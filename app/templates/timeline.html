@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>二狗的陈词滥调</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/timeline/style.css">
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        .line-limit-length {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: #ea6f5a;
+        }
+
+        .h2,
+        h2 {
+            font-size: 1.3em;
+        }
+
+        h3 {
+            font-size: 21px;
+
+        }
+    </style>
+</head>
+<!-- 4900w -->
+
+<body background="/static/img/墙.jpg">
+
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark ">
+        <a class="navbar-brand" href="/">Jmoyin</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav container">
+                <li class="nav-item" style="margin-right: 50px;">
+                    <a class="nav-link" href="/">主页 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item" style="margin-right: 50px;">
+                    <a class="nav-link" href="/article">杂文</a>
+                </li>
+                <li class="nav-item" style="margin-right: 50px;">
+                    <a class="nav-link" href="/tech">技术</a>
+                </li>
+                <li class="nav-item" style="margin-right: 50px;">
+                    <a class="nav-link" href="/aboutMe">我</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/backend/admin">管理</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="page-header">
+                    <div class="card mb-3 mt-2">
+                        <div class="card-header p-2 f-17">
+                            <b><i class="my-fa fa fa-coffee" aria-hidden="true"></i>建站日志</b>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="blogBriefContent">
+                    <section id="cd-timeline" class="cd-container">
+                        <div class="cd-timeline-block">
+                            <div class="cd-timeline-img cd-picture">
+                                <img src="../static/img/cd-icon-picture.svg" alt="Picture">
+                            </div>
+
+                            <div class="cd-timeline-content">
+                                <h2>HTML5+CSS3实现的响应式垂直时间轴</h2>
+                                <p>网页时间轴一般用于展示以时间为主线的事件，如企业网站常见的公司发展历程等。本文将给大家介绍一款基于HTML5和CSS3的漂亮的垂直时间轴，它可以响应页面布局，适用于HTML5开发的PC和移动手机WEB应用。
+                                </p>
+                                <a href="http://www.helloweba.com/view-blog-285.html" class="cd-read-more"
+                                    target="_blank">阅读全文</a>
+                                <span class="cd-date">2015-01-06</span>
+                            </div>
+                        </div>
+                        <div class="cd-timeline-block">
+                            <div class="cd-timeline-img cd-movie">
+                                <img src="../static/img/cd-icon-movie.svg" alt="Movie">
+                            </div>
+
+                            <div class="cd-timeline-content">
+                                <h2>jQuery+PHP动态数字展示效果</h2>
+                                <p>我们在一些应用中需要动态展示数据，比如当前在线人数，当前交易总额，当前汇率等等，前端页面需要实时刷新获取最新数据。本文将结合实例给大家介绍使用jQuery和PHP来实现动态数字展示效果。
+                                </p>
+                                <a href="http://www.helloweba.com/view-blog-284.html" class="cd-read-more"
+                                    target="_blank">阅读全文</a>
+                                <span class="cd-date">2014-12-25</span>
+                            </div>
+                        </div>
+                        <div class="cd-timeline-block">
+                            <div class="cd-timeline-img cd-picture">
+                                <img src="../static/img/cd-icon-picture.svg" alt="Picture">
+                            </div>
+
+                            <div class="cd-timeline-content">
+                                <h2>PHP操作Session和Cookie</h2>
+                                <p>我们跟踪用户信息时需要用到Session和Cookie，比如用户登录验证、记录用户浏览历史，存储购物车数据，限制用户会话有效时间等。今天我们来了解下PHP是如何操作Session和Cookie的。
+                                </p>
+                                <a href="http://www.helloweba.com/view-blog-283.html" class="cd-read-more"
+                                    target="_blank">阅读全文</a>
+                                <span class="cd-date">2014-12-20</span>
+                            </div>
+                        </div>
+                        <div class="cd-timeline-block">
+                            <div class="cd-timeline-img cd-movie">
+                                <img src="../static/img/cd-icon-movie.svg" alt="Movie">
+                            </div>
+
+                            <div class="cd-timeline-content">
+                                <h2>jQuery数字加减插件</h2>
+                                <p>我们在网上购物提交订单时，在网页上一般会有一个选择数量的控件，要求买家选择购买商品的件数，开发者会把该控件做成可以通过点击实现加减等微调操作，当然也可以直接输入数字件数。本文将介绍常见的几种使用spinner数字微调器来实现数字加减的功能的方法。
+                                </p>
+                                <a href="http://www.helloweba.com/view-blog-282.html" class="cd-read-more"
+                                    target="_blank">阅读全文</a>
+                                <span class="cd-date">2014-12-14</span>
+                            </div>
+                        </div>
+                        <div class="cd-timeline-block">
+                            <div class="cd-timeline-img cd-movie">
+                                <img src="../static/img/cd-icon-location.svg" alt="Location">
+                            </div>
+
+                            <div class="cd-timeline-content">
+                                <h2>收集整理的非常有用的PHP函数</h2>
+                                <p>项目中经常会需要一些让人头疼的函数，作为开发者应该整理一个自己的函数库，在需要之时复制过来即可。本文作者收集整理数十个PHP项目中常用的函数，保证能正常运行，你只要复制粘贴到你项目中即可。
+                                </p>
+                                <a href="http://www.helloweba.com/view-blog-281.html" class="cd-read-more"
+                                    target="_blank">阅读全文</a>
+                                <span class="cd-date">2014-12-05</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+</body>
+
+</html>

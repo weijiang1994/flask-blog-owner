@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% extends "bootstrap/base.html" %}
+{% block head%}
+{{super()}}
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="{{url_for('static', filename='crow.icon')}}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename = 'crow.ico') }}" type="image/x-icon">
+{% endblock %}
+{% block title %}Black Crow{% endblock %}
+{% block navbar %}
+<div class="header-page">
+    <div class="navbar navbar-inverse container" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a style="margin-right: 100px;" class="navbar-brand" href="/">
+                    <img alt="2 Dog" src="../static/img/dog.png">
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li id="homePageLi" class="active"> <a href="/">Journal</a></li>
+                <li><a href="">Article</a></li>
+                <li><a href="">Technology</a></li>
+                <li><a href="">Resume</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

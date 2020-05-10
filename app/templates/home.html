@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>二狗的陈词滥调</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ 
+    <div class="header-page">
+        <div class="navbar navbar-inverse" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a style="margin-right: 100px;" class="navbar-brand" href="/">
+                        <img alt="2 Dog" src="../static/img/dog.png">
+                    </a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li style="margin-right: 30px;" class="active"> <a href="/">主页</a></li>
+                    <li style="margin-right: 30px;"><a href="/article">杂文</a></li>
+                    <li style="margin-right: 30px;"><a href="/tech">技术</a></li>
+                    <li style="margin-right: 30px;"><a href="/aboutMe">我</a></li>
+                    <li><a href="/backend/admin">管理</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <style>
+        aside {
+            width: 280px;
+            height: auto;
+            float: right;
+        }
+
+        aside .widget {
+            margin-bottom: 80px;
+        }
+
+        aside h3.widget-title {
+            width: 240px;
+            padding: 17px 20px;
+            border-left: 3px #58c93a solid;
+            background: #f8f8f8;
+            margin-bottom: 20px;
+            font-family: 'LatoBold', 'Helvetica', arial;
+            font-weight: bold;
+            font-size: 16px;
+            color: #6c6969;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        aside .textwidget p {
+            width: 240px;
+            padding: 0 20px;
+            font-family: 'LatoRegular', 'Helvetica', arial;
+            font-size: 16px;
+            color: #737373;
+            margin-bottom: 10px;
+            line-height: 20px;
+        }
+
+        .pagination {
+            display: block;
+            width: 100%;
+            padding: 30px 0;
+            border-top: 1px #e1e0e0 solid;
+            border-bottom: 1px #e1e0e0 solid;
+            overflow: hidden;
+        }
+
+        .pagination a {
+            color: #818181;
+        }
+
+        .previous,
+        .next {
+            text-decoration: none;
+            margin: 0 30px;
+            font-family: 'LatoBold', 'Helvetica', arial;
+            font-weight: bold;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+
+        .previous {
+            float: left;
+        }
+
+        .next {
+            float: right;
+        }
+
+        .previous i,
+        .next i {
+            width: 15px;
+            height: 7px;
+            display: inline-block;
+            margin-bottom: 3px;
+            background: url('../static/img/pagination.png') no-repeat;
+        }
+
+        .previous i {
+            background-position: 0 0;
+            margin-right: 10px;
+        }
+
+        .next i {
+            background-position: -16px 0;
+            margin-left: 10px;
+        }
+
+        .previous:hover,
+        .next:hover {
+            color: #58c93a;
+        }
+
+        .previous:hover i,
+        .next:hover i {
+            background: url('../static/img/pagination_hover.png') no-repeat;
+        }
+
+        .previous:hover i {
+            background-position: 0px 0;
+        }
+
+        .next:hover i {
+            background-position: -16px 0;
+        }
+    </style>
+</head>
+
+<body background="../static/img/墙.jpg">
+    <div class="container">
+        <div style="border-right: 1px solid #E1E0E0; border-left: 1px solid#E1E0E0;" class="row">
+            <div style="height: auto;margin-top: 10px;" class="col-md-8">
+                <!-- 文章1 -->
+                <a id="a1" href="#" name="title1" onclick="openDetail(this.name, this.id)">
+                    <h3 id="title1">Python 开发-通过公共键值对字典进行排序</h3>
+                </a>
+                <ul style="width: 200px;" class="breadcrumb">
+                    <li id="authorLi">Macway</li>
+                    <li id="YearLi">2020</li>
+                    <li id="dayLi">0108</li>
+                </ul>
+                <img style="width: 30%; height: 50%;" src="../static/img/pic1.jpg" class="img-rounded">
+                <hr>
+                <!-- 文章2 -->
+                <a href="#" name="title2" id="a2" onclick="openDetail(this.name, this.id)">
+                    <h3 id="title2">Python中yield关键字的作用</h3>
+                </a>
+                <ul style="width: 200px;" class="breadcrumb">
+                    <li id="authorLi2">Macway</li>
+                    <li id="YearLi2">2020</li>
+                    <li id="dayLi2">0108</li>
+                </ul>
+                <img style="width: 30%; height: 50%;" src="../static/img/pic2.jpg" class="img-rounded">
+                <hr>
+                <!-- 文章3 -->
+                <a href="#" name="title3" id="a3" onclick="openDetail(this.name, this.id)">
+                    <h3 id="title3">夜雨寄北</h3>
+                </a>
+                <ul style="width: 200px;" class="breadcrumb">
+                    <li id="authorLi3">Macway</li>
+                    <li id="YearLi3">2020</li>
+                    <li id="dayLi3">0108</li>
+                </ul>
+                <div class="row">
+                    <div style="margin: 0px;" class="col-md-4">
+                        <img style="width: 100%; height: 100%;" src="../static/img/pic3.jpg" class="img-rounded">
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-7">
+                        <h4>Python 是一种解释型、面向对象、动态数据类型的高级程序设计语言。
+                            Python 由 Guido van Rossum 于 1989 年底发明，第一个公开发行版发行于 1991 年。
+                            像 Perl 语言一样, Python 源代码同样遵循 GPL(GNU General Public License) 协议。
+                            官方宣布，2020 年 1 月 1 日， 停止 Python 2 的更新。
+                            Python 2.7 被确定为最后一个 Python 2.x 版本。</h4>
+                    </div>
+                </div>
+
+                <hr>
+                <a href="#" name="title4" id="a4" onclick="openDetail(this.name, this.id)">
+                    <h3 id="title4">Python的ORM使用</h3>
+                </a>
+                <ul style="width: 200px;" class="breadcrumb">
+                    <li id="authorLi4">Macway</li>
+                    <li id="YearLi4">2020</li>
+                    <li id="dayLi4">0108</li>
+                </ul>
+                <div class="row">
+                    <div style="margin: 0px;" class="col-md-4">
+                        <img style="width: 100%; height: 100%;" src="../static/img/pic3.jpg" class="img-rounded">
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-7">
+                        <h4>Python 是一种解释型、面向对象、动态数据类型的高级程序设计语言。
+                            Python 由 Guido van Rossum 于 1989 年底发明，第一个公开发行版发行于 1991 年。
+                            像 Perl 语言一样, Python 源代码同样遵循 GPL(GNU General Public License) 协议。
+                            官方宣布，2020 年 1 月 1 日， 停止 Python 2 的更新。
+                            Python 2.7 被确定为最后一个 Python 2.x 版本。</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div style="height: 200px;" class="col-md-1"></div>
+            <div style="padding: 0px;" class="col-md-3">
+                <!-- 侧边栏 -->
+                <div>
+                    <aside>
+                        <section class="widget">
+                            <h3 class="widget-title">About Blog.</h3>
+                            <div class="textwidget">
+                                <p>We are in the gutter, but we always look up at the sky. </p>
+                                <p>As a programmer. Geek life is so beautiful! I love the Python and Pythonic!</p>
+                            </div>
+                        </section>
+                        <section class="widget">
+                            <h3 class="widget-title">Search.</h3>
+                            <form action="searchResult" class="search_widget">
+                                <input style="width: 240px;" type="text" class="form-control" id="searchKey"
+                                    placeholder="what are you looking for?">
+                            </form>
+                        </section>
+                    </aside>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+    </div>
+    <div class="container">
+        <!-- 底部页面切换 -->
+        <div class="row">
+            <div class="col-md-6">
+                <a href="/previousPage" onclick="previousPage" class="previous"><i></i>Previous</a>
+            </div>
+            <div class="col-md-6">
+                <a href="/nextPage" class="next">Next<i></i></a>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <script>
+        // 当前页面索引
+        var current_page = 0
+
+        function openDetail(name, id) {
+            var title = $("#" + name).html();
+            $("#" + id).attr("href", "/detail/article/" + title);
+        }
+
+    </script>
+</body>
+
+</html>

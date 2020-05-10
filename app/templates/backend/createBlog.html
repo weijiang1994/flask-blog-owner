@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% extends "backend/base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block head %}
+{{super()}}
+
+{% endblock %}
+{% block title %}创建博客{% endblock %}
+{%block content%}
+
+<body background="/static/img/墙.jpg">
+    <div class="container">
+        <h1 style="color:deepskyblue;font-family: 'Courier New', Courier, monospace;font-size: 48px">创建博客</h1>
+        <hr class="hr" size=1   color="#999" style="border:1 solid #999" >
+    </div>
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            
+            {{wtf.form_field(form.title)}}
+            <div class="row">
+                <div class="col-md-2">
+                    {{wtf.form_field(form.blog_type)}}
+                </div>
+                <div class="col-md-2">
+                    {{wtf.form_field(form.blog_level)}}
+                </div>
+                <div class="col-md-2">
+                    {{wtf.form_field(form.blog_img_file)}}
+                </div>
+            </div>
+            {{wtf.form_field(form.brief_content)}}<br>
+            {{ form.body }}<br>
+            <div class="row">
+                <div class="col-md-10"></div>
+                <div class="col-md-2" style="text-align: right;">
+                    {{ wtf.form_field(form.submit, class="btn btn-info") }}
+                </div>
+            </div>
+        </form>
+
+    </div>
+    {{ ckeditor.load() }}
+    {{ ckeditor.config(name='body') }}
+    <br>
+    <script>
+        $(function () {
+            $(document).ready(function () {
+                $("#cke_1_contents").append('<p>我是测试</p>');
+            });
+        })
+
+        // $(function () {
+        //     $("#submit").click(function () {
+        //         let blogTitle = $("#title").val();
+        //         let blogType = $("#blogTypeSel").val();
+        //         let blogLevel = $("#blogLevelSel").val();
+        //         var data = {
+        //             data: JSON.stringify({
+        //                 "blogTitle": blogTitle,
+        //                 "blogType": blogType,
+        //                 "blogLevel": blogLevel,
+        //             })
+        //         }
+        //         $.ajax({
+        //             url: "/backend/createBlog",
+        //             type: "POST",
+        //             data: data
+        //         })
+        //     })
+        // })
+
+    </script>
+</body>
+{% endblock %}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<head>
+	<title>二狗子的枯燥生活</title>
+	<meta charset="utf-8">
+	<meta name="author" content="">
+	<script aria-level="important" type="javascript" src="../static/js/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../static/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="../static/css/main.css">
+</head>
+
+<body>
+	<header>
+		<div class="wrapper">
+			<a href="/"><img src="../static/img/logo.png" class="h_logo" alt="Blogin" title=""></a>
+			<nav>
+				<ul class="main_nav">
+					<li class="current"><a href="#">Journal</a></li>
+					<li><a href="/article">Article</a></li>
+					<li><a href="/tech">Tech</a></li>
+					<li><a href="/aboutMe">Own</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header><!-- Header End -->
+
+	<section class="main2 wrapper">
+		<section class="content">
+			<article>
+				<div class="article_image">
+					<a href="#">
+						<img src="../static/img/pic4.jpg" alt="" title="">
+					</a>
+				</div>
+				<div class="post">
+					<h1 class="title">
+						<a id="articleTitle1" href="articleDetail">Duis aute irure dolor in henderit in voluptate.</a>
+					</h1>
+
+					<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+						commo
+						doconsequat, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+					<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+						pariatur...</p>
+
+					<a class="read_more" href="articleDetail">更多<i class="read_more_arrow"></i> </a>
+				</div>
+			</article>
+
+			<article>
+				<div class="article_image">
+					<a href="articleDetail">
+						<img src="../static/img/pic5.jpg" alt="" title="">
+					</a>
+				</div>
+				<div class="post">
+					<h1 class="title">
+						<a id="articleTitle2" href="articleDetail">Duis aute irure dolor in henderit in voluptate.</a>
+					</h1>
+
+					<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+						commo
+						doconsequat, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+					<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+						pariatur...</p>
+
+					<a class="read_more" href="articleDetail">Continue Reading <i class="read_more_arrow"></i> </a>
+				</div>
+			</article>
+		</section><!-- Content End -->
+
+		<aside class="sidebar">
+			<section class="widget">
+				<h3 class="widget-title">About Blogin.</h3>
+				<div class="textwidget">
+					<p>We are in the gutter, but we always look up at the sky. </p>
+					<p>As a programmer. Geek life is so beautiful! I love the Python and Pythonic!</p>
+				</div>
+			</section>
+
+			<section class="widget">
+				<h3 class="widget-title">Search.</h3>
+				<form action="searchResult" class="search_widget">
+					<input type="text" id="search-field" class="search-field" placeholder="what are you looking for?" />
+				</form>
+			</section>
+		</aside><!-- aside(sidebar) End -->
+
+		<nav class="pagination">
+			<a href="/previousPage" class="previous"><i></i>Previous</a>
+			<a href="/nextPage" class="next">Next<i></i></a>
+		</nav><!-- pagination End -->
+	</section><!-- Main2 End -->
+
+	<footer>
+		<div class="wrapper">
+			<img class="logo_footer" src="../static/img/logo_footer.png" alt="Blogin" title="">
+			<ul class="social_profiles">
+				<li class="f"><a href="https://www.baidu.com" target="_blink"></a></li>
+				<li class="t"><a href="https://www.csdn.com" target="_blink"></a></li>
+				<li class="be"><a href="https://www.github.com" target="_blink"></a></li>
+				<li class="d"><a href="https://www.oschina.com" target="_blink"></a></li>
+			</ul>
+		</div>
+	</footer><!-- Footer End -->
+
+	<script>
+		$(function () {
+			$(document).ready(function () {
+				$.ajax({
+					type: 'GET',
+					url: 'blogBriefInfo',
+					success: function (res) {
+
+					},
+
+					error: function (res) {
+
+					}
+				})
+			});
+		})
+	</script>
+</body>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% extends "bootstrap/base.html" %}
+{% block head%}
+{{super()}}
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="{{url_for('static', filename='dog.png')}}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename = 'dog.png') }}" type="image/x-icon">
+<script src="/static/bootstrap-select/js/bootstrap-select.min.js"></script>
+
+{% endblock %}
+{% block title %}Black Crow{% endblock %}
+{% block navbar %}
+<div class="header-page">
+    <div class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a style="margin-right: 100px;" class="navbar-brand" href="/">
+                    <img alt="2 Dog" src="../static/img/dog.png">
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li id="homePageLi"> <a href="/">导航</a></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        博客管理
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/backend/createBlog">新增博客</a></li>
+                        <li><a href="/backend/editBlog">编辑博客</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        评论管理
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">查看评论</a></li>
+                        <li><a href="#">编辑评论</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
