@@ -12,6 +12,8 @@ import uuid
 import datetime
 import hashlib
 
+CATEGORY_DIC = {1: '生活', 2: '陈词', 3: '技术'}
+
 
 def get_uuid():
     """

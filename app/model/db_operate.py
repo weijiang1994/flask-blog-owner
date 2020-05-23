@@ -47,6 +47,10 @@ class DBOperator:
         ret = self.session.query(obj).filter_by(type_name=condition).all()
         return ret
 
+    def update_blog_type_count(self, obj, condition):
+        ret = self.session.query(obj).filter_by(type_name=condition).all()
+        return ret
+
     def roll_back(self):
         self.session.roolback()
 

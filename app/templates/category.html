@@ -72,7 +72,7 @@
 
                 <div style="margin-top: 10px; margin-bottom: 30px;" class="description bg-white px-3 pt-3 pb-1">
                     <p class="float-right mb-0">共<span class="mx-2 text-info">{{category_article_count}}</span>篇</p>
-                    <h3 class="f-17" id="categoryName"><strong>文章分类：{{category_name}}</strong></h3>
+                    <h3 class="f-17" style="font-weight: bold" id="categoryName">文章分类：{{category_name}}</h3>
                     <p class="f-16">{{category_desc}}</p>
                 </div>
                 <div id="blogBriefContent">
@@ -188,6 +188,8 @@
         var currentPage = 1;
         var totalPage = 0;
         var isFirstTag = true;
+        let articleType = $("#categoryName").html();
+
         $(function () {
             $(document).ready(function () {
                 sendAjax(0);
@@ -195,7 +197,7 @@
         })
         function sendAjax(indexPage) {
             $.ajax({
-                url: "/blogBriefInfo/" + indexPage,
+                url: "/category/getBlogBrief/" + articleType + "/" + indexPage,
                 type: "POST",
                 success: function (res) {
                     $("#blogBriefContent").empty();
@@ -213,6 +215,15 @@
                             + '</a></h2>\
                             <p style="layout:fixed;" class="d-none d-sm-block mb-2 f-15">'+ res.data[index][2] + '</p></div></div></div></div>';
                         $("#blogBriefContent").append(content);
+                    }
+                    if (isFirstTag) {
+                        for (let index = 0; index < res.blog_type.length; index++) {
+                            let blogCategoryLi = '<li class="list-group-item d-flex justify-content-between align-items-center pr-2 py-2">\
+                            <a class="category-item" href="/category/'+ res.blog_type[index][0] + '" title="查看' + res.blog_type[index][0] + '分类下所有文章">' + res.blog_type[index][0] + '</a>\
+                            <span class="badge text-center" title="当前分类下有'+ res.blog_type[index][1] + '篇文章">' + res.blog_type[index][1] + '</span>\
+                        </li>'
+                            $("#blogCategoryList").append(blogCategoryLi);
+                        }
                     }
                     if (res.total == 0) {
                         return false;
@@ -232,16 +243,7 @@
                         $("#paginationIndex").append('<li id="next" class="page-item"><a onclick="nextPage()" class="page-link" href="javascript:;">下一页</a></li>');
                         totalPage = res.total;
                     }
-                    if (isFirstTag) {
-                        for (let index = 0; index < res.blog_type.length; index++) {
-                            let blogCategoryLi = '<li class="list-group-item d-flex justify-content-between align-items-center pr-2 py-2">\
-                            <a class="category-item" href="/category/'+ res.blog_type[index][0] + '" title="查看' + res.blog_type[index][0] + '分类下所有文章">' + res.blog_type[index][0] + '</a>\
-                            <span class="badge text-center" title="当前分类下有'+ res.blog_type[index][1] + '篇文章">' + res.blog_type[index][1] + '</span>\
-                        </li>'
-                            $("#blogCategoryList").append(blogCategoryLi);
-
-                        }
-                    }
+                    
                     isFirstTag = false;
 
 

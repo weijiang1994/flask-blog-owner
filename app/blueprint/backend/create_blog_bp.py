@@ -16,7 +16,7 @@ from werkzeug.datastructures import CombinedMultiDict
 from wtforms.validators import DataRequired, Length
 from wtforms import SubmitField, StringField, SelectField, TextAreaField, FileField
 from ..login_bp import login_require
-from ...util.common_util import get_current_time, get_uuid, create_path
+from ...util.common_util import get_current_time, get_uuid, create_path, CATEGORY_DIC
 from ...model.db_operate import DBOperator
 from ...model.blogin_model import Article, BlogType
 
@@ -30,7 +30,7 @@ class PostForm(FlaskForm):
     title = StringField(u'博客标题', validators=[Length(min=3, max=20, message='用户名长度必须在3到20位之间')],
                         render_kw={'class': '', 'rows': 50, 'placeholder': '输入您的博客标题'})
     blog_type = SelectField(label=u'博客类型',
-                            choices=choices, validators=[DataRequired()], default=0,
+                            choices=choices, default=0,
                             coerce=int)
     blog_level = SelectField(label=u'博客权限', choices=[(1, '公开'), (2, '私有')], validators=[DataRequired()],
                              default=1, coerce=int)
@@ -49,7 +49,7 @@ def index():
     if form.validate_on_submit():
         # 获取表单中信息
         blog_title = form.title.data
-        blog_type = form.blog_type.data
+        blog_type = int(form.blog_type.data)+1
         blog_level = form.blog_level.data
         blog_content = form.body.data
         current_time = get_current_time()
@@ -68,17 +68,12 @@ def index():
                            brief_content=brief_content, create_time=get_current_time(), update_time=get_current_time(),
                            read_times=0, delete_flag=0, img=blog_img_path)
         db.add_data(blog_obj)
+        blog_type_count = db.update_blog_type_count(BlogType, condition=CATEGORY_DIC.get(blog_type))[0]
+        blog_type_count.blog_count = int(blog_type_count.blog_count) + 1
         db.commit_data()
 
-        if blog_type == 1:
-            blog_type = '随记文章'
-        if blog_type == 2:
-            blog_type = '技术杂谈'
-        if blog_type == 3:
-            blog_type == '陈词滥调'
-
         return render_template('articleDetail.html', title=blog_title, create_time='发布于' + str(current_time),
-                               read_times='阅读数' + str(0), article_type=blog_type, article_content=blog_content)
+                               read_times='阅读数' + str(0), article_type=CATEGORY_DIC.get(blog_type), article_content=blog_content)
 
     return render_template('/backend/createBlog.html', form=form)
 

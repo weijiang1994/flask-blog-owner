@@ -30,7 +30,10 @@ def get_blog_brief_info(page=None):
     _data = db.query_all_desc_time(Article, page_size, page)
     total = db.query_all(Article)
     total = len(total)
-    total = math.ceil(total/page_size)
+    if total < page_size:
+        total = 0
+    else:
+        total = math.ceil(total / page_size)
     for i in _data:
         sub = list()
         sub.append(str(i.create_time))
