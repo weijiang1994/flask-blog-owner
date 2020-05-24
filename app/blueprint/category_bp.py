@@ -48,7 +48,6 @@ def blog_brief(arc_type, page):
         total = 0
     else:
         total = math.ceil(total / page_size)
-    print('total is ', total)
     ret2 = db.query_filter_by_category(Article, condition=category_dic.get(arc_type), page_index=page,
                                        page_size=page_size)
     for i in ret2:
