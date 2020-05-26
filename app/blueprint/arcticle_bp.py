@@ -8,9 +8,9 @@ file: login_bp.py
 """
 from flask import Blueprint, render_template
 
-article_bp = Blueprint('article_bp',  __name__)
+article_bp = Blueprint('article_bp',  __name__, static_url_path='/templates/gallery/')
 
 
 @article_bp.route('/article')
 def article():
-    return render_template('article.html')
+    return render_template('/gallery/index.html')
