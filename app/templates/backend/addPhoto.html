@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% extends "backend/base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block title %}博客后台管理{% endblock %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+{%block content%}
+
+<body background="/static/img/墙.jpg">
+    <div class="container">
+        <h1 style="color:deepskyblue;font-family: 'Courier New', Courier, monospace;font-size: 48px">添加相片</h1>
+    </div>
+<div class="container">
+        <form method="post" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            {{wtf.form_field(form.photo_title)}}
+            {{wtf.form_field(form.photo_desc)}}
+            <div class="row">
+                <div class="col-md-2">
+                    {{wtf.form_field(form.img_file)}}
+                    <button class="btn btn-info">预览图片</button>
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10"></div>
+                <div class="col-md-2" style="text-align: right;">
+                    {{ wtf.form_field(form.submit, class="btn btn-info") }}
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+{% endblock %}
+</html>

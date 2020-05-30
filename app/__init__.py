@@ -8,9 +8,8 @@
 @Contact:weijiang@colibri.com.cn
 """
 import os
-from datetime import timedelta
 
-from flask import Flask, session
+from flask import Flask
 from .blueprint.index_bp import index_bp
 from .blueprint.arcticle_bp import article_bp
 from .blueprint.work_bp import work_bp
@@ -24,6 +23,7 @@ from .blueprint.backend.edit_blog_bp import edit_blog_bp
 from flask_ckeditor import CKEditor
 from .blueprint.category_bp import category_bp
 from .blueprint.timeline_bp import timeline_bp
+from .blueprint.backend.gallery.add_photo_bp import add_photo_bp
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -68,3 +68,4 @@ def register_blueprint(app):
     app.register_blueprint(edit_blog_bp)
     app.register_blueprint(category_bp)
     app.register_blueprint(timeline_bp)
+    app.register_blueprint(add_photo_bp)

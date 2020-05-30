@@ -27,7 +27,7 @@ class PostForm(FlaskForm):
     db = DBOperator()
     ret = db.query_all(BlogType)
     choices = [(i[0], i[1].type_name) for i in zip(range(len(ret)), ret)]
-    title = StringField(u'博客标题', validators=[Length(min=3, max=20, message='用户名长度必须在3到20位之间')],
+    title = StringField(u'博客标题', validators=[Length(min=3, max=50, message='用户名长度必须在3到20位之间')],
                         render_kw={'class': '', 'rows': 50, 'placeholder': '输入您的博客标题'})
     blog_type = SelectField(label=u'博客类型',
                             choices=choices, default=0,
@@ -73,7 +73,8 @@ def index():
         db.commit_data()
 
         return render_template('articleDetail.html', title=blog_title, create_time='发布于' + str(current_time),
-                               read_times='阅读数' + str(0), article_type=CATEGORY_DIC.get(blog_type), article_content=blog_content)
+                               read_times='阅读数' + str(0), article_type=CATEGORY_DIC.get(blog_type), article_content
+                               =blog_content)
 
     return render_template('/backend/createBlog.html', form=form)
 
