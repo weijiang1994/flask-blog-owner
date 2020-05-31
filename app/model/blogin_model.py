@@ -7,6 +7,18 @@ Base = declarative_base()
 metadata = Base.metadata
 
 
+class Gallery(Base):
+    __tablename__ = 'gallery'
+
+    id = Column(INTEGER(11), primary_key=True, nullable=False)
+    photo_title = Column(String(255), nullable=False)
+    photo_path = Column(String(255), nullable=False)
+    photo_desc = Column(String(512))
+    create_time = Column(DateTime)
+    delete_flag = Column(INTEGER(11))
+    private_flag = Column(INTEGER(11))
+
+
 class Admin(Base):
     __tablename__ = 'admin'
 
