@@ -44,7 +44,6 @@
 	</head>
 	<body>
 	<nav style="font-size: 18px" class="navbar navbar-expand-md bg-dark navbar-dark ">
-{#        <a class="navbar-brand" href="/">Jmoyin</a>#}
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -201,7 +200,7 @@
 	        		<div class="fh5co-desc">Harum repellat labore est cum ipsa, nesciunt neque mollitia adipisci?</div>
         		</div>
         	</div>
-        	
+
         	<div class="item">
         		<div class="animate-box">
 	        		<a href="../../static/gallery/images/img_22.jpg" class="image-popup fh5co-board-img"><img src="../../static/gallery/images/img_22.jpg" alt="Free HTML5 Bootstrap template"></a>
@@ -277,8 +276,34 @@
 	<!-- Main JS -->
 	<script src="../../static/gallery/js/main.js"></script>
 
-	
+    <script>
+        $(function () {
+            $(document).ready(function () {
+                sendAjax();
+            });
+        })
 
-	
+        function sendAjax() {
+        $.ajax({
+                url: "/getPhoto",
+                type: "POST",
+                success: function (res) {
+                    for (let i=0;i<res.photo_info.length;i++){
+                        let content = ' <div class="item">\
+        		<div class="animate-box">\
+	        		<a href="'+res.photo_info[i][1]+'" class="image-popup fh5co-board-img" title="'+res.photo_info[i][0]+'"><img src="'+res.photo_info[i][1]+'" alt="Free HTML5 Bootstrap template"></a>\
+        		</div>\
+        		<div class="fh5co-desc">'+res.photo_info[i][2]+'</div>\
+        	</div></div>'
+                        $("#fh5co-board").append(content);
+                    }
+                },
+                error: function (res) {
+
+                }
+            });
+        }
+
+    </script>
 	</body>
 </html>

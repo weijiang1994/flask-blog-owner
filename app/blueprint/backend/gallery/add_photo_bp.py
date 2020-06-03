@@ -6,7 +6,7 @@ file: add_photo_bp.py
 @time: 2020/5/28 23:24
 @desc:
 """
-from flask import Blueprint, render_template, request, send_from_directory
+from flask import Blueprint, render_template, request, send_from_directory, redirect
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from werkzeug.datastructures import CombinedMultiDict
@@ -22,6 +22,7 @@ add_photo_bp = Blueprint('add_photo_bp', __name__, url_prefix='/backend')
 
 
 class AddPhotoForm(FlaskForm):
+    # 添加相册照片前端表单
     photo_title = StringField(u'相片标题', validators=[Length(min=3, max=50, message='用户名长度必须在3到50之间')],
                               render_kw={'class': '', 'rows': 50, 'placeholder': '输入照片标题'})
     photo_desc = TextAreaField(u'相片描述', validators=[Length(min=3, max=250, message='用户名长度必须在3到250之间')])
@@ -35,6 +36,10 @@ class AddPhotoForm(FlaskForm):
 
 @add_photo_bp.route('/addPhoto', methods=['GET', 'POST'])
 def index():
+    """
+    添加相册照片视图函数
+    :return:
+    """
     form = AddPhotoForm(CombinedMultiDict([request.form, request.files]))
     if form.validate_on_submit():
         photo_title = form.photo_title.data
@@ -44,7 +49,7 @@ def index():
         current_time = get_current_time()
         current_time = current_time.split(' ')[0]
         create_path(app_path() + '/gallery/' + current_time)
-        # 将博客示例图片存储到对应的文件夹中
+        # 将图片存储到服务器对应的文件夹中
         form.img_file.data.save(app_path() + '/gallery/' + current_time + '/' + photo_filename)
         blog_img_path = '/backend/blogImg/gallery/' + current_time + '/' + photo_filename
         db = DBOperator()
@@ -52,10 +57,18 @@ def index():
                           create_time=get_current_time(), delete_flag=0, private_flag=photo_level)
         db.add_data(gallery)
         db.commit_data()
+    #     TODO 照片添加完成之后需要进行重定向
+        return redirect('')
     return render_template('/backend/addPhoto.html', form=form)
 
 
 @add_photo_bp.route('/blogImg/gallery/<path>/<filename>')
-def get_blog_sample_img(path, filename):
+def get_gallery_img(path, filename):
+    """
+    获取服务器相册照片资源
+    :param path: 请求携带的path
+    :param filename: 请求携带的文件名
+    :return: 对应的照片文件
+    """
     path = app_path() + '/gallery/' + path + '/'
     return send_from_directory(path, filename)

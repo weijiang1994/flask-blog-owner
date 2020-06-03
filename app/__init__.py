@@ -11,7 +11,7 @@ import os
 
 from flask import Flask
 from .blueprint.index_bp import index_bp
-from .blueprint.arcticle_bp import article_bp
+from .blueprint.gallery_bp import gallery_bp
 from .blueprint.work_bp import work_bp
 from .blueprint.own_bp import own_bp
 from .blueprint.article_detail_bp import article_detail_bp
@@ -58,7 +58,7 @@ def create_app(test_config=None):
 
 def register_blueprint(app):
     app.register_blueprint(index_bp)
-    app.register_blueprint(article_bp)
+    app.register_blueprint(gallery_bp)
     app.register_blueprint(work_bp)
     app.register_blueprint(own_bp)
     app.register_blueprint(article_detail_bp)
