@@ -15,7 +15,7 @@ gallery_bp = Blueprint('gallery_bp', __name__)
 
 @gallery_bp.route('/article')
 def article():
-    return render_template('/gallery/index.html')
+    return render_template('/gallery/index_1.html')
 
 
 @gallery_bp.route('/getPhoto', methods=['POST'])

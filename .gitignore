@@ -36,6 +36,8 @@ MANIFEST
 image/
 uploads/
 gallery/
+static/gallery/img/
+static/gallery/images/
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
