@@ -6,13 +6,12 @@ file: add_photo_bp.py
 @time: 2020/5/28 23:24
 @desc:
 """
-from flask import Blueprint, render_template, request, send_from_directory, redirect
+from flask import Blueprint, render_template, request, send_from_directory, redirect, url_for
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from werkzeug.datastructures import CombinedMultiDict
 from wtforms import StringField, SubmitField, TextAreaField, FileField, SelectField
 from wtforms.validators import Length, DataRequired
-
 from app.frozen_dir import app_path
 from app.util.common_util import get_current_time, create_path
 from ....model.db_operate import DBOperator
@@ -58,7 +57,7 @@ def index():
         db.add_data(gallery)
         db.commit_data()
     #     TODO 照片添加完成之后需要进行重定向
-        return redirect('')
+        return url_for('gallery_bp.gallery')
     return render_template('/backend/addPhoto.html', form=form)
 
 

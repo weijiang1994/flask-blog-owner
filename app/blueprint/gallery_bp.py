@@ -6,7 +6,7 @@ file: gallery_bp.py
 @time: 2020/06/02 23:00
 @desc:
 """
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, redirect
 from ..model.db_operate import DBOperator
 from ..model.blogin_model import Gallery
 
@@ -14,7 +14,7 @@ gallery_bp = Blueprint('gallery_bp', __name__)
 
 
 @gallery_bp.route('/article')
-def article():
+def gallery():
     return render_template('/gallery/index_1.html')
 
 
