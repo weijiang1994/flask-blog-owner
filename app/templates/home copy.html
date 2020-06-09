@@ -212,9 +212,9 @@
     </div>
     </div>
     <script>
-        var currentPage = 1;
-        var totalPage = 0;
-        var isFirstTag = true;
+        let currentPage = 1;
+        let totalPage = 0;
+        let isFirstTag = true;
         $(function () {
             $(document).ready(function () {
                 sendAjax(0);
@@ -315,7 +315,7 @@
             sendAjax(currentPage);
         }
         function openDetail(name, id) {
-            var title = $("#" + name).html();
+            let title = $("#" + name).html();
             $("#" + id).attr("href", "/detail/article/" + title);
         }
     </script>

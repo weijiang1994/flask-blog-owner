@@ -26,6 +26,12 @@ class DBOperator:
     def query_all(self, obj):
         return self.session.query(obj).all()
 
+    def query_all_time(self, obj):
+        return self.session.query(obj).order_by(obj.create_time.desc()).all()
+
+    def query_pre_article(self, obj, condition):
+        return self.session.query(obj).filter_by(title=condition).order_by('create_time').first()
+
     def query_all_desc_time(self, obj, page_size, page_index):
         return self.session.query(obj).order_by(obj.create_time.desc()).\
             limit(page_size).offset((page_index-1)*page_size)
