@@ -36,13 +36,13 @@ def index(title):
             pre_article = ''
             pre_link = ''
         else:
-            pre_article = '上一篇:'+articles[current_index-1].title
+            pre_article = '<上一篇:'+articles[current_index-1].title
             pre_link = '/detail/article/'+articles[current_index-1].title
         if current_index == len(articles)-1:
             next_article = ''
             next_link = ''
         else:
-            next_article = '下一篇:' + articles[current_index+1].title
+            next_article = '下一篇:' + articles[current_index+1].title+'>'
             next_link = '/detail/article/'+articles[current_index+1].title
         read_times = ret.read_times
         if ret.type == 1:
