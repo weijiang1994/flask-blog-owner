@@ -24,7 +24,7 @@ from flask_ckeditor import CKEditor
 from .blueprint.category_bp import category_bp
 from .blueprint.timeline_bp import timeline_bp
 from .blueprint.backend.gallery.add_photo_bp import add_photo_bp
-
+from .blueprint.backend.other.add_timeline_bp import add_timeline_bp
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -69,3 +69,4 @@ def register_blueprint(app):
     app.register_blueprint(category_bp)
     app.register_blueprint(timeline_bp)
     app.register_blueprint(add_photo_bp)
+    app.register_blueprint(add_timeline_bp)
