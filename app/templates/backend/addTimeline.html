@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% extends "backend/base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 {% block title %}博客后台管理-增加时间线{% endblock %}
 <head>
     <meta charset="UTF-8">
@@ -10,6 +11,16 @@
 <body background="/static/img/墙.jpg">
 <div class="container">
         <h1 style="color:deepskyblue;font-family: 'Courier New', Courier, monospace;font-size: 48px">新增时间线</h1>
+    </div>
+<div class="container">
+        <form method="post" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            {{wtf.form_field(form.timeline_title)}}
+            {{wtf.form_field(form.timeline_content)}}
+            <div style="text-align: right;">
+                {{ wtf.form_field(form.submit) }}
+            </div>
+        </form>
     </div>
 </body>
 {% endblock %}
