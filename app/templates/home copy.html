@@ -117,7 +117,7 @@
                     <div class="card-header p-2 f-17">
                         <b><i class="my-fa fa fa-coffee" aria-hidden="true"></i>每日一句 (From ONE)</b>
                     </div>
-                    <div class="card-body p-2 f-15">
+                    <div id="oneWord" class="card-body p-2 f-15">
                         使人疲惫的不是远方的高山，而是鞋子里的一粒沙子。
                     </div>
                 </div>
@@ -218,8 +218,22 @@
         $(function () {
             $(document).ready(function () {
                 sendAjax(0);
+                getOne();
             });
         })
+        function getOne(){
+            $.ajax({
+            type: "GET",
+            url: ' http://api.youngam.cn/api/one.php',
+             dataType: 'json',
+
+            success: function(result){
+                console.log(result);
+                $("#oneWord").text(result['data'][0]['text']+'  ———— 「ONE · 一个」');
+                return false;
+    }
+});
+        }
         function sendAjax(indexPage) {
             $.ajax({
                 url: "/blogBriefInfo/" + indexPage,
