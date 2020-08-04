@@ -118,7 +118,7 @@
                         <b><i class="my-fa fa fa-coffee" aria-hidden="true"></i>每日一句 (From ONE)</b>
                     </div>
                     <div id="oneWord" class="card-body p-2 f-15">
-                       
+
                     </div>
                 </div>
                 <!-- 个人空间 -->
@@ -225,10 +225,8 @@
             $.ajax({
             type: "GET",
             url: ' http://api.youngam.cn/api/one.php',
-             dataType: 'json',
-
+            dataType: 'json',
             success: function(result){
-                console.log(result);
                 $("#oneWord").text(result['data'][0]['text']+'  ———— 「ONE · 一个」');
                 return false;
     }
