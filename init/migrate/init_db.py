@@ -13,14 +13,14 @@ import traceback
 
 print('Starting the create database operation, please enter the information required for the database.')
 print('-'*56)
-# host = input('please input database host:')
-# port = input('please input database port:')
-# user = input('please input database user:')
-# password = input('please input database password:')
+host = input('please input database host:')
+port = input('please input database port:')
+user = input('please input database user:')
+password = input('please input database password:')
 print('-'*56)
 try:
-    conn = pymysql.connect(host='127.0.0.1', port=3306, user='weijiang', password='1994124')
-    # conn = pymysql.connect(host=host, port=int(port), user=user, password=password)
+    # conn = pymysql.connect(host='127.0.0.1', port=3306, user='weijiang', password='1994124')
+    conn = pymysql.connect(host=host, port=int(port), user=user, password=password)
     cursor = conn.cursor()
 except Exception as e:
     print(e.args)
@@ -104,10 +104,3 @@ try:
 except Exception as e:
     print(e.args)
     traceback.print_exc()
-
-print('forge data')
-
-cursor.execute('insert into blog_type values("123", b"生活", "2020-08-24 11:14:53", 1, b"生活就是一把杀猪刀")')
-conn.commit()
-del conn
-del cursor
