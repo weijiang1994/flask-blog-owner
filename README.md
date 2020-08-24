@@ -35,5 +35,5 @@ flask run --host=0.0.0.0 --port=8000 # 指定主机及端口号
 如果采用指定主机以及端口号的运行方式，访问`youridp:yourport`，既可以看到博客主页。
 
 > 示例图
-
-![alt 博客主页](https://github.com/weijiang1994/flask-owner-blog/screenshot/homePage.jpg)
+![alt 博客主页](https://github.com/weijiang1994/flask-blog-owner/blob/master/screenshot/homePage.jpg
+)
