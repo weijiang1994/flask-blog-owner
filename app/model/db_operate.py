@@ -13,7 +13,7 @@ from sqlalchemy.orm import sessionmaker
 
 class DBOperator:
     def __init__(self):
-        self.engine = create_engine('mysql+pymysql://root:1994124@127.0.0.1:3306/blogin?charset=utf8')
+        self.engine = create_engine('mysql+pymysql://weijiang:1994124@127.0.0.1:3306/blogin?charset=utf8')
         self.session = sessionmaker(bind=self.engine)
         self.session = self.session()
 

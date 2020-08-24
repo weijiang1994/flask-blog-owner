@@ -53,7 +53,7 @@ class Article(Base):
     img = Column(String(255), nullable=False, comment='article preview image')
     brief_content = Column(String(255), nullable=False, server_default=text("''"), comment='article abstract')
     content = Column(Text, nullable=False, comment='article content')
-    private = Column(INTEGER(11), nullable=False, server_default=text("0"), comment='is private ? 0:no 1:yes')
+    is_private = Column(INTEGER(11), nullable=False, server_default=text("0"), comment='is private ? 0:no 1:yes')
     create_time = Column(DateTime, comment='article publish time')
     update_time = Column(DateTime, comment='modify this article time')
     read_times = Column(INTEGER(11), nullable=False, server_default=text("0"), comment='this article read times')
