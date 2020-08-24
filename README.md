@@ -4,18 +4,18 @@
 #### Start
 ##### 1.安装依赖文件
 ```shell script
-cd flask-owner-blog
+cd flask-blog-owner
 pip install -r requirement.txt -i https://pypi.douban.com/simple
 ```
 ##### 2.初始化数据库
 ```shell script
-cd migrate
+cd flask-blog-owner/init/migrate
 python init_db.py
 ```
 ##### 3.运行
 1. Windows
 ```shell script
-cd flask-owner-blog
+cd flask-blog-owner
 set FLASK_APP=app
 set FLASK_ENV=development # 可选
 # 下面的命令二选一即可
@@ -24,7 +24,7 @@ python -m flask run --host=0.0.0.0 --port=8000 # 指定主机及端口号
 ```
 2. Linux
 ```shell script
-cd flask-owner-blog
+cd flask-blog-owner
 export FLASK_APP=app
 export FLASK_ENV=development 
 # 下面的命令二选一即可
