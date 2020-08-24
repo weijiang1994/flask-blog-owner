@@ -14,7 +14,7 @@ article_detail_bp = Blueprint('article_detail_bp', __name__, url_prefix='/detail
 
 
 # 打开article类型文章详细页面
-@article_detail_bp.route('/article/<title>', methods=['GET', 'POST'])
+@article_detail_bp.route('/article/<path:title>', methods=['GET', 'POST'])
 def index(title):
     try:
         current_app.config['current_article_title'] = title
