@@ -64,7 +64,7 @@ def index():
         blog_img_path = '/backend/blogImg/image/' + current_time + '/' + filename
         # 博客入库操作
         db = DBOperator()
-        blog_obj = Article(id=get_uuid(), title=blog_title, type=blog_type, private=blog_level, content=blog_content,
+        blog_obj = Article(id=get_uuid(), title=blog_title, type=blog_type, is_private=blog_level, content=blog_content,
                            brief_content=brief_content, create_time=get_current_time(), update_time=get_current_time(),
                            read_times=0, delete_flag=0, img=blog_img_path)
         db.add_data(blog_obj)
