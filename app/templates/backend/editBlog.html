@@ -5,14 +5,71 @@
 {{super()}}
 {% endblock %}
 {% block title %}博客编辑{% endblock %}
-{%block content%}
-<div class="container">
+{% block content %}
+    <style>
+        .contentDiv{
+            background: white;
+            border-radius: 8px;
+            border: #cccccc solid 1px;
+            box-shadow: 10px 10px 5px #888888;
+        }
+    </style>
+<body background="/static/img/墙.jpg">
+    <div class="container contentDiv" id="content">
         <h1 style="color:deepskyblue;font-family: 'Courier New', Courier, monospace;font-size: 48px">博客编辑</h1>
         <hr>
-    </div>
-{%endblock%}
-<html lang="en">
-<body>
 
+<ul class="nav nav-pills" role="tablist">
+    <li class="active">
+        <a class="nav-link" data-toggle="pill" href="#typeManage">分类管理</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="pill" href="#articleManage">文章管理</a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div id="typeManage" class="container tab-pane active">
+    <br>
+        <form class="form-inline" method="post" action="addArticleType">
+        <label>文章类别</label>
+        <input class="form-control" name="articleType" type="text">
+        <input class="btn btn-info" type="submit" value="添加">
+    </form>
+    <hr>
+    {% if blog_type_datas %}
+    <table class="table table-hover">
+        <caption>已有文章类别</caption>
+        <thead>
+        <tr>
+            <th>类别名</th>
+            <th>创建时间</th>
+            <th>文章数量</th>
+            <th>描述</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+    <tbody>
+    {% for data in blog_type_datas %}
+           <tr>
+           <td>{{ data[1] }}</td>
+           <td>{{ data[2] }}</td>
+           <td>{{ data[3] }}</td>
+           <td>{{ data[4] }}</td>
+           <td>
+               <button class="btn btn-info"><a style="color: white;" href={{ data[5] }}>编辑</a></button>
+               <button class="btn btn-danger"><a style="color: white;" href="#">删除</a></button>
+           </td>
+           </tr>
+    {% endfor %}
+    {% endif %}
+    </tbody>
+    </table>
+    </div>
+    <div id="articleManage" class="container tab-pane fade">
+        <br>
+        <h3>博客文章管理</h3>
+    </div>
+</div>
+</div>
 </body>
-</html>
+{% endblock %}

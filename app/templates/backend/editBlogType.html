@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% extends "backend/base.html" %}
+{#{% import 'bootstrap/wtf.html' as wtf %}#}
+{% block head %}
+{{super()}}
+{% endblock %}
+{% block title %}文章类别编辑{% endblock %}
+{%block content%}
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <label for="type">文章类别</label>
+            <input id="type" class="form-control" value={{ blog_type }}>
+            <label for="createTime">创建时间</label>
+            <input class="form-control" id="createTime" value={{ create_time }} readonly>
+            <label for="count">文章数量</label>
+            <input class="form-control" id="count" value={{ count }} readonly>
+            <label for="description">类别描述</label>
+            <textarea class="form-control" id="description" >{{ description }}</textarea>
+            <br>
+            <div class="row">
+                <div class="col-md-10"></div>
+            <div class="col-md-2" style="text-align: right;">
+                <button class="btn btn-info" id="save">保存</button>
+            </div>
+            </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+{% endblock  %}
+</html>
