@@ -88,8 +88,8 @@
                     <div class="card-header p-2 f-17">
                         <b><i class="my-fa fa fa-coffee" aria-hidden="true"></i>每日一句 (From ONE)</b>
                     </div>
-                    <div class="card-body p-2 f-15">
-                        使人疲惫的不是远方的高山，而是鞋子里的一粒沙子。
+                    <div id="oneWord" class="card-body p-2 f-15">
+
                     </div>
                 </div>
                 <!-- 个人空间 -->
@@ -193,8 +193,20 @@
         $(function () {
             $(document).ready(function () {
                 sendAjax(0);
+                getOne();
             });
         })
+        function getOne(){
+            $.ajax({
+            type: "GET",
+            url: ' http://api.youngam.cn/api/one.php',
+            dataType: 'json',
+            success: function(result){
+                $("#oneWord").text(result['data'][0]['text']+'  ———— 「ONE · 一个」');
+                return false;
+    }
+});
+        }
         function sendAjax(indexPage) {
             $.ajax({
                 url: "/category/getBlogBrief/" + articleType + "/" + indexPage,
@@ -220,7 +232,7 @@
                         for (let index = 0; index < res.blog_type.length; index++) {
                             let blogCategoryLi = '<li class="list-group-item d-flex justify-content-between align-items-center pr-2 py-2">\
                             <a class="category-item" href="/category/'+ res.blog_type[index][0] + '" title="查看' + res.blog_type[index][0] + '分类下所有文章">' + res.blog_type[index][0] + '</a>\
-                            <span class="badge text-center" title="当前分类下有'+ res.blog_type[index][1] + '篇文章">' + res.blog_type[index][1] + '</span>\
+                            <span class="badge badge-pill badge-success" title="当前分类下有'+ res.blog_type[index][1] + '篇文章">' + res.blog_type[index][1] + '</span>\
                         </li>'
                             $("#blogCategoryList").append(blogCategoryLi);
                         }

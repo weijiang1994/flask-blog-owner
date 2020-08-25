@@ -70,7 +70,7 @@
            <td>{{ data[4] }}</td>
            <td>
                <button class="btn btn-info"><a style="color: white;" href={{ data[5] }}>编辑</a></button>
-               <button id="{{ data[0] }}" onclick="deleteCategory(this.id)" class="btn btn-danger"><a style="color: white;" href="#">删除</a></button>
+               <button id="{{ data[0] }}" onclick="deleteCategory(this.id)" class="btn btn-danger">删除</button>
            </td>
            </tr>
     {% endfor %}
@@ -85,9 +85,24 @@
 </div>
 </div>
 <script>
-    function deleteCategory(){
+    function deleteCategory(categoryId){
     // TODO 添加删除类别的功能，如果类别中包含有文章，则禁止删除
+        $.ajax({
+            type: 'POST',
+            url: '/backend/deleteCategory',
+            data:{"id": categoryId},
+            success: function (res){
+                if (res.not_null){
+                    alert("该类别下面存在博文，不能删除~");
+                    return false;
+                }else {
+                    alert("删除类别成功～");
+                    location.reload();
+                }
+            }
+        })
     }
+
     function addCategory(){
         let categoryName = $("#categoryName").val();
         let desc = $("#description").val();
@@ -106,8 +121,8 @@
                     return false;
                 }else {
                     alert("新的类别添加成功~");
+                    location.reload();
                 }
-
             }
         })
     }

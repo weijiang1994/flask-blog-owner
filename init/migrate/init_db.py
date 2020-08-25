@@ -77,7 +77,7 @@ try:
     CREATE_ARTICLE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS article(" \
                                "id VARCHAR (40) PRIMARY KEY NOT NULL," \
                                "title VARCHAR (235) NOT NULL DEFAULT ''," \
-                               "type INTEGER NOT NULL," \
+                               "type VARCHAR NOT NULL DEFAULT ''," \
                                "img VARCHAR (255) NOT NULL DEFAULT ''," \
                                "brief_content VARCHAR (255) NOT NULL DEFAULT ''," \
                                "content TEXT NOT NULL ," \

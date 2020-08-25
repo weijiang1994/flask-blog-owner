@@ -28,7 +28,7 @@ def index():
     return render_template('/backend/editBlog.html', blog_type_datas=blog_type_datas)
 
 
-@edit_blog_bp.route('/editArticleType/<int:type_id>')
+@edit_blog_bp.route('/editArticleType/<type_id>')
 def edit_blog_type(type_id):
     print(type_id)
     db_opr = DBOperator()
@@ -51,3 +51,15 @@ def add_category():
     db_opr.add_data(type_obj)
     db_opr.commit_data()
     return jsonify({"is_exists": False})
+
+
+@edit_blog_bp.route('/deleteCategory', methods=['POST'])
+def delete_category():
+    category_id = request.form.get('id')
+    db_opr = DBOperator()
+    category = db_opr.query_filter_by_id(BlogType, condition=category_id)
+    if category[0].blog_count:
+        return jsonify({'not_null': True})
+    db_opr.remove_data_by_id(BlogType, condition=category_id)
+    db_opr.commit_data()
+    return jsonify({'not_null': False})

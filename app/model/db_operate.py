@@ -57,6 +57,10 @@ class DBOperator:
         ret = self.session.query(obj).filter_by(type_name=condition).all()
         return ret
 
+    def remove_data_by_id(self, obj, condition):
+        ret = self.session.query(obj).filter_by(id=condition).first()
+        self.session.delete(ret)
+
     def roll_back(self):
         self.session.roolback()
 
