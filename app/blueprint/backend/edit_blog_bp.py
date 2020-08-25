@@ -6,9 +6,10 @@ file: edit_blog_bp.py
 @time: 2020/3/15 23:05
 @desc:
 """
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template, jsonify
 from ...model.blogin_model import BlogType
 from ...model.db_operate import DBOperator
+from ...util.common_util import get_uuid, get_current_time
 
 edit_blog_bp = Blueprint('edit_blog_bp', __name__, url_prefix='/backend')
 
@@ -23,7 +24,7 @@ def index():
         print(i)
         print(blog_type.id)
         blog_type_datas.append([blog_type.id, blog_type.type_name, blog_type.create_time, blog_type.blog_count,
-                               blog_type.description, '/backend/editArticleType/'+blog_type.id])
+                                blog_type.description, '/backend/editArticleType/' + blog_type.id])
     return render_template('/backend/editBlog.html', blog_type_datas=blog_type_datas)
 
 
@@ -34,3 +35,19 @@ def edit_blog_type(type_id):
     datas = db_opr.query_filter_by_id(obj=BlogType, condition=type_id)
     return render_template('backend/editBlogType.html', blog_type=datas[0].type_name, create_time=datas[0].create_time,
                            count=datas[0].blog_count, description=datas[0].description)
+
+
+@edit_blog_bp.route('/addCategory', methods=['POST'])
+def add_category():
+    category_name = request.form.get('name')
+    desc = request.form.get('desc')
+
+    db_opr = DBOperator()
+    categories = db_opr.query_filter_by_category_name(obj=BlogType, condition=category_name)
+    if categories:
+        return jsonify({"is_exists": True})
+    type_obj = BlogType(id=get_uuid(), type_name=category_name, create_time=get_current_time(), blog_count=0,
+                        description=desc)
+    db_opr.add_data(type_obj)
+    db_opr.commit_data()
+    return jsonify({"is_exists": False})
