@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 {% extends "backend/base.html" %}
-{#{% import 'bootstrap/wtf.html' as wtf %}#}
 {% block head %}
 {{super()}}
 {% endblock %}
 {% block title %}文章类别编辑{% endblock %}
 {%block content%}
     <div class="container">
-
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
                 <label for="type">文章类别</label>
-            <input id="type" class="form-control" value={{ blog_type }}>
+            <input id="type" class="form-control" value={{ blog_type }} disabled>
             <label for="createTime">创建时间</label>
             <input class="form-control" id="createTime" value={{ create_time }} readonly>
             <label for="count">文章数量</label>
@@ -23,12 +21,27 @@
             <div class="row">
                 <div class="col-md-10"></div>
             <div class="col-md-2" style="text-align: right;">
-                <button class="btn btn-info" id="save">保存</button>
+                <button onclick="saveCategoryInfo()" class="btn btn-info" id="save">保存</button>
             </div>
             </div>
             </div>
             <div class="col-md-2"></div>
         </div>
     </div>
+    <script>
+        function saveCategoryInfo(){
+            let name = $("#type").val();
+            let desc = $("#description").val();
+            $.ajax({
+                type:"POST",
+                url: '/backend/editArticleType/'+ name,
+                data:{"name": name, "desc": desc},
+                success: function (res){
+                    alert("更新类别信息成功~");
+                    location.reload();
+                }
+            })
+        }
+    </script>
 {% endblock  %}
 </html>

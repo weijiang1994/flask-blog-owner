@@ -28,10 +28,18 @@ def index():
     return render_template('/backend/editBlog.html', blog_type_datas=blog_type_datas)
 
 
-@edit_blog_bp.route('/editArticleType/<type_id>')
+@edit_blog_bp.route('/editArticleType/<type_id>', methods=['GET', 'POST'])
 def edit_blog_type(type_id):
-    print(type_id)
     db_opr = DBOperator()
+    if request.method == 'POST':
+        category_name = request.form.get('name')
+        category_desc = request.form.get('desc')
+        print(category_desc)
+        print(category_name)
+        category = db_opr.update_blog_type_count(BlogType, condition=category_name)
+        category[0].description = category_desc
+        db_opr.commit_data()
+        return jsonify({"tag": True})
     datas = db_opr.query_filter_by_id(obj=BlogType, condition=type_id)
     return render_template('backend/editBlogType.html', blog_type=datas[0].type_name, create_time=datas[0].create_time,
                            count=datas[0].blog_count, description=datas[0].description)
