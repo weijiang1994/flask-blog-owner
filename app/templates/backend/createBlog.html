@@ -43,11 +43,22 @@
     {{ ckeditor.config(name='body') }}
     <br>
     <script>
+
         $(function () {
             $(document).ready(function () {
                 {#$("#cke_1_contents").append('<p>我是测试</p>');#}
             });
         })
+
+        CKEDITOR.on( 'instanceReady', function( evt ) {
+            evt.editor.dataProcessor.htmlFilter.addRules( {
+                elements: {
+                    img: function(el) {
+                        el.addClass('img-fluid');
+                 }
+            }
+        });
+    });
 
     </script>
 </body>
