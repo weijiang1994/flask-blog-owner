@@ -7,39 +7,18 @@ file: create_blog_bp.py
 @desc:
 """
 import os
+
+from .blog_forms import PostForm
 from ...frozen_dir import app_path
 from flask import Blueprint, request, render_template, url_for, send_from_directory, current_app
-from flask_ckeditor import CKEditorField, upload_fail, upload_success
-from flask_wtf import FlaskForm
-from flask_wtf.file import FileAllowed
+from flask_ckeditor import upload_fail, upload_success
 from werkzeug.datastructures import CombinedMultiDict
-from wtforms.validators import DataRequired, Length
-from wtforms import SubmitField, StringField, SelectField, TextAreaField, FileField
 from ..login_bp import login_require
-from ...util.common_util import get_current_time, get_uuid, create_path, CATEGORY_DIC
+from ...util.common_util import get_current_time, get_uuid, create_path
 from ...model.db_operate import DBOperator
 from ...model.blogin_model import Article, BlogType
 
 create_blog_bp = Blueprint('create_blog_bp', __name__, url_prefix='/backend')
-
-
-class PostForm(FlaskForm):
-    db = DBOperator()
-    ret = db.query_all(BlogType)
-    choices = [(i[0], i[1].type_name) for i in zip(range(len(ret)), ret)]
-    title = StringField(u'博客标题', validators=[Length(min=3, max=50, message='用户名长度必须在3到20位之间')],
-                        render_kw={'class': '', 'rows': 50, 'placeholder': '输入您的博客标题'})
-    blog_type = SelectField(label=u'博客类型',
-                            choices=choices, default=0,
-                            coerce=int)
-    blog_level = SelectField(label=u'博客权限', choices=[(1, '公开'), (2, '私有')], validators=[DataRequired()],
-                             default=1, coerce=int)
-    brief_content = TextAreaField(u'博客简介', validators=[DataRequired()])
-    blog_img_file = FileField(label=u'博客示例图',
-                              validators=[FileAllowed(['png', 'jpg'], '只接收png和jpg图片')],
-                              render_kw={'value': "上传", 'class': 'btn btn-default'})
-    body = CKEditorField('Body', validators=[DataRequired()])
-    submit = SubmitField(u'发布博客')
 
 
 @create_blog_bp.route('/createBlog', methods=['GET', 'POST'])
@@ -51,11 +30,6 @@ def index():
         blog_title = form.title.data
         blog_type = int(form.blog_type.data)
         blog_type = form.blog_type.choices[blog_type][1]
-        print(blog_type)
-        # print(form.blog_type.data)
-        # print(form.blog_type.choices)
-        # print(form.blog_type.validate_choice)
-        # print(form.blog_type.iter_choices())
         blog_level = form.blog_level.data
         blog_content = form.body.data
         current_time = get_current_time()
