@@ -153,9 +153,7 @@
                     <div class="card-header bg-white px-0">
                         <strong><i class="fa fa-book mr-2 f-17"></i>文章分类</strong>
                     </div>
-
                     <ul id="blogCategoryList" class="list-group list-group-flush f-16">
-
                     </ul>
                 </div>
                 <!-- 友情链接 -->
@@ -165,7 +163,6 @@
                     </div>
                     <div class="card-body px-0 py-3">
                         <div class="tool-list">
-
                             <div class="w-50 float-left text-center mb-2">
                                 <div class="mx-2">
                                     <a href="https://frostming.com" title="一个基于 Flask 开发的博客" target="_blank">
@@ -224,8 +221,8 @@
         function getOne(){
             $.ajax({
             type: "GET",
-            url: ' http://api.youngam.cn/api/one.php',
-            dataType: 'json',
+            url: "http://api.youngam.cn/api/one.php",
+            dataType: "json",
             success: function(result){
                 $("#oneWord").text(result['data'][0]['text']+'  ———— 「ONE · 一个」');
                 return false;

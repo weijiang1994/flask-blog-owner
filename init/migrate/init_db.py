@@ -29,9 +29,9 @@ except Exception as e:
 try:
     # 创建数据库
     print('starting create database.')
-    CREATE_DB_SQL = 'CREATE DATABASE IF NOT EXISTS blogin CHARACTER SET utf8 COLLATE utf8_general_ci'
+    CREATE_DB_SQL = 'CREATE DATABASE IF NOT EXISTS blogin_test CHARACTER SET utf8 COLLATE utf8_general_ci'
     cursor.execute(CREATE_DB_SQL)
-    conn.select_db('blogin')
+    conn.select_db('blogin_test')
     print('Created database is done.')
     print('-'*56)
     print('staring create gallery table.')
@@ -77,7 +77,7 @@ try:
     CREATE_ARTICLE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS article(" \
                                "id VARCHAR (40) PRIMARY KEY NOT NULL," \
                                "title VARCHAR (235) NOT NULL DEFAULT ''," \
-                               "type VARCHAR NOT NULL DEFAULT ''," \
+                               "type VARCHAR(255) NOT NULL DEFAULT ''," \
                                "img VARCHAR (255) NOT NULL DEFAULT ''," \
                                "brief_content VARCHAR (255) NOT NULL DEFAULT ''," \
                                "content TEXT NOT NULL ," \
