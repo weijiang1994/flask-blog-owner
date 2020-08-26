@@ -40,7 +40,7 @@ try:
                                "photo_title VARCHAR(255) NOT NULL ," \
                                "photo_path VARCHAR(255) NOT NULL ," \
                                "photo_desc VARCHAR(512) NOT NULL ," \
-                               "create_time DATE NOT NULL ," \
+                               "create_time datetime NOT NULL ," \
                                "delete_flag INTEGER NOT NULL ," \
                                "private_flag INTEGER NOT NULL )"
     cursor.execute(CREATE_GALLERY_TABLE_SQL)
@@ -59,7 +59,7 @@ try:
                                 "id VARCHAR (40) PRIMARY KEY  NOT NULL ," \
                                 "title VARCHAR (255) NOT NULL ," \
                                 "content VARCHAR (1024) NOT NULL ," \
-                                "time DATE NOT NULL )"
+                                "time datetime NOT NULL )"
     cursor.execute(CREATE_TIMELINE_TABLE_SQL)
     print('the timeline table is created.')
     print('-'*56)
@@ -67,7 +67,7 @@ try:
     CREATE_BLOGTYPE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS blog_type(" \
                                 "id VARCHAR (40) PRIMARY KEY NOT NULL ," \
                                 "type_name VARCHAR (40) NOT NULL DEFAULT ''," \
-                                "create_time DATE ," \
+                                "create_time datetime NOT NULL ," \
                                 "blog_count INTEGER NOT NULL DEFAULT 0 ," \
                                 "description VARCHAR (1024) NOT NULL DEFAULT '')"
     cursor.execute(CREATE_BLOGTYPE_TABLE_SQL)
@@ -82,8 +82,8 @@ try:
                                "brief_content VARCHAR (255) NOT NULL DEFAULT ''," \
                                "content TEXT NOT NULL ," \
                                "is_private INTEGER NOT NULL DEFAULT 0," \
-                               "create_time DATE ," \
-                               "update_time DATE ," \
+                               "create_time datetime NOT NULL ," \
+                               "update_time datetime NOT NULL ," \
                                "read_times INTEGER NOT NULL DEFAULT 0," \
                                "delete_flag INTEGER NOT NULL DEFAULT 0)"
     cursor.execute(CREATE_ARTICLE_TABLE_SQL)
@@ -94,7 +94,7 @@ try:
                                "id VARCHAR (40) PRIMARY KEY NOT NULL ," \
                                "article_id VARCHAR (40) NOT NULL ," \
                                "parent_id VARCHAR (40) NOT NULL ," \
-                               "comment_time DATE ," \
+                               "comment_time datetime NOT NULL ," \
                                "comment_content VARCHAR (255) NOT NULL DEFAULT ''," \
                                "is_read INTEGER NOT NULL DEFAULT 0," \
                                "delete_flag INTEGER NOT NULL DEFAULT 0)"
