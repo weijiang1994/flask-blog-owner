@@ -21,14 +21,14 @@
 
 <ul class="nav nav-pills" role="tablist">
     <li class="active">
-        <a class="nav-link" data-toggle="pill" href="#typeManage">分类管理</a>
+      <a class="nav-link" data-toggle="pill" href="#articleManage">文章管理</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" data-toggle="pill" href="#articleManage">文章管理</a>
+        <a class="nav-link" data-toggle="pill" href="#typeManage">分类管理</a>
     </li>
 </ul>
 <div  class="tab-content">
-    <div id="typeManage" class="container tab-pane active">
+    <div id="typeManage" class="container tab-pane fade">
     <br>
     <a href="#category" class="btn btn-success" data-toggle="collapse">添加新类别</a>
     <div id="category" class="collapse">
@@ -78,8 +78,10 @@
     </tbody>
     </table>
     </div>
-    <div id="articleManage" class="container tab-pane fade">
+    <div id="articleManage" class="container tab-pane active">
         <br>
+        <button class="btn btn-success"><a style="color: white;" href="/backend/createBlog">添加新博客</a></button>
+        <div class="table-responsive">
         {% if articles %}
         <table class="table table-hover">
             <caption>已有博客文章</caption>
@@ -91,27 +93,34 @@
                     <th>创建时间</th>
                     <th>修改时间</th>
                     <th>阅读次数</th>
+                    <th>状态</th>
                     <th>操作</th>
                 </tr>
             </thead>
         <tbody>
             {% for article in articles %}
                 <tr>
-                    <td>{{ article[0] }}</td>
-                    <td><span class="label label-info">{{ article[1] }}</span></td>
-                    <td>{{ article[2] }}</td>
+                    <td><a href="/detail/article/{{ article[1] }}">{{ article[1] }}</a></td>
+                    <td><span class="label label-info">{{ article[2] }}</span></td>
                     <td>{{ article[3] }}</td>
                     <td>{{ article[4] }}</td>
-                    <td><span class="label label-success">{{ article[5] }}</span></td>
+                    <td>{{ article[5] }}</td>
+                    <td><spa class="label label-success">{{ article[6] }}</spa></td>
+                    <td><span class="label label-default">{{ article[7] }}</span></td>
                     <td>
                         <button class="btn btn-info"><a>编辑</a></button>
                         <button class="btn btn-danger">删除</button>
+                        {% if article[8] %}
+                            <button class="btn btn-warning">恢复</button>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
+        {% endif %}
         </tbody>
         </table>
-        {% endif %}
+        </div>
+
     </div>
 </div>
 </div>

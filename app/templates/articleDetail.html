@@ -38,6 +38,22 @@
 </nav>
 
 <body background="/static/img/墙.jpg">
+    <style>
+        blockquote {
+          font: 14px/22px normal helvetica, sans-serif;
+          margin-top: 10px;
+          margin-bottom: 10px;
+          margin-left: 0px;
+          padding: 10px 10px 10px 15px;
+          border-left: 3px solid #4cae4c;
+          background-color:#f1f1f1
+     }
+        blockquote>p {
+          font: 16px/22px normal helvetica, sans-serif;
+          margin: 5px 0px 5px 0px;
+          font-style:italic;
+     }
+    </style>
     <div style="background: white; border: 1px solid#E1E0E0; border-radius: 5px; margin-bottom: 20px; margin-top: 20px;" class="container">
         {{ ckeditor.load_code_theme() }}
         <h1 style="width: 100%;text-align: center;">

@@ -13,6 +13,8 @@ from ...util.common_util import get_uuid, get_current_time
 
 edit_blog_bp = Blueprint('edit_blog_bp', __name__, url_prefix='/backend')
 
+BLOG_STATE = {0: '正常', 1: '删除'}
+
 
 @edit_blog_bp.route('/editBlog', methods=['GET', 'POST'])
 def index():
@@ -25,7 +27,11 @@ def index():
         blog_type_datas.append([blog_type.id, blog_type.type_name, blog_type.create_time, blog_type.blog_count,
                                 blog_type.description, '/backend/editArticleType/' + blog_type.id])
     for i, article in enumerate(articles):
-        articles_ret.append([article.title, article.type, article.brief_content[:30] + '...', article.create_time, article.update_time, article.read_times])
+        articles_ret.append([article.id, article.title, article.type, article.brief_content[:30] + '...', article.create_time,
+                             article.update_time, article.read_times, BLOG_STATE.get(article.delete_flag),
+                             article.delete_flag])
+    db_opr.clear_buffer()
+    del db_opr
     return render_template('/backend/editBlog.html', blog_type_datas=blog_type_datas, articles=articles_ret)
 
 
@@ -35,8 +41,6 @@ def edit_blog_type(type_id):
     if request.method == 'POST':
         category_name = request.form.get('name')
         category_desc = request.form.get('desc')
-        print(category_desc)
-        print(category_name)
         category = db_opr.update_blog_type_count(BlogType, condition=category_name)
         category[0].description = category_desc
         db_opr.commit_data()
@@ -59,6 +63,8 @@ def add_category():
                         description=desc)
     db_opr.add_data(type_obj)
     db_opr.commit_data()
+    db_opr.clear_buffer()
+    del db_opr
     return jsonify({"is_exists": False})
 
 
