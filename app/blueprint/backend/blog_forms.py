@@ -32,6 +32,7 @@ class PostForm(FlaskForm):
     submit = SubmitField(u'发布博客')
 
     def __init__(self, *args, **kwargs):
+        # 为了使得SelectField能够同步数据库的最新数据g
         super(PostForm, self).__init__(*args, **kwargs)
         db = DBOperator()
         ret = db.query_all(BlogType)
