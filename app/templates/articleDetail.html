@@ -5,6 +5,7 @@
     <title>二狗的陈词滥调</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
@@ -38,71 +39,77 @@
 </nav>
 
 <body background="/static/img/墙.jpg">
-    <style>
-        blockquote {
-            font: 14px/22px normal helvetica, sans-serif;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            margin-left: 0px;
-            padding: 10px 10px 10px 15px;
-            border-left: 3px solid #70b8f0;
-            background-color:rgba(0,132,255,.08);
-            border-radius: 0px 8px 8px 0px ;
-        }
-        img { max-width: 100%; height: auto; width: auto; width: auto; }
-        blockquote>p {
-            font: 14px/22px normal helvetica, sans-serif;
-            margin: 5px 0px 5px 0px;
-            font-style:italic;
-        }
-    </style>
-    <div style="background: white; border: 1px solid#E1E0E0; border-radius: 5px; margin-bottom: 20px; margin-top: 20px;" class="container">
-        {{ ckeditor.load_code_theme() }}
-        <h1 style="width: 100%;text-align: center;">
-            <strong>{{title}}</strong>
-        </h1>
+<style>
+    blockquote {
+        font: 14px/22px normal helvetica, sans-serif;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-left: 0px;
+        padding: 10px 10px 10px 15px;
+        border-left: 3px solid #70b8f0;
+        background-color:rgba(0,132,255,.08);
+        border-radius: 0px 8px 8px 0px ;
+    }
+    img { max-width: 100%; height: auto; width: auto; width: auto; }
+    blockquote>p {
+        font: 14px/22px normal helvetica, sans-serif;
+        margin: 5px 0px 5px 0px;
+        font-style:italic;
+    }
+</style>
+<div style="background: white; border: 1px solid#E1E0E0; border-radius: 5px; margin-bottom: 20px; margin-top: 20px;" class="container">
+    {{ ckeditor.load_code_theme() }}
+    <h1 style="width: 100%;text-align: center;">
+        <strong>{{title}}</strong>
+    </h1>
 
-        <div style="font-size: 17px; width: 100%; text-align: center;">
-            <span class="badge badge-info">原创</span>
-            <span class="badge badge-success">{{article_type}}</span>
-            <span class="badge badge-secondary">{{create_time}}</span>
-            <span class="badge badge-dark">{{read_times}}</span>
-        </div>
-        <hr>
-        <article>
-            {{article_content|safe}}
-        </article>
-        <hr>
-        <div class="text-center">
-            <button class="btn btn-danger rounded-0" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="sponsor-zfb sponsor-wx" style="line-height: 1;font-size: .8rem;">
-                <i class="fa fa-cny"></i>
-                    如果文章对你有所帮助，可以赞助本站
-                <i class="fa fa-chevron-down"></i>
-            </button>
-        </div>
-        <div class="row p-3">
-    <div class="col text-center">
-        <div class="multi-collapse collapse" id="sponsor-wx" style="">
-            <div class="p-1 text-success">微信</div>
-            <img class="w-75" src="https://tendcode.com/static/blog/img/reward_wx.png">
+    <div style="font-size: 17px; width: 100%; text-align: center;">
+        <span class="badge badge-info"><i class="fa fa-file-text-o"></i> 原创</span>
+        <span class="badge badge-success"><i class="fa fa-tag"></i> {{article_type}}</span>
+        <span class="badge badge-secondary"><i class="fa fa-calendar"></i> {{create_time}}</span>
+        <span class="badge badge-dark"><i class="fa fa-ticket"></i> {{read_times}}</span>
+    </div>
+    <hr>
+    <article>
+        {{article_content|safe}}
+    </article>
+    <hr>
+    <div class="text-center">
+        <button data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-outline-success"><i class="fa fa-heart-o"></i>Donate</button>
+{#        <button class="btn btn-outline-info"><i class="fa fa-thumbs-o-up"></i>Like it</button>#}
+    </div>
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle"><i class="fa fa-coffee"></i>给作者买杯咖啡吧～</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <i class="fa fa-weixin"></i>微信<img src="/static/donate/wechatpay.jpg">
+                            </div>
+                            <div class="col-md-6">
+                                <i class="fa fa-cc-paypal"></i>支付宝<img src="/static/donate/alipay.jpg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="col text-center">
-        <div class="multi-collapse collapse" id="sponsor-zfb" style="">
-            <div class="p-1 text-primary">支付宝</div>
-            <img class="w-75" src="https://tendcode.com/static/blog/img/reward_zfb.png">
-        </div>
+    <div style="margin-bottom: 15px"  class="row">
+        <div class="col-lg-6"><a   href="{{ preLink }}">{{ preArticle }}</a></div>
+        <div style="text-align: right;display: inline-block;" class="col-lg-6"><a class="float-right d-none d-sm-block" href="{{ nextLink }}">{{ nextArticle }}</a></div>
     </div>
 </div>
-        <div style="margin-bottom: 15px"  class="row">
-
-            <div class="col-lg-6"><a  href="{{ preLink }}">{{ preArticle }}</a></div>
-            <div style="text-align: right;display: inline-block;" class="col-lg-6"><a href="{{ nextLink }}">{{ nextArticle }}</a></div>
-        </div>
-    </div>
-    <script>
-
-    </script>
+<script>
+</script>
 </body>
 
 </html>

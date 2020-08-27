@@ -45,15 +45,12 @@ def index(title):
             next_article = '下一篇:' + articles[current_index+1].title+'>'
             next_link = '/detail/article/'+articles[current_index+1].title
         read_times = ret.read_times
-        if ret.type == 1:
-            article_type = '随记文章'
-        else:
-            article_type = '技术开发'
+
         # 文章阅读次数+1
         ret.read_times += 1
         db.commit_data()
         return render_template('articleDetail.html', title=title, create_time='发布于' + str(ret.create_time),
-                               read_times='阅读数' + str(read_times), article_type=article_type,
+                               read_times='阅读数' + str(read_times), article_type=ret.type,
                                article_content=ret.content, preLink=pre_link, preArticle=pre_article,
                                nextLink=next_link, nextArticle=next_article)
     except Exception as e:

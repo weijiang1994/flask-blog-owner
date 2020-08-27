@@ -99,6 +99,16 @@ try:
                                "is_read INTEGER NOT NULL DEFAULT 0," \
                                "delete_flag INTEGER NOT NULL DEFAULT 0)"
     cursor.execute(CREATE_COMMENT_TABLE_SQL)
+    print('the comment table is created.')
+    print('-'*56)
+    print('starting create like_blog table')
+    CREATE_LIKEBLOG_TABLE_SQL = "CREATE TABLE IF NOT EXISTS like_blog(" \
+                                "id VARCHAR (255) PRIMARY KEY NOT NULL DEFAULT ''," \
+                                "blog_id VARCHAR (255) NOT NULL DEFAULT ''," \
+                                "like_acount VARCHAR (255) NOT NULL DEFAULT ''," \
+                                "like_time VARCHAR (255) NOT NULL DEFAULT '')"
+    print('the like_blog table is created.')
+    print('-'*56)
     conn.commit()
     print('database is initialed.')
 except Exception as e:
