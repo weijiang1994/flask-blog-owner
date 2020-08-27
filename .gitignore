@@ -4,10 +4,10 @@ __pycache__/
 *$py.class
 nohup.out
 
-/app/config
+/app/config/
 #Project ignore
-/app/image
-/app/uploads
+/app/image/
+/app/uploads/
 
 # C extensions
 *.so
