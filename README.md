@@ -12,7 +12,24 @@ pip install -r requirement.txt -i https://pypi.douban.com/simple
 cd flask-blog-owner/init/migrate
 python init_db.py
 ```
-##### 3.运行
+运行过程中需要你输入你数据库的相关信息，根据提示正确输入即可。
+##### 3. 初始化配置文件
+为了数据库安全，仓库没有上传配置文件的相关内容，因此需要自己新建配置文件
+```shell script
+cd flask-blog-owner/app/
+mkdir config
+vim config.ini
+```
+在`config.ini`文件中输入如下内容，具体信息根据自己数据库配置而定。
+```editorconfig
+[DATABASE]
+host=your_db_host
+port=your_db_port
+user=your_db_user
+password=your_db_password
+database=blogin
+```
+##### 4.运行
 1. Windows
 ```shell script
 cd flask-blog-owner

@@ -11,8 +11,29 @@ import os
 import uuid
 import datetime
 import hashlib
+import configparser
+from ..frozen_dir import app_path
 
 CATEGORY_DIC = {1: '生活', 2: '陈词', 3: '技术'}
+SUPER_DIR = app_path()
+CONFIG_PATH = app_path() + r'/config/config.ini'
+
+
+class ReadConfig:
+
+    def __init__(self, config_path=None):
+        self.cf = configparser.ConfigParser()
+        self.cf.read(config_path)
+
+    def get_database(self, param):
+        return self.cf.get('DATABASE', param)
+
+
+DB_HOST = ReadConfig(CONFIG_PATH).get_database('host')
+DB_PORT = ReadConfig(CONFIG_PATH).get_database('port')
+DB_USER = ReadConfig(CONFIG_PATH).get_database('user')
+DB_PASSWORD = ReadConfig(CONFIG_PATH).get_database('password')
+DB_DATABASE = ReadConfig(CONFIG_PATH).get_database('database')
 
 
 def get_uuid():

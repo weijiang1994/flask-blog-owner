@@ -9,11 +9,13 @@
 """
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from ..util.common_util import DB_HOST, DB_PORT, DB_USER, DB_DATABASE, DB_PASSWORD
 
 
 class DBOperator:
     def __init__(self):
-        self.engine = create_engine('mysql+pymysql://weijiang:1994124@127.0.0.1:3306/blogin?charset=utf8')
+        self.engine = create_engine('mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.
+                                    format(DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE))
         self.session = sessionmaker(bind=self.engine)
         self.session = self.session()
 
