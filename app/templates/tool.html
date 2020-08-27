@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>二狗的陈词滥调</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+        a {
+            color: inherit;
+        }
+
+        h3 {
+            font-size: 21px;
+
+        }
+        .link-img{
+            height:40px;
+            width: 40px;
+        }
+
+        .card-div{
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: #cccccc 1px solid;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body background="/static/img/墙.jpg">
+
+<nav class="navbar navbar-expand-md bg-dark navbar-dark ">
+    <a class="navbar-brand" href="/">Blogin</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav container">
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/"><i class="fa fa-home"></i> 主页<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/article"><i class="fa fa-photo"></i> 摄影相册</a>
+            </li>
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/tech"><i class="fa fa-steam"></i> 实用工具</a>
+            </li>
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/aboutMe"><i class="fa fa-align-right"></i> 关于清水</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/backend/admin"><i class="fa fa-rocket"></i> Blogin</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <div style="margin-top: 10px; margin-bottom: 30px;" class="description bg-white px-3 pt-3 pb-1">
+                <h3 class="f-17" style="font-weight: bold" id="categoryName">实用工具</h3>
+                <p>介绍实用工具文案</p>
+            </div>
+            <ul  class="nav nav-pills card-div" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="pill" href="#encryptTool">密文生成工具</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#numberTool">区号查询工具</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="card-div" id="encryptTool">
+                    <div class="row">
+                        <div class="col">
+                            <label for="encryptWay">加密方式</label>
+                            <select id="encryptWay" class="form-control">
+                                <option>md5</option>
+                                <option>base64</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="plaintext">明文</label>
+                            <input id="plaintext" class="form-control" type="text" placeholder="请输入需要加密字符串">
+                        </div>
+                        <div class="col">
+                            <label for="plaintext">输出方式</label>
+                            <select id="outputWay" class="form-control">
+                                <option><i class="fa fa-font"></i>小写</option>
+                                <option><i class="fa fa-bold"></i>大写</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px;" class="row text-right">
+                        <div class="col">
+                            <button onclick="generateEncrypt()" class="btn btn-outline-success">生成</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="margin-top: 10px;" class="row text-center">
+                        <div class="col">
+                            <h4 style="font-style: italic; color: #ff6955;" id="encryptText"></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div style="margin-top: 10px;" class="card border-0 rounded-1 px-3 mb-2 mb-lg-3" id="home-card">
+                <div class="card-header bg-white px-0">
+                    <strong><i class="fa fa-link mr-2 f-17"></i>博客论坛</strong>
+                </div>
+                <div class="card-body px-0 pt-3 pb-1">
+                    <div class="row text-center">
+                        <div class="col">
+                            <a href="https://stackoverflow.com/" target="_blank" title="StackOverflow">
+                                <img class="link-img" alt="StackOverflow"
+                                     src="/static/tool_img/stackoverflow.jpeg">
+                                <p class="mt-2">StackOverflow</p>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a href="https://www.v2ex.com/" title="V2EX">
+                                <img class="link-img" alt="Vitor Freitas"
+                                     src="/static/tool_img/v2ex.jpg">
+                                <p class="mt-2">V2ex</p>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a href="https://linux.cn/" title="Linux中国">
+                                <img class="link-img" alt="Linux中国社区"
+                                     src="/static/tool_img/linux.jpeg">
+                                <p class="mt-2">Linux中国</p>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a href="https://www.zhihu.com/" title="知乎">
+                                <img class="link-img" alt="知乎"
+                                     src="/static/tool_img/zhihu.jpeg">
+                                <p class="mt-2">知乎</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function generateEncrypt(){
+        let text = $("#plaintext").val();
+        if (text == ''){
+            alert("请输入要加密的文本～");
+            return false;
+        }
+        let encryptWay = $("#encryptWay").val();
+        let outputWay = $("#outputWay").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/tech/encrypt",
+            data:{
+                "encryptWay": encryptWay,
+                "text": text,
+                "outputWay": outputWay
+            },
+            success: function (res){
+                $("#encryptText").text(res.encryptText);
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

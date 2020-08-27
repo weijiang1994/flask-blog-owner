@@ -13,6 +13,7 @@ import datetime
 import hashlib
 import configparser
 from ..frozen_dir import app_path
+import base64
 
 CATEGORY_DIC = {1: '生活', 2: '陈词', 3: '技术'}
 SUPER_DIR = app_path()
@@ -67,3 +68,14 @@ def get_md5(plaintext):
 def create_path(path):
     if not os.path.exists(path):
         os.makedirs(path)
+
+
+def get_base64(text: str):
+    return base64.encodebytes(text.encode('utf-8'))
+
+
+def get_encrypt_text(way, text):
+    if way == 'md5':
+        return get_md5(text)
+    if way == 'base64':
+        return get_base64(text)
