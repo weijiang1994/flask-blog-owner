@@ -2,20 +2,20 @@
 {% extends "backend/base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block head %}
-{{super()}}
+    {{super()}}
 
 {% endblock %}
 {% block title %}创建博客{% endblock %}
 {%block content%}
 
-<body background="/static/img/墙.jpg">
+    <body background="/static/img/墙.jpg">
     <div class="container">
         <h1 style="color:deepskyblue;font-family: 'Courier New', Courier, monospace;font-size: 48px">创建博客</h1>
     </div>
     <div class="container">
         <form method="post" enctype="multipart/form-data">
             {{ form.csrf_token }}
-            
+
             {{wtf.form_field(form.title)}}
             <div class="row">
                 <div class="col-md-2">
@@ -55,11 +55,14 @@
                 elements: {
                     img: function(el) {
                         el.addClass('img-fluid center-block');
-                 }
-            }
+                    },
+                    table: function (el){
+                        el.addClass('table table-responsive');
+                    }
+                }
+            });
         });
-    });
 
     </script>
-</body>
+    </body>
 {% endblock %}
