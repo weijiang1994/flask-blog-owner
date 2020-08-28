@@ -9,7 +9,7 @@ file: login_bp.py
 import json
 import functools
 from flask import Blueprint, request, render_template, redirect, url_for, session, g, jsonify
-
+from ..util.common_util import get_md5
 
 login_bp = Blueprint('login_bp', __name__, url_prefix='/auth')
 
@@ -20,7 +20,7 @@ def login():
         auth_data = json.loads(request.form.get('data'))
         username = auth_data['username']
         password = auth_data['password']
-        if username == 'admin' and password == 'admin':
+        if username == 'admin' and get_md5(password) == 'b5b26111d157f8d1def468cb7b7214d1':
             session.clear()
             session['user_id'] = username
             return redirect(url_for('admin_bp.index'))
