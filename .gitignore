@@ -8,7 +8,7 @@ nohup.out
 #Project ignore
 /app/image/
 /app/uploads/
-.flaskenv
+/app/.flaskenv
 wsgi.py
 # C extensions
 *.so
