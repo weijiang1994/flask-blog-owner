@@ -58,5 +58,5 @@ If you use the specified host and port number operation mode, visit `yourip:your
 ![alt 博客主页](https://github.com/weijiang1994/flask-blog-owner/blob/master/screenshot/homePage.jpg
 )
 
-##### 5.Blog Online address
+##### 5.Blog Online Address
 addr:http://2dogz.cn

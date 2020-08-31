@@ -2,6 +2,7 @@
 通过Flask框架搭建的个人博客网站。
 
 #### Start
+[English Guid](https://github.com/weijiang1994/flask-blog-owner/blob/master/README-EN.md)
 ##### 1.安装依赖文件
 ```shell script
 cd flask-blog-owner
