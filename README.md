@@ -8,6 +8,7 @@ cd flask-blog-owner
 pip install -r requirement.txt -i https://pypi.douban.com/simple
 ```
 ##### 2.初始化数据库
+> 在进行这个步骤之前你需要提前先安装一个使用的数据库。
 ```shell script
 cd flask-blog-owner/init/migrate
 python init_db.py
