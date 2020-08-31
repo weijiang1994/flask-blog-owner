@@ -41,268 +41,268 @@
 
 <body background="/static/img/墙.jpg">
 
-    <nav class="navbar navbar-expand-md bg-dark navbar-dark ">
-        <a class="navbar-brand" href="/">Blogin</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav container">
-                <li class="nav-item" style="margin-right: 50px;">
-                    <a class="nav-link" href="/"><i class="fa fa-home"></i> 主页 <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item" style="margin-right: 50px;">
-                    <a class="nav-link" href="/article"><i class="fa fa-photo"></i> 摄影相册</a>
-                </li>
-                <li class="nav-item" style="margin-right: 50px;">
-                    <a class="nav-link" href="/tech"><i class="fa fa-steam"></i> 实用工具</a>
-                </li>
-                <li class="nav-item" style="margin-right: 50px;">
-                    <a class="nav-link" href="/aboutMe"><i class="fa fa-align-right"></i> 关于清水</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/backend/admin"><i class="fa fa-rocket"></i> Blogin</a>
-                </li>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark ">
+    <a class="navbar-brand" href="/">Blogin</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav container">
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/"><i class="fa fa-home"></i> 主页 <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/article"><i class="fa fa-photo"></i> 摄影相册</a>
+            </li>
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/tech"><i class="fa fa-steam"></i> 实用工具</a>
+            </li>
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/aboutMe"><i class="fa fa-align-right"></i> 关于清水</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/backend/admin"><i class="fa fa-rocket"></i> Blogin</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+
+            <div style="margin-top: 10px; margin-bottom: 30px;" class="description bg-white px-3 pt-3 pb-1">
+                <p class="float-right mb-0">共<span class="mx-2 text-info">{{category_article_count}}</span>篇</p>
+                <h3 class="f-17" style="font-weight: bold" id="categoryName">文章分类：{{category_name}}</h3>
+                <p class="f-16">{{category_desc}}</p>
+            </div>
+            <div id="blogBriefContent">
+
+            </div>
+            <ul id="paginationIndex" class="pagination justify-content-center">
+                <!-- 博客简介内容 -->
             </ul>
         </div>
-    </nav>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8">
-
-                <div style="margin-top: 10px; margin-bottom: 30px;" class="description bg-white px-3 pt-3 pb-1">
-                    <p class="float-right mb-0">共<span class="mx-2 text-info">{{category_article_count}}</span>篇</p>
-                    <h3 class="f-17" style="font-weight: bold" id="categoryName">文章分类：{{category_name}}</h3>
-                    <p class="f-16">{{category_desc}}</p>
+        <div class="col-lg-4">
+            <!-- 每日一句 -->
+            <div class="card mb-3 mt-2">
+                <div class="card-header p-2 f-17">
+                    <b><i class="my-fa fa fa-coffee" aria-hidden="true"></i>每日一句 (From ONE)</b>
                 </div>
-                <div id="blogBriefContent">
+                <div id="oneWord" class="card-body p-2 f-15">
 
                 </div>
-                <ul id="paginationIndex" class="pagination justify-content-center">
-                    <!-- 博客简介内容 -->
+            </div>
+            <!-- 个人空间 -->
+            <div class="card border-0 rounded-1 px-3 mb-2 mb-lg-3" id="home-card">
+                <div class="card-header bg-white px-0">
+                    <strong><i class="fa fa-paper-plane mr-2 f-17"></i>个人空间</strong>
+
+                </div>
+                <div class="card-body px-0 pt-3 pb-1">
+                    <div class="row text-center">
+                        <div class="col">
+                            <a href="https://github.com/weijiang1994" target="_blank" title="进入博主的Github查看博客源码">
+                                <img style="max-width:40px" alt="博主的github"
+                                     src="https://tendcode.com/static/blog/img/github.png">
+                                <p class="mt-2">Github</p>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a href="/timeline" title="查看网站建站历程">
+                                <img style="max-width:40px" alt="网站的建站历程"
+                                     src="https://tendcode.com/static/blog/img/blog.png">
+                                <p class="mt-2">Timeline</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 博客分类 -->
+            <div class="card border-0 rounded-0 px-3 mb-2 mb-lg-3" id="category-card">
+                <div class="card-header bg-white px-0">
+                    <strong><i class="fa fa-book mr-2 f-17"></i>文章分类</strong>
+                </div>
+
+                <ul id="blogCategoryList" class="list-group list-group-flush f-16">
+
                 </ul>
             </div>
-            <div class="col-lg-4">
-                <!-- 每日一句 -->
-                <div class="card mb-3 mt-2">
-                    <div class="card-header p-2 f-17">
-                        <b><i class="my-fa fa fa-coffee" aria-hidden="true"></i>每日一句 (From ONE)</b>
-                    </div>
-                    <div id="oneWord" class="card-body p-2 f-15">
-
-                    </div>
+            <!-- 友情链接 -->
+            <div class="card border-0 rounded-0 px-3 mb-2 mb-lg-3" id="friends-card">
+                <div class="card-header bg-white px-0">
+                    <strong><i class="fa fa-link mr-2 f-17"></i>友情链接</strong>
                 </div>
-                <!-- 个人空间 -->
-                <div class="card border-0 rounded-1 px-3 mb-2 mb-lg-3" id="home-card">
-                    <div class="card-header bg-white px-0">
-                        <strong><i class="fa fa-paper-plane mr-2 f-17"></i>个人空间</strong>
+                <div class="card-body px-0 py-3">
+                    <div class="tool-list">
 
-                    </div>
-                    <div class="card-body px-0 pt-3 pb-1">
-                        <div class="row text-center">
-                            <div class="col">
-                                <a href="https://github.com/weijiang1994" target="_blank" title="进入博主的Github查看博客源码">
-                                    <img style="max-width:40px" alt="博主的github"
-                                        src="https://tendcode.com/static/blog/img/github.png">
-                                    <p class="mt-2">Github</p>
-                                </a>
-                            </div>
-                            <div class="col">
-                                <a href="/timeline" title="查看网站建站历程">
-                                    <img style="max-width:40px" alt="网站的建站历程"
-                                        src="https://tendcode.com/static/blog/img/blog.png">
-                                    <p class="mt-2">Timeline</p>
-                                </a>
+
+                        <div class="w-50 float-left text-center mb-2">
+                            <div class="mx-2">
+                                <a href="https://github.com/Hopetree/izone" title="izone 博客项目的源代码" target="_blank">
+                                    博客源码</a>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!-- 博客分类 -->
-                <div class="card border-0 rounded-0 px-3 mb-2 mb-lg-3" id="category-card">
-                    <div class="card-header bg-white px-0">
-                        <strong><i class="fa fa-book mr-2 f-17"></i>文章分类</strong>
-                    </div>
 
-                    <ul id="blogCategoryList" class="list-group list-group-flush f-16">
-
-                    </ul>
-                </div>
-                <!-- 友情链接 -->
-                <div class="card border-0 rounded-0 px-3 mb-2 mb-lg-3" id="friends-card">
-                    <div class="card-header bg-white px-0">
-                        <strong><i class="fa fa-link mr-2 f-17"></i>友情链接</strong>
-                    </div>
-                    <div class="card-body px-0 py-3">
-                        <div class="tool-list">
-
-
-                            <div class="w-50 float-left text-center mb-2">
-                                <div class="mx-2">
-                                    <a href="https://github.com/Hopetree/izone" title="izone 博客项目的源代码" target="_blank">
-                                        博客源码</a>
-                                </div>
+                        <div class="w-50 float-left text-center mb-2">
+                            <div class="mx-2">
+                                <a href="https://frostming.com" title="一个基于 Flask 开发的博客" target="_blank">
+                                    Frost&#39;s Blog</a>
                             </div>
-
-                            <div class="w-50 float-left text-center mb-2">
-                                <div class="mx-2">
-                                    <a href="https://frostming.com" title="一个基于 Flask 开发的博客" target="_blank">
-                                        Frost&#39;s Blog</a>
-                                </div>
-                            </div>
-
-                            <div class="w-50 float-left text-center mb-2">
-                                <div class="mx-2">
-                                    <a href="https://zmrenwu.com" title="Django 博客教程分享者" target="_blank">
-                                        追梦人物</a>
-                                </div>
-                            </div>
-
-                            <div class="w-50 float-left text-center mb-2">
-                                <div class="mx-2">
-                                    <a href="https://www.dusaiphoto.com/" title="Django 搭建的博客，分享博客教程" target="_blank">
-                                        杜赛的个人网站</a>
-                                </div>
-                            </div>
-
-                            <div class="w-50 float-left text-center mb-2">
-                                <div class="mx-2">
-                                    <a href="https://www.jerrycoding.com/" title="Jerry 的个人博客" target="_blank">
-                                        Jerry Coding</a>
-                                </div>
-                            </div>
-
-                            <div class="w-50 float-left text-center mb-2">
-                                <div class="mx-2">
-                                    <a href="https://boywithacoin.cn/" title="Stray_Camel的个人技术博客" target="_blank">
-                                        Stray_Camel</a>
-                                </div>
-                            </div>
-
                         </div>
+
+                        <div class="w-50 float-left text-center mb-2">
+                            <div class="mx-2">
+                                <a href="https://zmrenwu.com" title="Django 博客教程分享者" target="_blank">
+                                    追梦人物</a>
+                            </div>
+                        </div>
+
+                        <div class="w-50 float-left text-center mb-2">
+                            <div class="mx-2">
+                                <a href="https://www.dusaiphoto.com/" title="Django 搭建的博客，分享博客教程" target="_blank">
+                                    杜赛的个人网站</a>
+                            </div>
+                        </div>
+
+                        <div class="w-50 float-left text-center mb-2">
+                            <div class="mx-2">
+                                <a href="https://www.jerrycoding.com/" title="Jerry 的个人博客" target="_blank">
+                                    Jerry Coding</a>
+                            </div>
+                        </div>
+
+                        <div class="w-50 float-left text-center mb-2">
+                            <div class="mx-2">
+                                <a href="https://boywithacoin.cn/" title="Stray_Camel的个人技术博客" target="_blank">
+                                    Stray_Camel</a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        var currentPage = 1;
-        var totalPage = 0;
-        var isFirstTag = true;
-        let articleType = $("#categoryName").html();
+</div>
+<script>
+    let currentPage = 1;
+    let totalPage = 0;
+    let isFirstTag = true;
+    let articleType = $("#categoryName").html();
 
-        $(function () {
-            $(document).ready(function () {
-                sendAjax(0);
-                getOne();
-            });
-        })
-        function getOne(){
-            $.ajax({
+    $(function () {
+        $(document).ready(function () {
+            sendAjax(0);
+            getOne();
+        });
+    })
+    function getOne(){
+        $.ajax({
             type: "GET",
             url: ' http://api.youngam.cn/api/one.php',
             dataType: 'json',
             success: function(result){
                 $("#oneWord").text(result['data'][0]['text']+'  ———— 「ONE · 一个」');
                 return false;
+            }
+        });
     }
-});
-        }
-        function sendAjax(indexPage) {
-            $.ajax({
-                url: "/category/getBlogBrief/" + articleType + "/" + indexPage,
-                type: "POST",
-                success: function (res) {
-                    $("#blogBriefContent").empty();
-                    for (let index = 0; index < res.data.length; index++) {
-                        let content = '<div style="margin-bottom: 20px;" class="card border-0 rounded-0 px-3 mb-2 mb-lg-3">\
+    function sendAjax(indexPage) {
+        $.ajax({
+            url: "/category/getBlogBrief/" + articleType + "/" + indexPage,
+            type: "POST",
+            success: function (res) {
+                $("#blogBriefContent").empty();
+                for (let index = 0; index < res.data.length; index++) {
+                    let content = '<div style="margin-bottom: 20px;" class="card border-0 rounded-0 px-3 mb-2 mb-lg-3">\
                     <div  class="row">\
-                        <div class="col-3 m-auto">\
-                            <img class="img-fluid " style=" padding: 15px;" src="'+ res.data[index][3] + '">\
+                        <div class="col-4 m-auto">\
+                            <img class="img-fluid " style=" padding: 5px;" src="'+ res.data[index][3] + '">\
                         </div>\
-                        <div class="col-9">\
+                        <div class="col-8">\
                             <p style="margin-top: 10px;"><span style="margin-right: 5px;"\
                                     class="badge badge-info"><i class="fa fa-user-circle-o"></i> 清水</span><span class="badge badge-primary"><i class="fa fa-calendar"></i>'+' ' +  res.data[index][0] + '</span></p>\
                             <h2 class="mt-0 font-weight-bold text-info f-17"><a href="#" name="h' + index + '" id="a' + index + '" onclick="openDetail(this.name, this.id)">' +
-                            '<h3 id="h' + index + '">' + res.data[index][1] + '</h3>'
-                            + '</a></h2>\
+                        '<h3 id="h' + index + '">' + res.data[index][1] + '</h3>'
+                        + '</a></h2>\
                             <p style="layout:fixed;" class="d-none d-sm-block mb-2 f-15">'+ res.data[index][2] + '</p></div></div></div></div>';
-                        $("#blogBriefContent").append(content);
-                    }
-                    if (isFirstTag) {
-                        for (let index = 0; index < res.blog_type.length; index++) {
-                            let blogCategoryLi = '<li class="list-group-item d-flex justify-content-between align-items-center pr-2 py-2">\
+                    $("#blogBriefContent").append(content);
+                }
+                if (isFirstTag) {
+                    for (let index = 0; index < res.blog_type.length; index++) {
+                        let blogCategoryLi = '<li class="list-group-item d-flex justify-content-between align-items-center pr-2 py-2">\
                             <a class="category-item" href="/category/'+ res.blog_type[index][0] + '" title="查看' + res.blog_type[index][0] + '分类下所有文章">' + res.blog_type[index][0] + '</a>\
                             <span class="badge badge-pill badge-success" title="当前分类下有'+ res.blog_type[index][1] + '篇文章">' + res.blog_type[index][1] + '</span>\
                         </li>'
-                            $("#blogCategoryList").append(blogCategoryLi);
-                        }
+                        $("#blogCategoryList").append(blogCategoryLi);
                     }
-                    if (res.total == 0) {
-                        return false;
-                    }
-                    if (isFirstTag) {
-                        $("#paginationIndex").append('<li id="pre" class="page-item disabled"><a class="page-link" onclick="prePage()" href="javascript:;">\
-                    上一页</a></li>');
-                        for (let index = 0; index < res.total; index++) {
-                            if (index == 0) {
-                                $("#paginationIndex").append('<li class="page-item active" id="' + (index + 1) + '"><a class="page-link" onclick=clickPage(this.text) href="javascript:;">' + (index + 1) + '</a></li>');
-
-                            } else {
-                                $("#paginationIndex").append('<li class="page-item" id="' + (index + 1) + '"><a class="page-link" onclick=clickPage(this.text) href="javascript:;">' + (index + 1) + '</a></li>');
-
-                            }
-                        }
-                        $("#paginationIndex").append('<li id="next" class="page-item"><a onclick="nextPage()" class="page-link" href="javascript:;">下一页</a></li>');
-                        totalPage = res.total;
-                    }
-                    
-                    isFirstTag = false;
-
-
-                },
-                error: function (res) {
-
                 }
-            });
-        }
-        function clickPage(val) {
-            $("#" + currentPage).attr("class", 'page-item');
-            $("#" + val).attr("class", 'page-item active');
-            currentPage = Number(val);
-            firstOrLast();
-            sendAjax(currentPage);
-        }
-        function firstOrLast() {
-            if (currentPage == 1) {
-                $("#pre").attr("class", "page-item disabled");
-            } else {
-                $("#pre").attr("class", "page-item");
+                if (res.total == 0) {
+                    return false;
+                }
+                if (isFirstTag) {
+                    $("#paginationIndex").append('<li id="pre" class="page-item disabled"><a class="page-link" onclick="prePage()" href="javascript:;">\
+                    上一页</a></li>');
+                    for (let index = 0; index < res.total; index++) {
+                        if (index == 0) {
+                            $("#paginationIndex").append('<li class="page-item active" id="' + (index + 1) + '"><a class="page-link" onclick=clickPage(this.text) href="javascript:;">' + (index + 1) + '</a></li>');
+
+                        } else {
+                            $("#paginationIndex").append('<li class="page-item" id="' + (index + 1) + '"><a class="page-link" onclick=clickPage(this.text) href="javascript:;">' + (index + 1) + '</a></li>');
+
+                        }
+                    }
+                    $("#paginationIndex").append('<li id="next" class="page-item"><a onclick="nextPage()" class="page-link" href="javascript:;">下一页</a></li>');
+                    totalPage = res.total;
+                }
+
+                isFirstTag = false;
+
+
+            },
+            error: function (res) {
+
             }
-            if (totalPage == currentPage) {
-                $("#next").attr("class", "page-item disabled");
-            } else {
-                $("#next").attr("class", "page-item");
-            }
+        });
+    }
+    function clickPage(val) {
+        $("#" + currentPage).attr("class", 'page-item');
+        $("#" + val).attr("class", 'page-item active');
+        currentPage = Number(val);
+        firstOrLast();
+        sendAjax(currentPage);
+    }
+    function firstOrLast() {
+        if (currentPage == 1) {
+            $("#pre").attr("class", "page-item disabled");
+        } else {
+            $("#pre").attr("class", "page-item");
         }
-        function prePage() {
-            $("#" + currentPage).attr("class", "page-item");
-            currentPage = currentPage - 1;
-            $("#" + currentPage).attr("class", "page-item active");
-            firstOrLast();
-            sendAjax(currentPage);
+        if (totalPage == currentPage) {
+            $("#next").attr("class", "page-item disabled");
+        } else {
+            $("#next").attr("class", "page-item");
         }
-        function nextPage() {
-            $("#" + currentPage).attr("class", "page-item");
-            currentPage = currentPage + 1;
-            $("#" + currentPage).attr("class", "page-item active");
-            firstOrLast();
-            sendAjax(currentPage);
-        }
-        function openDetail(name, id) {
-            var title = $("#" + name).html();
-            $("#" + id).attr("href", "/detail/article/" + title);
-        }
-    </script>
+    }
+    function prePage() {
+        $("#" + currentPage).attr("class", "page-item");
+        currentPage = currentPage - 1;
+        $("#" + currentPage).attr("class", "page-item active");
+        firstOrLast();
+        sendAjax(currentPage);
+    }
+    function nextPage() {
+        $("#" + currentPage).attr("class", "page-item");
+        currentPage = currentPage + 1;
+        $("#" + currentPage).attr("class", "page-item active");
+        firstOrLast();
+        sendAjax(currentPage);
+    }
+    function openDetail(name, id) {
+        const title = $("#" + name).html();
+        $("#" + id).attr("href", "/detail/article/" + title);
+    }
+</script>
 </body>
 
 </html>

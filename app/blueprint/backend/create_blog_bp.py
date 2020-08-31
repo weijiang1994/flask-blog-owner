@@ -10,7 +10,7 @@ import os
 
 from .blog_forms import PostForm
 from ...frozen_dir import app_path
-from flask import Blueprint, request, render_template, url_for, send_from_directory, current_app
+from flask import Blueprint, request, render_template, url_for, send_from_directory, current_app, redirect
 from flask_ckeditor import upload_fail, upload_success
 from werkzeug.datastructures import CombinedMultiDict
 from ..login_bp import login_require
@@ -51,11 +51,7 @@ def index():
         blog_type_count = db.update_blog_type_count(BlogType, condition=blog_type)[0]
         blog_type_count.blog_count = int(blog_type_count.blog_count) + 1
         db.commit_data()
-
-        return render_template('articleDetail.html', title=blog_title, create_time='发布于' + str(current_time),
-                               read_times='阅读数' + str(0), article_type=blog_type, article_content
-                               =blog_content)
-
+        return redirect(url_for('article_detail_bp.index', title=blog_title))
     return render_template('/backend/createBlog.html', form=form)
 
 
