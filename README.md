@@ -55,3 +55,6 @@ flask run --host=0.0.0.0 --port=8000 # 指定主机及端口号
 
 ![alt 博客主页](https://github.com/weijiang1994/flask-blog-owner/blob/master/screenshot/homePage.jpg
 )
+
+##### 5.演示地址
+传送门:http://2dogz.cn
