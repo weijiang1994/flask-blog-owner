@@ -4,8 +4,8 @@ __pycache__/
 *$py.class
 nohup.out
 
-/app/config/
 #Project ignore
+/app/config/
 /app/image/
 /app/uploads/
 /app/.flaskenv
