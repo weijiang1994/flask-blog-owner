@@ -27,6 +27,7 @@ from .blueprint.category_bp import category_bp
 from .blueprint.timeline_bp import timeline_bp
 from .blueprint.backend.gallery.add_photo_bp import add_photo_bp
 from .blueprint.backend.other.add_timeline_bp import add_timeline_bp
+from .blueprint.search_blog import search_bp
 from flask_share import Share
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -76,6 +77,7 @@ def register_blueprint(app):
     app.register_blueprint(timeline_bp)
     app.register_blueprint(add_photo_bp)
     app.register_blueprint(add_timeline_bp)
+    app.register_blueprint(search_bp)
 
 
 def register_log(app: Flask):

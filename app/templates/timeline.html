@@ -5,6 +5,8 @@
     <title>二狗的陈词滥调</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.png')}}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.png') }}" type="image/x-icon">
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/timeline/style.css">
@@ -42,70 +44,70 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-md bg-dark navbar-dark ">
-        <a class="navbar-brand" href="/">Blogin</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav container">
-                <li class="nav-item" style="margin-right: 50px;">
-                    <a class="nav-link" href="/"><i class="fa fa-home"></i> 主页 <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item" style="margin-right: 50px;">
-                    <a class="nav-link" href="/article"><i class="fa fa-photo"></i> 摄影相册</a>
-                </li>
-                <li class="nav-item" style="margin-right: 50px;">
-                    <a class="nav-link" href="/tech"><i class="fa fa-steam"></i> 实用工具</a>
-                </li>
-                <li class="nav-item" style="margin-right: 50px;">
-                    <a class="nav-link" href="/aboutMe"><i class="fa fa-align-right"></i> 关于清水</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/backend/admin"><i class="fa fa-rocket"></i> Blogin</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="page-header">
-                    <div class="card mb-3 mt-2">
-                        <div class="card-header p-2 f-17">
-                            <b><i class="my-fa fa fa-coffee" aria-hidden="true"></i>建站日志</b>
-                        </div>
-
-                    </div>
-                </div>
-                <div id="blogBriefContent">
-                    <section id="cd-timeline" class="cd-container">
-
-                        <div class="cd-timeline-block">
-                            <div class="cd-timeline-img cd-movie">
-                                <img src="../static/img/cd-icon-location.svg" alt="Location">
-                            </div>
-
-                            <div class="cd-timeline-content">
-                                <h2>收集整理的非常有用的PHP函数</h2>
-                                
-                                <ul>
-                                    <li>我是第一个</li>
-                                    <li>我是第二个</li>
-                                    <li>我是第三个</li>
-                                </ul>
-                                <a href="http://www.helloweba.com/view-blog-281.html" class="cd-read-more"
-                                    target="_blank">阅读全文</a>
-                                <span class="cd-date">2014-12-05</span>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-
-            </div>
-            
-        </div>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark ">
+    <a class="navbar-brand" href="/">Blogin</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav container">
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/"><i class="fa fa-home"></i> 主页 <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/article"><i class="fa fa-photo"></i> 摄影相册</a>
+            </li>
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/tech"><i class="fa fa-steam"></i> 实用工具</a>
+            </li>
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/aboutMe"><i class="fa fa-align-right"></i> 关于清水</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/backend/admin"><i class="fa fa-rocket"></i> Blogin</a>
+            </li>
+        </ul>
     </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="page-header">
+                <div class="card mb-3 mt-2">
+                    <div class="card-header p-2 f-17">
+                        <b><i class="my-fa fa fa-coffee" aria-hidden="true"></i>建站日志</b>
+                    </div>
+
+                </div>
+            </div>
+            <div id="blogBriefContent">
+                <section id="cd-timeline" class="cd-container">
+
+                    <div class="cd-timeline-block">
+                        <div class="cd-timeline-img cd-movie">
+                            <img src="../static/img/cd-icon-location.svg" alt="Location">
+                        </div>
+
+                        <div class="cd-timeline-content">
+                            <h2>收集整理的非常有用的PHP函数</h2>
+
+                            <ul>
+                                <li>我是第一个</li>
+                                <li>我是第二个</li>
+                                <li>我是第三个</li>
+                            </ul>
+                            <a href="http://www.helloweba.com/view-blog-281.html" class="cd-read-more"
+                               target="_blank">阅读全文</a>
+                            <span class="cd-date">2014-12-05</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+
+    </div>
+</div>
 </body>
 
 </html>

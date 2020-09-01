@@ -7,7 +7,7 @@
 @License: (@)Copyright 2001-2019,SZ_Colibri
 @Contact:weijiang@colibri.com.cn
 """
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, and_, or_
 from sqlalchemy.orm import sessionmaker
 from ..util.common_util import DB_HOST, DB_PORT, DB_USER, DB_DATABASE, DB_PASSWORD
 
@@ -35,8 +35,8 @@ class DBOperator:
         return self.session.query(obj).filter_by(title=condition).order_by('create_time').first()
 
     def query_all_desc_time(self, obj, page_size, page_index):
-        return self.session.query(obj).order_by(obj.create_time.desc()).\
-            limit(page_size).offset((page_index-1)*page_size)
+        return self.session.query(obj).order_by(obj.create_time.desc()). \
+            limit(page_size).offset((page_index - 1) * page_size)
 
     def query_filter_by_id(self, obj, condition):
         ret = self.session.query(obj).filter_by(id=condition).all()
@@ -47,12 +47,18 @@ class DBOperator:
         return ret
 
     def query_filter_by_category(self, obj, condition, page_size, page_index):
-        ret = self.session.query(obj).filter_by(type=condition).order_by(obj.create_time.desc()).\
-            limit(page_size).offset((page_index-1)*page_size)
+        ret = self.session.query(obj).filter_by(type=condition).order_by(obj.create_time.desc()). \
+            limit(page_size).offset((page_index - 1) * page_size)
         return ret
 
     def query_filter_by_category_name(self, obj, condition):
         ret = self.session.query(obj).filter_by(type_name=condition).all()
+        return ret
+
+    def contain_query(self, obj, condition):
+        ret = self.session.query(obj).filter(or_(obj.title.like('%{}%'.format(condition)),
+                                                 obj.brief_content.like('%{}%'.format(condition)),
+                                                 obj.content.like('%{}%'.format(condition))))
         return ret
 
     def update_blog_type_count(self, obj, condition):
