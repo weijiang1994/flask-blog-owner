@@ -6,6 +6,7 @@ nohup.out
 
 #Project ignore
 /app/config/
+*.log
 /app/image/
 /app/uploads/
 /app/.flaskenv

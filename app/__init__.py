@@ -8,6 +8,8 @@
 @Contact:weijiang@colibri.com.cn
 """
 import os
+import logging
+from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 from .blueprint.index_bp import index_bp
@@ -25,6 +27,7 @@ from .blueprint.category_bp import category_bp
 from .blueprint.timeline_bp import timeline_bp
 from .blueprint.backend.gallery.add_photo_bp import add_photo_bp
 from .blueprint.backend.other.add_timeline_bp import add_timeline_bp
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -53,6 +56,7 @@ def create_app(test_config=None):
         pass
 
     register_blueprint(app)
+    register_log(app)
     return app
 
 
@@ -70,3 +74,13 @@ def register_blueprint(app):
     app.register_blueprint(timeline_bp)
     app.register_blueprint(add_photo_bp)
     app.register_blueprint(add_timeline_bp)
+
+
+def register_log(app: Flask):
+    app.logger.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    file_handler = RotatingFileHandler('logs/blogin.log', maxBytes=10*1024*1024, backupCount=10)
+    file_handler.setFormatter(formatter)
+    file_handler.setLevel(logging.INFO)
+    # if not app.debug:
+    app.logger.addHandler(file_handler)
