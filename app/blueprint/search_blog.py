@@ -24,4 +24,4 @@ def search():
             results.append({'title': blog.title, 'brief_content': blog.brief_content})
     else:
         keyword = request.form.get('q')
-    return render_template('searchResult.html', blogs=results)
+    return render_template('searchResult.html', blogs=results, keyword=keyword)

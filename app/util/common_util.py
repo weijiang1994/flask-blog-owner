@@ -19,6 +19,9 @@ CATEGORY_DIC = {1: '生活', 2: '陈词', 3: '技术'}
 SUPER_DIR = app_path()
 CONFIG_PATH = app_path() + r'/config/config.ini'
 
+TIMELINE_STYLE = [['cd-location', 'cd-icon-location.svg'], ['cd-movie', 'cd-icon-movie.svg'],
+                  ['cd-picture', 'cd-icon-picture.svg'], ]
+
 
 class ReadConfig:
 

@@ -14,35 +14,11 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
-        .line-limit-length {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
 
-        a {
-            color: inherit;
-        }
-
-        a:hover {
-            text-decoration: none;
-            color: #ea6f5a;
-        }
-
-        .h2,
-        h2 {
-            font-size: 1.3em;
-        }
-
-        h3 {
-            font-size: 21px;
-
-        }
     </style>
 </head>
-<!-- 4900w -->
 
-<body>
+<body background="../static/img/墙.jpg">
 
 <nav class="navbar navbar-expand-md bg-dark navbar-dark ">
     <a class="navbar-brand" href="/">Blogin</a>
@@ -70,42 +46,34 @@
     </div>
 </nav>
 <div class="container">
+    <br>
     <div class="row">
         <div class="col">
-            <div class="page-header">
-                <div class="card mb-3 mt-2">
-                    <div class="card-header p-2 f-17">
-                        <b><i class="my-fa fa fa-coffee" aria-hidden="true"></i>建站日志</b>
-                    </div>
-
-                </div>
-            </div>
-            <div id="blogBriefContent">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/"><span class="fa fa-home"></span> 首页</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><span class="fa fa-sitemap"></span> 建站日志</li>
+            </ol>
+            <div>
                 <section id="cd-timeline" class="cd-container">
-
-                    <div class="cd-timeline-block">
-                        <div class="cd-timeline-img cd-movie">
-                            <img src="../static/img/cd-icon-location.svg" alt="Location">
+                    {% for timeline in timelines %}
+                        <div class="cd-timeline-block">
+                            <div class="cd-timeline-img {{ timeline[-1][0] }}">
+                                <img src="../static/img/{{ timeline[-1][1] }}">
+                            </div>
+                            <div class="cd-timeline-content">
+                                <h2>{{ timeline[0] }}</h2>
+                                <ul>
+                                    {% for content in timeline[1] %}
+                                        <li>{{ content }}</li>
+                                    {% endfor %}
+                                </ul>
+                                <span class="cd-date">{{ timeline[2] }}</span>
+                            </div>
                         </div>
-
-                        <div class="cd-timeline-content">
-                            <h2>收集整理的非常有用的PHP函数</h2>
-
-                            <ul>
-                                <li>我是第一个</li>
-                                <li>我是第二个</li>
-                                <li>我是第三个</li>
-                            </ul>
-                            <a href="http://www.helloweba.com/view-blog-281.html" class="cd-read-more"
-                               target="_blank">阅读全文</a>
-                            <span class="cd-date">2014-12-05</span>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </section>
             </div>
-
         </div>
-
     </div>
 </div>
 </body>
