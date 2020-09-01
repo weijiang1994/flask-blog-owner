@@ -27,6 +27,7 @@ from .blueprint.category_bp import category_bp
 from .blueprint.timeline_bp import timeline_bp
 from .blueprint.backend.gallery.add_photo_bp import add_photo_bp
 from .blueprint.backend.other.add_timeline_bp import add_timeline_bp
+from flask_share import Share
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -35,6 +36,7 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     Bootstrap(app)
     CKEditor(app)
+    Share(app)
     app.config['current_article_title'] = ''
     app.config['CKEDITOR_SERVE_LOCAL'] = True
     app.config['CKEDITOR_ENABLE_CODESNIPPET'] = True

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>二狗的陈词滥调</title>
+    <title>{{ title }}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.min.css">
@@ -71,7 +71,6 @@
 
     article>h2 {
         font-size: 20px;
-        font: bold;
         margin-top: 5px;
         margin-bottom: 5px;
         padding: 5px 5px 5px 5px;
@@ -79,7 +78,6 @@
     }
 
     article>h3 {
-        font: bold;
         font-size: 18px;
         margin-top: 10px;
         margin-bottom: 10px;
@@ -94,6 +92,7 @@
     }
 </style>
 <div style="background: white; border: 1px solid#E1E0E0; border-radius: 5px; margin-bottom: 20px; margin-top: 20px;" class="container">
+    {{ share.load() }}
     {{ ckeditor.load_code_theme() }}
     <h1 style="width: 100%;text-align: center;">
         <strong>{{title}}</strong>
@@ -108,11 +107,14 @@
     <hr>
     <article>
         {{article_content|safe}}
+        <div class="text-center">
+            {{ share.create(addition_class='text-center',title='') }}
+        </div>
     </article>
     <hr>
     <div class="text-center">
         <button data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-outline-success"><i class="fa fa-heart-o"></i>Donate</button>
-{#        <button class="btn btn-outline-info"><i class="fa fa-thumbs-o-up"></i>Like it</button>#}
+        {#        <button class="btn btn-outline-info"><i class="fa fa-thumbs-o-up"></i>Like it</button>#}
     </div>
 
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
