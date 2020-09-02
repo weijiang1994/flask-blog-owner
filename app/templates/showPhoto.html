@@ -111,10 +111,16 @@
                             <a class="badge badge-light" href="/tag/8" target="_blank"><span class="oi oi-tag"></span> figure</a>
                         </p>
                     </div>
+                    <button data-toggle="tooltip" data-placement="bottom" title="给{{ photo.title }}点赞～" class="btn btn-outline-info"><i class="fa fa-heartbeat"></i></button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 </body>
 </html>

@@ -17,6 +17,7 @@ class Gallery(Base):
     create_time = Column(DateTime)
     delete_flag = Column(INTEGER(11))
     private_flag = Column(INTEGER(11))
+    tag_id = Column(String(40))
 
 
 class Admin(Base):

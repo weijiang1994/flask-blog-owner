@@ -29,9 +29,9 @@ except Exception as e:
 try:
     # 创建数据库
     print('starting create database.')
-    CREATE_DB_SQL = 'CREATE DATABASE IF NOT EXISTS blogin_test CHARACTER SET utf8 COLLATE utf8_general_ci'
+    CREATE_DB_SQL = 'CREATE DATABASE IF NOT EXISTS blogin CHARACTER SET utf8 COLLATE utf8_general_ci'
     cursor.execute(CREATE_DB_SQL)
-    conn.select_db('blogin_test')
+    conn.select_db('blogin')
     print('Created database is done.')
     print('-'*56)
     print('staring create gallery table.')
@@ -42,7 +42,8 @@ try:
                                "photo_desc VARCHAR (512) NOT NULL ," \
                                "create_time datetime NOT NULL ," \
                                "delete_flag INTEGER NOT NULL ," \
-                               "private_flag INTEGER NOT NULL )"
+                               "private_flag INTEGER NOT NULL ," \
+                               "tag_id VARCHAR (40) NOT NULL)"
     cursor.execute(CREATE_GALLERY_TABLE_SQL)
     print('the gallery table is created.')
     print('-'*56)
@@ -107,8 +108,18 @@ try:
                                 "blog_id VARCHAR (255) NOT NULL DEFAULT ''," \
                                 "like_acount VARCHAR (255) NOT NULL DEFAULT ''," \
                                 "like_time VARCHAR (255) NOT NULL DEFAULT '')"
+    cursor.execute(CREATE_LIKEBLOG_TABLE_SQL)
     print('the like_blog table is created.')
     print('-'*56)
+    print('starting create photo_tag table')
+    CREATE_PHOTO_TAG_TABLE_SQL = "CREATE TABLE IF NOT EXISTS photo_tag(" \
+                                 "id VARCHAR (40) PRIMARY KEY NOT NULL DEFAULT ''," \
+                                 "tag_name VARCHAR (40) NOT NULL DEFAULT ''," \
+                                 "photo_counts INTEGER NOT NULL DEFAULT 0," \
+                                 "create_time Datetime NOT NULL," \
+                                 "delete_falg INTEGER NOT NULL DEFAULT 0)"
+    cursor.execute(CREATE_PHOTO_TAG_TABLE_SQL)
+    print('create photo_tag table done.')
     conn.commit()
     print('database is initialed.')
 except Exception as e:
