@@ -13,7 +13,7 @@ from werkzeug.datastructures import CombinedMultiDict
 from wtforms import StringField, SubmitField, TextAreaField, FileField, SelectField
 from wtforms.validators import Length, DataRequired
 from app.frozen_dir import app_path
-from app.util.common_util import get_current_time, create_path
+from app.util.common_util import get_current_time, create_path, get_uuid
 from ....model.db_operate import DBOperator
 from ....model.blogin_model import Gallery
 
@@ -22,9 +22,10 @@ add_photo_bp = Blueprint('add_photo_bp', __name__, url_prefix='/backend')
 
 class AddPhotoForm(FlaskForm):
     # 添加相册照片前端表单
-    photo_title = StringField(u'相片标题', validators=[Length(min=3, max=50, message='用户名长度必须在3到50之间')],
+    photo_title = StringField(u'相片标题',
+                              validators=[DataRequired(), Length(min=1, max=20, message='用户名长度必须在1到20之间')],
                               render_kw={'class': '', 'rows': 50, 'placeholder': '输入照片标题'})
-    photo_desc = TextAreaField(u'相片描述', validators=[Length(min=3, max=250, message='用户名长度必须在3到250之间')])
+    photo_desc = TextAreaField(u'相片描述', validators=[DataRequired(), Length(min=3, max=250, message='用户名长度必须在1到250之间')])
     img_file = FileField(label=u'博客示例图',
                          validators=[FileAllowed(['png', 'jpg'], '只接收png和jpg图片')],
                          render_kw={'value': "上传", 'class': 'btn btn-default'})
@@ -52,12 +53,11 @@ def index():
         form.img_file.data.save(app_path() + '/gallery/' + current_time + '/' + photo_filename)
         blog_img_path = '/backend/blogImg/gallery/' + current_time + '/' + photo_filename
         db = DBOperator()
-        gallery = Gallery(photo_title=photo_title, photo_desc=photo_desc, photo_path=blog_img_path,
+        gallery = Gallery(id=get_uuid(), photo_title=photo_title, photo_desc=photo_desc, photo_path=blog_img_path,
                           create_time=get_current_time(), delete_flag=0, private_flag=photo_level)
         db.add_data(gallery)
         db.commit_data()
-    #     TODO 照片添加完成之后需要进行重定向
-        return url_for('gallery_bp.gallery')
+        return redirect(url_for('gallery_bp.gallery'))
     return render_template('/backend/addPhoto.html', form=form)
 
 

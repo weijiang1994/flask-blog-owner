@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>搜索结果</title>
+    <title>不会摄影的程序员不是一名好的厨子～</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="{{url_for('static', filename='favicon.png')}}" type="image/x-icon">
     <link rel="icon" href="{{ url_for('static', filename = 'favicon.png') }}" type="image/x-icon">
@@ -11,10 +11,15 @@
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/gallery/style.css">
 </head>
-<body background="/static/img/墙.jpg">
-
+<body>
+<style>
+    .border-card{
+        border: 5px solid rgba(0 123 255 / 5%);
+        margin: 0px 0px 5px 0px;
+    }
+</style>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark justify-content-between">
     <a class="navbar-brand" href="/">Blogin</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -39,7 +44,7 @@
                 <a class="nav-link" href="/backend/admin"><i class="fa fa-rocket"></i> Blogin</a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0 mr-4 f-17" method="get" action="/search/">
+        <form class="form-inline my-2 my-lg-0 mr-4 f-17" method="get" action="/searchPhoto/">
             <input class="form-control mr-sm-2" type="search" name="q" placeholder="输入关键字" aria-label="Search" required="True">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
         </form>
@@ -50,24 +55,36 @@
     </div>
 
 </nav>
-<br>
 <div class="container">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb bg-white">
+    <nav aria-label="breadcrumb ">
+        <ol class="breadcrumb bg-orange border-0 rounded-0 mb-2 py-2 f-15">
             <li class="breadcrumb-item"><a href="/">首页</a></li>
-            <li class="breadcrumb-item active" aria-current="page">搜索结果</li>
-            <li style="color: #ff1c41" class="breadcrumb-item active" aria-current="page">关键字:{{ keyword }}</li>
+            <li class="breadcrumb-item active" aria-current="page">相册</li>
         </ol>
     </nav>
-    {% for blog in blogs %}
-        <div style="margin-bottom: 10px;" class="card">
-            <div class="card-header"><a href="/detail/article/{{ blog.title }}">{{ blog.title }}</a></div>
-            <div class="card-body">{{ blog.brief_content }}</div>
-        </div>
-    {% endfor %}
-    {% if not blogs %}
+    <div>
+        {% for photo in galleries %}
+            <div class="border-card card photo-card">
+                <a href="/photo/{{ photo[3] }}" class="card-thumbnail">
+                    <img class="card-img-top portrait" src="{{ photo[1] }}">
+                </a>
+                <div class="card-body">
+                    <a> {{ photo[0] }} </a>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <i class="fa fa-comment"></i> 0
+                            <i class="fa fa-heart"></i> 0
+                        </div>
+                        <div class="col-lg-8 text-right">
+                            <i class="fa fa-calendar"></i> {{ photo[2] }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
-    {% endif %}
 </div>
 </body>
 </html>

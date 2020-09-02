@@ -36,10 +36,10 @@ try:
     print('-'*56)
     print('staring create gallery table.')
     CREATE_GALLERY_TABLE_SQL = "CREATE TABLE IF NOT EXISTS gallery (" \
-                               "id INTEGER PRIMARY KEY NOT NULL ," \
-                               "photo_title VARCHAR(255) NOT NULL ," \
-                               "photo_path VARCHAR(255) NOT NULL ," \
-                               "photo_desc VARCHAR(512) NOT NULL ," \
+                               "id VARCHAR (40) PRIMARY KEY NOT NULL ," \
+                               "photo_title VARCHAR (255) NOT NULL ," \
+                               "photo_path VARCHAR (255) NOT NULL ," \
+                               "photo_desc VARCHAR (512) NOT NULL ," \
                                "create_time datetime NOT NULL ," \
                                "delete_flag INTEGER NOT NULL ," \
                                "private_flag INTEGER NOT NULL )"

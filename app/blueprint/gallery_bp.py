@@ -13,9 +13,14 @@ from ..model.blogin_model import Gallery
 gallery_bp = Blueprint('gallery_bp', __name__)
 
 
-@gallery_bp.route('/article')
+@gallery_bp.route('/gallery')
 def gallery():
-    return render_template('/gallery/index_1.html')
+    ret = []
+    db = DBOperator()
+    galleries = db.query_all(Gallery)
+    for photo in galleries:
+        ret.append([photo.photo_title, photo.photo_path, photo.create_time, photo.id])
+    return render_template('gallery.html', galleries=ret)
 
 
 @gallery_bp.route('/getPhoto', methods=['POST'])
@@ -32,3 +37,14 @@ def get_photo():
             sub.append(i.photo_desc)
             photo_info.append(sub)
         return jsonify({'photo_info': photo_info, 'total': total_photo})
+
+
+@gallery_bp.route('/photo/<photo_id>', methods=['GET', 'POST'])
+def show_photo(photo_id):
+    db = DBOperator()
+    photo = db.query_filter_by_id(Gallery, condition=photo_id)[0]
+    ret = {'title': photo.photo_title, 'photo': photo.photo_path, 'photoDesc': photo.photo_desc,
+           'updateTime': photo.create_time,
+           }
+    return render_template('showPhoto.html', photo=ret, photoDesc=photo.photo_desc,
+                           time=photo.create_time, )
