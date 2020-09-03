@@ -72,3 +72,12 @@ class Comment(Base):
     is_read = Column(INTEGER(11), nullable=False, server_default=text("0"), comment='comment have read? 0:no 1:yes')
     delete_flag = Column(INTEGER(11), nullable=False, server_default=text("0"), comment='comment have delete? 0:no '
                                                                                         '1:yes')
+
+
+class TagID(Base):
+    __tablename__ = 'tag_id'
+    id = Column(String(40), primary_key=True, comment='tag id')
+    tag_name = Column(String(40), default='', comment='photo tag name')
+    photo_counts = Column(INTEGER(11), default=0, comment='bellow this tag photo"s counts')
+    create_time = Column(DateTime, comment='this tag create time')
+    delete_tag = Column(INTEGER, default=0, comment='delete tag')

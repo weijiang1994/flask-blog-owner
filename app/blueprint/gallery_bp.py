@@ -43,8 +43,26 @@ def get_photo():
 def show_photo(photo_id):
     db = DBOperator()
     photo = db.query_filter_by_id(Gallery, condition=photo_id)[0]
+    photos = db.query_all(Gallery)
+    current_idx = 0
+    for i, ph in enumerate(photos):
+        if photo.id == ph.id:
+            current_idx = i
+    if current_idx == 0:
+        pre_link = ''
+    else:
+        pre_link = '/photo/'+photos[current_idx-1].id
+    if current_idx == len(photos) - 1:
+        next_link = ''
+    else:
+        next_link = '/photo/'+photos[current_idx+1].id
+    print('pre link:', pre_link)
+    print('next link', next_link)
+
     ret = {'title': photo.photo_title, 'photo': photo.photo_path, 'photoDesc': photo.photo_desc,
-           'updateTime': photo.create_time,
+           'updateTime': photo.create_time, 'preLink': pre_link, 'nextLink': next_link
            }
+    print(ret)
     return render_template('showPhoto.html', photo=ret, photoDesc=photo.photo_desc,
                            time=photo.create_time, )
+

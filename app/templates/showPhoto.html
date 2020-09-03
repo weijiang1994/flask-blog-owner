@@ -21,8 +21,9 @@
         margin: 0px 0px 5px 0px;
         border-radius: 10px;
     }
-    .border-card hover{
-        box-shadow:2px 2px 5px #20c997;
+    .btn-group a{
+        text-decoration: none;
+        color: #000000;
     }
 </style>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark justify-content-between">
@@ -74,16 +75,14 @@
             </div>
         </div>
         <div class="col-md-4">
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="/photo/p/15"><i class="fa fa-arrow-left" aria-hidden="true"></i> 上一个</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="/photo/n/15">下一个 <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-                    </li>
-                </ul>
-            </nav>
+            <div style="margin-bottom: 10px;" class="btn-group">
+                {% if photo.preLink %}
+                    <button type="button" class="btn btn-outline-info"><a href="{{ photo.preLink }}" ><i class="fa fa-arrow-circle-left"></i></a></button>
+                {% endif %}
+                {% if photo.nextLink %}
+                    <button type="button" class="btn btn-outline-info"><a href="{{ photo.nextLink }}"><i class="fa fa-arrow-circle-right"></i></a></button>
+                {% endif %}
+            </div>
             <div class="card bg-light mb-3 w-100 sidebar-card">
                 <div class="card-body">
                     <div class="row">
