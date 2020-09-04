@@ -10,6 +10,7 @@ from flask import Blueprint, render_template, current_app
 from ..model.db_operate import DBOperator
 from ..model.blogin_model import Article
 import traceback
+
 article_detail_bp = Blueprint('article_detail_bp', __name__, url_prefix='/detail')
 
 
