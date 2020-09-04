@@ -17,7 +17,6 @@ class Gallery(Base):
     create_time = Column(DateTime)
     delete_flag = Column(INTEGER(11))
     private_flag = Column(INTEGER(11))
-    tag_id = Column(String(40))
 
 
 class Admin(Base):
@@ -74,10 +73,18 @@ class Comment(Base):
                                                                                         '1:yes')
 
 
-class TagID(Base):
-    __tablename__ = 'tag_id'
-    id = Column(String(40), primary_key=True, comment='tag id')
+class PhotoTag(Base):
+    __tablename__ = 'photo_tag'
+    id = Column(INTEGER, autoincrement=True, primary_key=True, comment='tag id')
     tag_name = Column(String(40), default='', comment='photo tag name')
     photo_counts = Column(INTEGER(11), default=0, comment='bellow this tag photo"s counts')
     create_time = Column(DateTime, comment='this tag create time')
-    delete_tag = Column(INTEGER, default=0, comment='delete tag')
+    delete_flag = Column(INTEGER, default=0, comment='delete tag')
+
+
+class Tags(Base):
+    __tablename__ = 'tags'
+    id = Column(INTEGER, autoincrement=True, primary_key=True, comment='tags id')
+    tag_id = Column(INTEGER, nullable=False, default=0)
+    photo_id = Column(String(40), nullable=False, default='')
+    create_time = Column(DateTime)

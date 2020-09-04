@@ -8,21 +8,39 @@
 </head>
 {%block content%}
 
-<body background="/static/img/墙.jpg">
+    <body background="/static/img/墙.jpg">
     <div class="container">
         <h1 style="color:deepskyblue;font-family: 'Courier New', Courier, monospace;font-size: 48px">添加相片</h1>
     </div>
-<div class="container">
+    <div class="container">
         <form method="post" enctype="multipart/form-data">
             {{ form.csrf_token }}
+            {% for message in form.photo_title.errors %}
+                <small class="error"> {{ message }}</small>
+            {% endfor %}
+            {% for message in form.photo_desc.errors %}
+                <small class="error"> {{ message }}</small>
+            {% endfor %}
+            {% for message in form.photo_level.errors %}
+                <small class="error"> {{ message }}</small>
+            {% endfor %}
+            {% for message in form.tags.errors %}
+                <small class="error"> {{ message }}</small>
+            {% endfor %}
+            {% for message in form.img_file.errors %}
+                <small class="error"> {{ message }}</small>
+            {% endfor %}
             {{wtf.form_field(form.photo_title)}}
             {{wtf.form_field(form.photo_desc)}}
             <div class="row">
                 <div class="col-md-2">
                     {{ wtf.form_field(form.photo_level) }}
                 </div>
-                <div class="col-md-2">
-                     {{wtf.form_field(form.img_file)}}
+                <div class="col-md-6">
+                    {{ wtf.form_field(form.tags) }}
+                </div>
+                <div class="col-md-4">
+                    {{wtf.form_field(form.img_file)}}
                 </div>
             </div>
             <div class="row">
@@ -33,6 +51,6 @@
             </div>
         </form>
     </div>
-</body>
+    </body>
 {% endblock %}
 </html>

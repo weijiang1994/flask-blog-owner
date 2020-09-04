@@ -28,6 +28,7 @@ from .blueprint.timeline_bp import timeline_bp
 from .blueprint.backend.gallery.add_photo_bp import add_photo_bp
 from .blueprint.backend.other.add_timeline_bp import add_timeline_bp
 from .blueprint.search_blog import search_bp
+from .blueprint.backend.gallery.edit_photo_bp import edit_photo_bp
 from flask_share import Share
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -45,9 +46,10 @@ def create_app(test_config=None):
     app.config['CKEDITOR_FILE_UPLOADER'] = 'create_blog_bp.upload'
     app.config['CKEDITOR_CODE_THEME'] = 'docco'
     app.config['UPLOADED_PATH'] = os.path.join(basedir, 'uploads')
-    app.config.from_mapping(
-        SECRET_KEY='dev'
-    )
+    app.config['SECRET_KEY'] = 'dev'
+    # app.config.from_mapping(
+    #     SECRET_KEY='de'
+    # )
     # if test_config is None:
     #     app.config.from_pyfile('config.py', silent=True)
     # else:
@@ -63,7 +65,7 @@ def create_app(test_config=None):
     return app
 
 
-def register_blueprint(app):
+def register_blueprint(app: Flask):
     app.register_blueprint(index_bp)
     app.register_blueprint(gallery_bp)
     app.register_blueprint(work_bp)
@@ -78,12 +80,13 @@ def register_blueprint(app):
     app.register_blueprint(add_photo_bp)
     app.register_blueprint(add_timeline_bp)
     app.register_blueprint(search_bp)
+    app.register_blueprint(edit_photo_bp)
 
 
 def register_log(app: Flask):
     app.logger.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    file_handler = RotatingFileHandler('logs/blogin.log', maxBytes=10*1024*1024, backupCount=10)
+    file_handler = RotatingFileHandler('logs/blogin.log', maxBytes=10 * 1024 * 1024, backupCount=10)
     file_handler.setFormatter(formatter)
     file_handler.setLevel(logging.DEBUG)
     # if not app.debug:

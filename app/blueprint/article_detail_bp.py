@@ -49,6 +49,8 @@ def index(title):
         # 文章阅读次数+1
         ret.read_times += 1
         db.commit_data()
+        db.clear_buffer()
+        del db
         return render_template('articleDetail.html', title=title, create_time='发布于' + str(ret.create_time),
                                read_times='阅读数' + str(read_times), article_type=ret.type,
                                article_content=ret.content, preLink=pre_link, preArticle=pre_article,

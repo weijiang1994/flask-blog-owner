@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>关于{{ tag }}的相册</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.png')}}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/gallery/style.css">
+    <style>
+        .border-card{
+            border: 5px solid rgba(0 123 255 / 5%);
+            margin: 0px 0px 5px 0px;
+        }
+        .card-body a{
+            text-decoration: none;
+            color: #0f0f0f;
+        }
+        a:hover{
+            color: #9d9d9d;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark justify-content-between">
+    <a class="navbar-brand" href="/">Blogin</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-collapse collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav mr-auto f-17">
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/"><i class="fa fa-home"></i> 主页 <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/gallery"><i class="fa fa-photo"></i> 摄影相册</a>
+            </li>
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/tech"><i class="fa fa-steam"></i> 实用工具</a>
+            </li>
+            <li class="nav-item" style="margin-right: 50px;">
+                <a class="nav-link" href="/aboutMe"><i class="fa fa-align-right"></i> 关于清水</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/backend/admin"><i class="fa fa-rocket"></i> Blogin</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0 mr-4 f-17" method="get" action="/searchPhoto/">
+            <input class="form-control mr-sm-2" type="search" name="q" placeholder="输入关键字" aria-label="Search" required="True">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+        </form>
+        {#        <ul class="navbar-nav f-17">#}
+        {#            <li class="nav-item"><a class="nav-link" href="#">登录</a></li>#}
+        {#            <li class="nav-item"><a class="nav-link" href="#">注册</a></li>#}
+        {#        </ul>#}
+    </div>
+
+</nav>
+<div class="container">
+    <div style="margin-top: 10px; margin-bottom: 30px; background: linear-gradient(35deg, #CCFFFF, #FFCCCC); border-radius: 5px;" class="description px-3 pt-3 pb-1">
+        <h3 class="f-17" style="font-weight: bold" id="categoryName"><i class="fa fa-camera-retro"></i> 相册—{{ tag }}</h3>
+        <p class="f-16">“我们不只是用相机拍照，因为我们带到摄影中去的是所有我们读过的书，看过的电影，听过的音乐，爱过的人。”——安塞尔 亚当斯</p>
+    </div>
+    <div>
+        {% for photo in galleries %}
+            <div class="border-card card photo-card">
+                <a href="/photo/{{ photo[3] }}" class="card-thumbnail">
+                    <img class="card-img-top portrait" src="{{ photo[1] }}">
+                </a>
+                <div class="card-body">
+                    <a class="photo-link" href="/photo/{{ photo[3] }}"> {{ photo[0] }} </a>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <i class="fa fa-comment"></i> 0
+                            <i class="fa fa-heart"></i> 0
+                        </div>
+                        <div class="col-lg-8 text-right">
+                            <i class="fa fa-calendar"></i> {{ photo[2] }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

@@ -75,7 +75,7 @@
                     <a class="nav-link active" data-toggle="pill" href="#encryptTool">密文生成工具</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="pill" href="#numberTool">区号查询工具</a>
+                    <a class="nav-link" data-toggle="pill" href="#numberTool">IP地址查询</a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -90,7 +90,7 @@
                         </div>
                         <div class="col">
                             <label for="plaintext">明文</label>
-                            <input id="plaintext" class="form-control" type="text" placeholder="请输入需要加密字符串">
+                            <input id="plaintext" class="form-control" type="text" placeholder="请输入需要加密字符串" required>
                         </div>
                         <div class="col">
                             <label for="plaintext">输出方式</label>
@@ -108,7 +108,7 @@
                     <hr>
                     <div style="margin-top: 10px;" class="row text-center">
                         <div class="col">
-                            <h4 style="font-style: italic; color: #ff6955;" id="encryptText"></h4>
+                            <p class="f-16" style="font-style: italic; color: #ff6955;" id="encryptText"></p>
                         </div>
                     </div>
                 </div>

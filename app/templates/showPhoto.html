@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>清水的照片--{{ photo.title }}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -62,6 +61,7 @@
 
 </nav>
 <div class="container">
+    {{ share.load() }}
     <div class="row">
         <div class="col-md-8">
             <div class="border-card photo">
@@ -107,10 +107,19 @@
                     </div>
                     <div id="tags">
                         <p>
-                            <a class="badge badge-light" href="/tag/8" target="_blank"><span class="oi oi-tag"></span> figure</a>
+                            {% for tag in photo.tags %}
+                                <a class="badge badge-light" href="/gallery/tag/{{ photo.tagIds[loop.index0]}}"><span class="fa fa-tags"></span> {{ tag }}</a>
+                            {% endfor %}
                         </p>
                     </div>
-                    <button data-toggle="tooltip" data-placement="bottom" title="给{{ photo.title }}点赞～" class="btn btn-outline-info"><i class="fa fa-heartbeat"></i></button>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <button data-toggle="tooltip" data-placement="bottom" title="给{{ photo.title }}点赞～" class="btn btn-outline-info"><i class="fa fa-heartbeat"></i></button>
+                        </div>
+                        <div class="col-md-10">
+                            {{ share.create(sites='weibo, wechat, qq, douban, qzone') }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

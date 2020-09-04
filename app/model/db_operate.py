@@ -7,17 +7,24 @@
 @License: (@)Copyright 2001-2019,SZ_Colibri
 @Contact:weijiang@colibri.com.cn
 """
-from sqlalchemy import create_engine, and_, or_
+from sqlalchemy import create_engine, or_
 from sqlalchemy.orm import sessionmaker
 from ..util.common_util import DB_HOST, DB_PORT, DB_USER, DB_DATABASE, DB_PASSWORD
 
+_engine = create_engine('mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.
+                        format(DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE))
+_session = sessionmaker(bind=_engine)
+_session = _session()
+
 
 class DBOperator:
-    def __init__(self):
-        self.engine = create_engine('mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.
-                                    format(DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE))
-        self.session = sessionmaker(bind=self.engine)
-        self.session = self.session()
+    def __init__(self, engine=_engine, session=_session):
+        # self.engine = create_engine('mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.
+        #                             format(DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE))
+        # self.session = sessionmaker(bind=self.engine)
+        # self.session = self.session()
+        self.engine = engine
+        self.session = session
 
     def add_data(self, obj):
         self.session.add(obj)
@@ -42,6 +49,10 @@ class DBOperator:
         ret = self.session.query(obj).filter_by(id=condition).all()
         return ret
 
+    def query_photo_tag_by_id(self, obj, condition):
+        ret = self.session.query(obj).filter_by(photo_id=condition).all()
+        return ret
+
     def query_filter_by_title(self, obj, condition):
         ret = self.session.query(obj).filter_by(title=condition).all()
         return ret
@@ -61,8 +72,20 @@ class DBOperator:
                                                  obj.content.like('%{}%'.format(condition))))
         return ret
 
+    def query_tag_by_tag_name(self, obj, condition):
+        ret = self.session.query(obj).filter_by(tag_name=condition).all()
+        return ret
+
+    def query_photo_by_tag_id(self, obj, condition):
+        ret = self.session.query(obj).filter_by(tag_id=condition).all()
+        return ret
+
     def update_blog_type_count(self, obj, condition):
         ret = self.session.query(obj).filter_by(type_name=condition).all()
+        return ret
+
+    def update_photo_count(self, obj, condition):
+        ret = self.session.query(obj).filter_by(tag_name=condition).first()
         return ret
 
     def remove_data_by_id(self, obj, condition):

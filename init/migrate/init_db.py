@@ -42,8 +42,7 @@ try:
                                "photo_desc VARCHAR (512) NOT NULL ," \
                                "create_time datetime NOT NULL ," \
                                "delete_flag INTEGER NOT NULL ," \
-                               "private_flag INTEGER NOT NULL ," \
-                               "tag_id VARCHAR (40) NOT NULL)"
+                               "private_flag INTEGER NOT NULL )"
     cursor.execute(CREATE_GALLERY_TABLE_SQL)
     print('the gallery table is created.')
     print('-'*56)
@@ -113,15 +112,26 @@ try:
     print('-'*56)
     print('starting create photo_tag table')
     CREATE_PHOTO_TAG_TABLE_SQL = "CREATE TABLE IF NOT EXISTS photo_tag(" \
-                                 "id VARCHAR (40) PRIMARY KEY NOT NULL DEFAULT ''," \
+                                 "id INTEGER PRIMARY KEY  AUTO_INCREMENT," \
                                  "tag_name VARCHAR (40) NOT NULL DEFAULT ''," \
                                  "photo_counts INTEGER NOT NULL DEFAULT 0," \
                                  "create_time Datetime NOT NULL," \
-                                 "delete_falg INTEGER NOT NULL DEFAULT 0)"
+                                 "delete_flag INTEGER NOT NULL DEFAULT 0)"
     cursor.execute(CREATE_PHOTO_TAG_TABLE_SQL)
     print('create photo_tag table done.')
+    print('-'*56)
+    print('starting create tags table')
+    CREATE_TAGS_TABLE_SQL = "CREATE TABLE IF NOT EXISTS tags(" \
+                            "id INTEGER PRIMARY KEY AUTO_INCREMENT ," \
+                            "tag_id INTEGER NOT NULL DEFAULT 0," \
+                            "photo_id VARCHAR (40) NOT NULL DEFAULT ''," \
+                            "create_time DATE NOT NULL )"
+    cursor.execute(CREATE_TAGS_TABLE_SQL)
+    print('create tags table done.')
     conn.commit()
     print('database is initialed.')
+    conn.close()
+    cursor.close()
 except Exception as e:
     print(e.args)
     traceback.print_exc()
