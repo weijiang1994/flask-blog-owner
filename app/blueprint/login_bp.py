@@ -27,7 +27,8 @@ def login():
         else:
             return jsonify({'error': 1})
 
-    return render_template('/backend/login.html')
+    # return render_template('/backend/login.html')
+    return render_template('login.html')
 
 
 @login_bp.before_app_request
