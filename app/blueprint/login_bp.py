@@ -7,7 +7,7 @@ file: login_bp.py
 @desc:
 """
 import functools
-from flask import Blueprint, request, render_template, redirect, url_for, session, g, flash
+from flask import Blueprint, request, render_template, redirect, url_for, session, g, flash, current_app
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Length
@@ -36,7 +36,7 @@ class RegisterForm(FlaskForm):
                                               'placeholder': '请确认密码',
                                               'type': 'password'},
                           validators=[DataRequired(), Length(min=8, max=40, message='密码格式不正确')])
-    submit = submit = SubmitField(u'注册', render_kw={'class': 'pull-right btn btn-outline-success rounded-1',
+    submit = SubmitField(u'注册', render_kw={'class': 'pull-right btn btn-outline-success rounded-1',
                                                     'type': 'submit'})
 
 
@@ -67,7 +67,7 @@ def register():
         db.commit_data()
         db.clear_buffer()
         del db
-        return redirect(url_for('login_bp.login'))
+        return redirect(url_for('login_bp.user_login'))
     return render_template('register.html', form=form)
 
 
@@ -92,9 +92,25 @@ def login_backend():
     return render_template('login.html')
 
 
-@login_bp.route('/user_login', methods=['GET', 'POST'])
+@login_bp.route('/userLogin', methods=['GET', 'POST'])
 def user_login():
-    pass
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        db = DBOperator()
+        user = db.query_user_by_name(Users, condition=username)
+        if user:
+            if user.password != get_md5(password):
+                flash('用户名或密码错误')
+                return render_template('userLogin.html')
+        else:
+            flash('当前用户名不存在')
+            return render_template('userLogin.html')
+        session.permanent = True
+        session['user'] = username
+        return redirect(current_app.config.get('PRE_URL') or 'index_bp.index')
+    current_app.config['PRE_URL'] = request.referrer
+    return render_template('userLogin.html')
 
 
 @login_bp.before_app_request

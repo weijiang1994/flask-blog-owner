@@ -48,6 +48,7 @@ def create_app(test_config=None):
     app.config['CKEDITOR_CODE_THEME'] = 'docco'
     app.config['UPLOADED_PATH'] = os.path.join(basedir, 'uploads')
     app.config['SECRET_KEY'] = 'dev'
+    app.config['PRE_URL'] = ''
     app.permanent_session_lifetime = datetime.timedelta(days=1)
     # app.config.from_mapping(
     #     SECRET_KEY='de'
