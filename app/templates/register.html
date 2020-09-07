@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>后台登录</title>
+    <title>用户注册</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="{{url_for('static', filename='favicon.png')}}" type="image/x-icon">
     <link rel="icon" href="{{ url_for('static', filename = 'favicon.png') }}" type="image/x-icon">
@@ -51,40 +51,61 @@
 
 </nav>
 <main>
-    <div class="container">
-
-        <div style="margin-top: 20px;" class="row">
+    <div style="margin-top: 20px;" class="container">
+        <div class="row">
             <div class="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3 px-xl-5">
                 <div class="card rounded-0 px-3 px-lg-4">
-                    {% for message in get_flashed_messages() %}
-                        <div style="margin-top: 5px;" class="text-center alert alert-danger" role="alert">
-                            {{ message }}
-                            <button type="button" class="close btn btn-small" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    {% endfor %}
                     <div class="card-header text-center bg-white py-2">
-                        <h3 class="my-1 text-info">登录</h3>
+                        <h3 class="my-1 text-info">注册</h3>
                     </div>
                     <div class="card-body card-login">
-                        <form class="login" method="POST" action="/auth/login">
-                            <input type="hidden" name="csrfmiddlewaretoken" value="7RG7fyRXxDfmOO8UnGZyDkCkrnfdWnMCJOAh8jVn8e7BsIhJdvyMkTJBZgsDw21I">
-                            <div id="div_id_login" class="form-group"> <label for="id_login" class="col-form-label  requiredField">
-                                账号<span class="asteriskField">*</span> </label> <div class=""> <input type="text" name="username" placeholder="用户名或e-mail" autofocus="autofocus" class="textinput textInput form-control" required="" id="id_login"> </div> </div> <div id="div_id_password" class="form-group"> <label for="id_password" class="col-form-label  requiredField">
-                            密码<span class="asteriskField">*</span> </label> <div class=""> <input type="password" name="password" placeholder="密码" class="textinput textInput form-control" required="" id="id_password"> </div> </div> <div class="form-group"> <div id="div_id_remember" class="form-check"> <label for="id_remember" class="form-check-label"> <input type="checkbox" name="remember" class="checkboxinput form-check-input" id="id_remember">
-                            记住我
-                        </label> </div> </div>
-                            <input type="hidden" name="next" value="/">
-                            <a class="secondaryAction" href="/auth/password/reset">忘记密码了？</a>
-                            <a class="secondaryAction" href="/auth/register">注册账号？</a>
-                            <button class="pull-right btn btn-outline-success btn-mini rounded-3" type="submit">登录</button>
+                        <form class="signup" id="signup_form" method="post" action="/auth/register">
+                            {% for message in get_flashed_messages() %}
+                                <div class="text-center alert alert-danger" role="alert">
+                                    {{ message }}
+                                </div>
+                             {% endfor %}
+                            {{ form.csrf_token }}
+                            <div id="div_id_email" class="form-group">
+                                <label for="id_email" class="col-form-label  requiredField">
+                                    E-mail<span class="asteriskField">*</span>
+                                </label> <div class="">
+                                {{ form.email }}
+                            </div>
+                            </div>
+                            <div id="div_id_username" class="form-group">
+                                <label for="id_username" class="col-form-label  requiredField">
+                                    用户名<span class="asteriskField">*</span>
+                                </label>
+                                <div class="">
+                                    {{ form.username }}
+                                </div>
+                            </div>
+                            <div id="div_id_password1" class="form-group">
+                                <label for="id_password1" class="col-form-label  requiredField">
+                                    密码<span class="asteriskField">*</span>
+                                </label>
+                                <div class="">
+                                    {{ form.password }}
+                                </div>
+                            </div>
+                            <div id="div_id_password2" class="form-group">
+                                <label for="id_password2" class="col-form-label  requiredField">
+                                    密码(重复)<span class="asteriskField">*</span>
+                                </label>
+                                <div class="">
+                                    {{ form.confirm }}
+                                </div>
+                            </div>
+                            <input type="hidden" name="next" value="/tag/MD5/">
+                            <a class="secondaryAction" href="/auth/login">已有账号登录</a>
+                            {{ form.submit }}
                         </form>
+
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </main>
 </body>

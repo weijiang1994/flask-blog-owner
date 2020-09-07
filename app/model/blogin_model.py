@@ -88,3 +88,13 @@ class Tags(Base):
     tag_id = Column(INTEGER, nullable=False, default=0)
     photo_id = Column(String(40), nullable=False, default='')
     create_time = Column(DateTime)
+
+
+class Users(Base):
+    __tablename__ = 'users'
+    id = Column(INTEGER, autoincrement=True, primary_key=True, comment='user id')
+    email = Column(String(40), nullable=False, default='', comment='register email')
+    username = Column(String(40), nullable=False, default='', comment='register username')
+    password = Column(String(40), nullable=False, default='', comment='register user password')
+    create_time = Column(DateTime)
+    delete_flag = Column(INTEGER, default=0)

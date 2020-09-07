@@ -13,6 +13,7 @@
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/ck.css" rel="stylesheet">
 </head>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark ">
     <a class="navbar-brand" href="/">Blogin</a>
@@ -41,59 +42,8 @@
 </nav>
 
 <body background="/static/img/墙.jpg">
-<style>
-    blockquote {
-        font: 14px/22px normal helvetica, sans-serif;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        margin-left: 0px;
-        padding: 10px 10px 10px 15px;
-        border-left: 3px solid #70b8f0;
-        background-color:rgba(0,132,255,.08);
-        border-radius: 0px 8px 8px 0px ;
-    }
-
-    .marker{
-        padding: .2em .4em;
-        margin: 0;
-        font-size: 85%;
-        background-color: rgba(27,31,35,.05);
-        border-radius: 6px;
-    }
-
-    article>h1 {
-        font-size: 22px;
-        font-weight: 600;
-        margin: 10px 0 10px 0;
-        padding: 0 10px;
-        border-left: 5px solid #20c997;
-        background-color: #f7f7f7;
-        line-height: 2em;
-    }
-
-    article>h2 {
-        font-size: 20px;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        padding: 5px 5px 5px 5px;
-        border-bottom: 1px solid #28a745;
-    }
-
-    article>h3 {
-        font-size: 18px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        padding: 5px 5px 5px 5px;
-        border-bottom: 1px solid #28a745;
-    }
-
-    blockquote>p {
-        font: 14px/22px normal helvetica, sans-serif;
-        margin: 5px 0px 5px 0px;
-        font-style:italic;
-    }
-</style>
 <div style="background: white; border: 1px solid#E1E0E0; border-radius: 5px; margin-bottom: 20px; margin-top: 20px;" class="container">
+
     {{ share.load() }}
     {{ ckeditor.load_code_theme() }}
     <h1 style="width: 100%;text-align: center;">
@@ -125,7 +75,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle"><i class="fa fa-coffee"></i>给作者买杯咖啡吧～</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true" class="fa fa-close"></span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -144,10 +94,13 @@
         </div>
     </div>
     <div style="margin-bottom: 15px"  class="row">
-        <div class="col-lg-6"><a   href="{{ preLink }}">{{ preArticle }}</a></div>
+        <div class="col-lg-6"><a href="{{ preLink }}">{{ preArticle }}</a></div>
         <div style="text-align: right;display: inline-block;" class="col-lg-6"><a href="{{ nextLink }}">{{ nextArticle }}</a></div>
     </div>
 </div>
+
+
+
 <script>
 </script>
 </body>

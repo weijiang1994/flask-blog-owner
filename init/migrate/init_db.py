@@ -128,6 +128,16 @@ try:
                             "create_time DATE NOT NULL )"
     cursor.execute(CREATE_TAGS_TABLE_SQL)
     print('create tags table done.')
+    print('starting create users table')
+    CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users(" \
+                        "id INTEGER PRIMARY KEY AUTO_INCREMENT," \
+                        "email VARCHAR (40) NOT NULL DEFAULT ''," \
+                        "username VARCHAR (40) NOT NULL DEFAULT ''," \
+                        "password VARCHAR (40) NOT NULL DEFAULT ''," \
+                        "create_time DATE NOT NULL ," \
+                        "delete_flag INTEGER NOT NULL DEFAULT 0)"
+    cursor.execute(CREATE_USER_TABLE)
+    print('create users table done.')
     conn.commit()
     print('database is initialed.')
     conn.close()

@@ -12,7 +12,8 @@ from sqlalchemy.orm import sessionmaker
 from ..util.common_util import DB_HOST, DB_PORT, DB_USER, DB_DATABASE, DB_PASSWORD
 
 _engine = create_engine('mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.
-                        format(DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE))
+                        format(DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE), pool_recycle=360, max_overflow=5,
+                        pool_size=10)
 _session = sessionmaker(bind=_engine)
 _session = _session()
 
@@ -40,6 +41,12 @@ class DBOperator:
 
     def query_pre_article(self, obj, condition):
         return self.session.query(obj).filter_by(title=condition).order_by('create_time').first()
+
+    def query_user_by_email(self, obj, condition):
+        return self.session.query(obj).filter_by(email=condition).first()
+
+    def query_user_by_name(self, obj, condition):
+        return self.session.query(obj).filter_by(username=condition).first()
 
     def query_all_desc_time(self, obj, page_size, page_index):
         return self.session.query(obj).order_by(obj.create_time.desc()). \

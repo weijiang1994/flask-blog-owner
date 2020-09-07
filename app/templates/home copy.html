@@ -13,32 +13,7 @@
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <style>
-        .line-limit-length {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        a {
-            color: inherit;
-        }
-
-        a:hover {
-            text-decoration: none;
-            color: #ea6f5a;
-        }
-
-        .h2,
-        h2 {
-            font-size: 1.3em;
-        }
-
-        h3 {
-            font-size: 21px;
-
-        }
-    </style>
+    <link rel="stylesheet" href="/static/css/base.css">
 </head>
 <!-- 4900w -->
 
@@ -72,10 +47,10 @@
             <input class="form-control mr-sm-2" type="search" name="q" placeholder="输入关键字" aria-label="Search" required="True">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
         </form>
-        {#        <ul class="navbar-nav f-17">#}
-        {#            <li class="nav-item"><a class="nav-link" href="#">登录</a></li>#}
-        {#            <li class="nav-item"><a class="nav-link" href="#">注册</a></li>#}
-        {#        </ul>#}
+        <ul class="navbar-nav f-17">
+            <li class="nav-item"><a class="nav-link" href="/auth/login">登录</a></li>
+            <li class="nav-item"><a class="nav-link" href="/auth/register">注册</a></li>
+        </ul>
     </div>
 
 </nav>
@@ -178,6 +153,12 @@
                     <div class="tool-list">
                         <div class="w-50 float-left text-center mb-2">
                             <div class="mx-2">
+                                <a href="https://tendcode.com" title="一个基于 Django 开发的博客" target="_blank">
+                                    Tendcode</a>
+                            </div>
+                        </div>
+                        <div class="w-50 float-left text-center mb-2">
+                            <div class="mx-2">
                                 <a href="https://frostming.com" title="一个基于 Flask 开发的博客" target="_blank">
                                     Frost&#39;s Blog</a>
                             </div>
@@ -250,10 +231,10 @@
                 $("#blogBriefContent").empty();
                 // 添加博客的简要信息条目
                 for (let index = 0; index < res.data.length; index++) {
-                    let content = '<div style="margin-bottom: 20px;" class="card border-0 rounded-0 px-3 mb-2 mb-lg-3">\
+                    let content = '<div style="margin-bottom: 20px;" class="card border-0 rounded-0 px-3 mb-2 mb-lg-3 blog-column">\
                     <div  class="row">\
                         <div class="col-4 m-auto text-center">\
-                            <img class="img-fluid " style=" padding: 5px;" src="'+ res.data[index][3] + '">\
+                            <img class="img-fluid article-img" style=" padding: 5px;" src="'+ res.data[index][3] + '">\
                         </div>\
                         <div class="col-8">\
                             <p style="margin-top: 10px;"><span style="margin-right: 5px;"\
