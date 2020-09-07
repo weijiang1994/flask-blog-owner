@@ -77,7 +77,7 @@ def reset_password():
 
 
 @login_bp.route('/login', methods=['GET', 'POST'])
-def login():
+def login_backend():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -89,8 +89,12 @@ def login():
         else:
             flash('用户名或密码错误')
             return render_template('login.html')
-
     return render_template('login.html')
+
+
+@login_bp.route('/user_login', methods=['GET', 'POST'])
+def user_login():
+    pass
 
 
 @login_bp.before_app_request
@@ -109,4 +113,13 @@ def login_require(view):
             return redirect(url_for('login_bp.login'))
         return view(**kwargs)
 
+    return wrapped_view
+
+
+def user_login_require(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.logined is None:
+            return redirect(url_for('login_bp.login'))
+        return view(**kwargs)
     return wrapped_view
