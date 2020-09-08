@@ -30,6 +30,7 @@ from .blueprint.backend.gallery.add_photo_bp import add_photo_bp
 from .blueprint.backend.other.add_timeline_bp import add_timeline_bp
 from .blueprint.search_blog import search_bp
 from .blueprint.backend.gallery.edit_photo_bp import edit_photo_bp
+from .blueprint.account_bp import account_bp
 from flask_share import Share
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -84,6 +85,7 @@ def register_blueprint(app: Flask):
     app.register_blueprint(add_timeline_bp)
     app.register_blueprint(search_bp)
     app.register_blueprint(edit_photo_bp)
+    app.register_blueprint(account_bp)
 
 
 def register_log(app: Flask):

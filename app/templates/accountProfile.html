@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-{% import 'bootstrap/wtf.html' as wtf %}
 <head>
     <meta charset="UTF-8">
-    <title>用户注册</title>
+    <title>个人主页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="{{url_for('static', filename='favicon.png')}}" type="image/x-icon">
     <link rel="icon" href="{{ url_for('static', filename = 'favicon.png') }}" type="image/x-icon">
@@ -13,12 +12,7 @@
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/login.css">
-    <style>
-        .help-block{
-            color: darkred;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/css/base.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark justify-content-between">
@@ -49,50 +43,29 @@
             <input class="form-control mr-sm-2" type="search" name="q" placeholder="输入关键字" aria-label="Search" required="True">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
         </form>
+        {% if not g.normal_user %}
         <ul class="navbar-nav f-17">
-            <li class="nav-item"><a class="nav-link" href="/auth/login">登录</a></li>
+            <li class="nav-item"><a class="nav-link" href="/auth/userLogin">登录</a></li>
             <li class="nav-item"><a class="nav-link" href="/auth/register">注册</a></li>
         </ul>
+        {% else %}
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="欢迎回来,{{ g.normal_user_name }}~">
+                    <img class="avatar" src="{{ g.normal_user_avatar }}" alt={{ g.normal_user_name }}>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right mt-0 rounded-0 border-0" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item pl-3" href="/accounts/profile"><i class="fa fa-fw fa-user text-info mr-2"></i>个人资料</a>
+                    <a class="dropdown-item pl-3" href="/comment/notification"><i class="fa fa-fw fa-bell text-info mr-2"></i>消息
+                    </a>
+                    <a class="dropdown-item pl-3" href="/auth/logout"><i class="fa fa-fw fa-sign-out text-info mr-2"></i>退出</a>
+                </div>
+            </li>
+        </ul>
+        {% endif %}
     </div>
 
 </nav>
-<main>
-    <div style="margin-top: 20px;" class="container">
-        <div class="row">
-            <div class="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3 px-xl-5">
-                <div class="card rounded-0 px-3 px-lg-4">
-                    <div class="card-header text-center bg-white py-2">
-                        <h3 class="my-1 text-info">注册</h3>
-                    </div>
-                    <div class="card-body card-login">
-                        <form class="signup" id="signup_form" method="post" action="/auth/register">
-                            {% for message in get_flashed_messages() %}
-                                <div class="text-center alert alert-danger" role="alert">
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                            {{ form.csrf_token }}
-                            <div id="div_id_email" class="form-group">
-                                {{ wtf.form_field(form.email) }}
-                            </div>
-                            <div id="div_id_username" class="form-group">
-                                {{ wtf.form_field(form.username) }}
-                            </div>
-                            <div id="div_id_password1" class="form-group">
-                                {{ wtf.form_field(form.password) }}
-                            </div>
-                            <div id="div_id_password2" class="form-group">
-                                {{ wtf.form_field(form.confirm) }}
-                            </div>
-                            <input type="hidden" name="next" value="/tag/MD5/">
-                            <a class="secondaryAction" href="/auth/login">已有账号登录</a>
-                            {{ form.submit }}
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
+
 </body>
 </html>

@@ -6,7 +6,9 @@ file: login_bp.py
 @time: 2020/1/14 23:00
 @desc:
 """
-from flask import Blueprint, render_template, jsonify
+from flask import Blueprint, render_template, jsonify, send_from_directory
+
+from ..frozen_dir import app_path
 from ..model.blogin_model import Article, BlogType
 from ..model.db_operate import DBOperator
 import math
@@ -61,3 +63,10 @@ def get_blog_brief_info(page=None):
 @index_bp.route('/search')
 def search_article():
     return
+
+
+@index_bp.route('/user/avatars/<path:filename>')
+def get_blog_sample_img(filename):
+    path = app_path() + '/avatars/' + filename
+    print(path)
+    return send_from_directory(path, filename)

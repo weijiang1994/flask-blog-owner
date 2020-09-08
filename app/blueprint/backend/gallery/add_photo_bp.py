@@ -23,9 +23,10 @@ add_photo_bp = Blueprint('add_photo_bp', __name__, url_prefix='/backend')
 class AddPhotoForm(FlaskForm):
     # 添加相册照片前端表单
     photo_title = StringField(u'相片标题',
-                              validators=[DataRequired(), Length(min=1, max=20, message='用户名长度必须在1到20之间')],
+                              validators=[DataRequired(), Length(min=1, max=20, message='相片标题长度必须在1到20之间')],
                               render_kw={'class': '', 'rows': 50, 'placeholder': '输入照片标题'})
-    photo_desc = TextAreaField(u'相片描述', validators=[DataRequired(), Length(min=3, max=250, message='用户名长度必须在3到250之间')])
+    photo_desc = TextAreaField(u'相片描述',
+                               validators=[DataRequired(), Length(min=3, max=250, message='相片描述长度必须在3到250之间')])
     img_file = FileField(label=u'博客示例图',
                          validators=[DataRequired(), FileAllowed(['png', 'jpg'], '只接收png和jpg图片')],
                          render_kw={'value': "上传", 'class': 'btn btn-default'})
@@ -33,7 +34,7 @@ class AddPhotoForm(FlaskForm):
                               default=1, coerce=int)
     tags = StringField(u'相片标签',
                        validators=[DataRequired(), Length(min=1, max=50, message='标签长度必须在1-50之间')],
-                       render_kw={'placeholder': '请输入相片标签，用空格隔开～'})
+                       render_kw={'placeholder': '请输入相片标签，用空格隔开'})
     submit = SubmitField(u'发布相片')
 
 
@@ -44,12 +45,7 @@ def index():
     :return:
     """
     form = AddPhotoForm(CombinedMultiDict([request.form, request.files]))
-    print('获取到了请求，请求方为:', request.method)
-    print(form.validate_on_submit())
-    # print(session['user_id'])
-    # print(g.user)
     if form.validate_on_submit():
-        print('进入了表单验证')
         photo_id = get_uuid()
         photo_title = form.photo_title.data
         photo_desc = form.photo_desc.data
@@ -82,8 +78,6 @@ def index():
         db.commit_data()
         db.clear_buffer()
         del db
-        # print(session['user_id'])
-        # print(g.user)
         return redirect(url_for('gallery_bp.gallery'))
     return render_template('/backend/addPhoto.html', form=form)
 

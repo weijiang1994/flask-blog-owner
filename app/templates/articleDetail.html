@@ -14,6 +14,15 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="/static/css/ck.css" rel="stylesheet">
+    <link href="/static/css/base.css" rel="stylesheet">
+    <script src="https://cdn.ckeditor.com/ckeditor5/22.0.0/classic/ckeditor.js"></script>
+    <style>
+        .cc{
+            border-left:4px solid #4a9c87;
+            padding:10px 20px;
+            background-color:rgba(0,0,0,.04);
+            margin:10px 0 20px}
+    </style>
 </head>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark justify-content-between">
     <a class="navbar-brand" href="/">Blogin</a>
@@ -43,10 +52,26 @@
             <input class="form-control mr-sm-2" type="search" name="q" placeholder="输入关键字" aria-label="Search" required="True">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
         </form>
-        <ul class="navbar-nav f-17">
-            <li class="nav-item"><a class="nav-link" href="/auth/userLogin">登录</a></li>
-            <li class="nav-item"><a class="nav-link" href="/auth/register">注册</a></li>
-        </ul>
+        {% if not g.normal_user %}
+            <ul class="navbar-nav f-17">
+                <li class="nav-item"><a class="nav-link" href="/auth/userLogin">登录</a></li>
+                <li class="nav-item"><a class="nav-link" href="/auth/register">注册</a></li>
+            </ul>
+        {% else %}
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="欢迎回来,{{ g.normal_user_name }}~">
+                        <img class="avatar" src="{{ g.normal_user_avatar }}" alt={{ g.normal_user_name }}>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right mt-0 rounded-0 border-0" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item pl-3" href="/accounts/profile"><i class="fa fa-fw fa-user text-info mr-2"></i>个人资料</a>
+                        <a class="dropdown-item pl-3" href="/comment/notification"><i class="fa fa-fw fa-bell text-info mr-2"></i>消息
+                        </a>
+                        <a class="dropdown-item pl-3" href="/auth/logout"><i class="fa fa-fw fa-sign-out text-info mr-2"></i>退出</a>
+                    </div>
+                </li>
+            </ul>
+        {% endif %}
     </div>
 
 </nav>
@@ -69,6 +94,10 @@
     <hr>
     <article>
         {{article_content|safe}}
+        <div class="cc">
+            <div>版权声明：<i class="fa fa-cc-paypal"></i>原创不易,转载请注明出处～</div>
+            <div>文章连接：<a style="color: #4a9c87" href="http://2dogz.cn/detail/article/使用sqlachemy出现1040错误问题解决记录">http://2dogz.cn/detail/article/{{ title }}</a></div>
+        </div>
         <div class="text-center">
             {{ share.create(addition_class='text-center',title='') }}
         </div>
@@ -107,12 +136,58 @@
         <div class="col-lg-6"><a href="{{ preLink }}">{{ preArticle }}</a></div>
         <div style="text-align: right;display: inline-block;" class="col-lg-6"><a href="{{ nextLink }}">{{ nextArticle }}</a></div>
     </div>
+
 </div>
 
+<div style="background: white; border: 1px solid#E1E0E0; border-radius: 5px; margin-bottom: 20px; margin-top: 20px;" class="container">
+    {% if not g.normal_user %}
+        <div style="background: #ddddee" class="text-center">
+            <div class="card-body text-center m-2 m-md-3 f-16" id="no-editor">
+                <div>您尚未登录，请
+                    <a class="text-danger" href="/auth/userLogin">登录</a> 或
+                    <a class="text-danger" href="/auth/register">注册</a> 后评论
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div style="margin: 10px">
+            <form action="/detail/comment" method="post">
+            <textarea name="comment" id="comment">
+            </textarea>
+                <div style="margin-top: 5px;" class="text-right">
+                    <button class="btn btn-outline-success round-3" id="comment">评论</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+    <p><strong>当前文章共有{{ comment_count }}条评论</strong></p>
+    <hr>
 
-
+</div>
 <script>
+    ClassicEditor.create( document.querySelector( '#comment' ), {
+        toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
+        heading: {
+            options: [
+                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+            ]
+        }
+    } )
+        .catch( error => {
+            console.log( error );
+        } );
+
+    function submitComment(){
+        let comment = $("#comment").html();
+        console.log(comment);
+        $.ajax({
+            url: '/detail/comment',
+            type: 'post',
+
+        })
+    }
 </script>
 </body>
-
 </html>

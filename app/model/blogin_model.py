@@ -63,14 +63,22 @@ class Article(Base):
 class Comment(Base):
     __tablename__ = 'comment'
 
-    id = Column(String(40), primary_key=True, server_default=text("''"), comment='comment id')
+    id = Column(INTEGER, primary_key=True, nullable=False, comment='comment id', autoincrement=True)
     article_id = Column(String(40), nullable=False, server_default=text("''"), comment='article id')
-    parent_id = Column(String(40), nullable=False, server_default=text("''"), comment='comment and reply relationship')
+    parent_id = Column(INTEGER, comment='comment and reply relationship')
     comment_time = Column(DateTime, comment='comment time')
     comment_content = Column(String(255), nullable=False, server_default=text("''"), comment='comment content')
-    is_read = Column(INTEGER(11), nullable=False, server_default=text("0"), comment='comment have read? 0:no 1:yes')
-    delete_flag = Column(INTEGER(11), nullable=False, server_default=text("0"), comment='comment have delete? 0:no '
-                                                                                        '1:yes')
+    delete_flag = Column(INTEGER, nullable=False, comment='comment have delete? 0:no 1:yes')
+
+
+class Notification(Base):
+    __tablename__ = 'notification'
+    id = Column(INTEGER, primary_key=True, nullable=False, autoincrement=True)
+    create_u = Column(String(40), nullable=False, default="''")
+    receive_u = Column(String(40), nullable=False, default="''")
+    comment_id = Column(INTEGER)
+    create_time = Column(DateTime)
+    readed = Column(INTEGER, nullable=False, comment='is read? 0 no 1 yes')
 
 
 class PhotoTag(Base):
@@ -98,3 +106,4 @@ class Users(Base):
     password = Column(String(40), nullable=False, default='', comment='register user password')
     create_time = Column(DateTime)
     delete_flag = Column(INTEGER, default=0)
+    avatar = Column(String(128), nullable=False, default='')

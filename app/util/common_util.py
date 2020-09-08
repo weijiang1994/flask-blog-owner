@@ -15,6 +15,10 @@ import configparser
 from ..frozen_dir import app_path
 import base64
 
+AVATARS = ['/static/avatars/1.jpg', '/static/avatars/2.jpg', '/static/avatars/3.jpg', '/static/avatars/4.jpg',
+           '/static/avatars/5.png', '/static/avatars/6.png', '/static/avatars/7.png', '/static/avatars/8.png',
+           '/static/avatars/9.png', '/static/avatars/10.png']
+
 CATEGORY_DIC = {1: '生活', 2: '陈词', 3: '技术'}
 SUPER_DIR = app_path()
 CONFIG_PATH = app_path() + r'/config/config.ini'

@@ -12,32 +12,25 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Length
 
-from ..util.common_util import get_md5, get_current_time
+from ..util.common_util import get_md5, get_current_time, AVATARS
 from ..model.blogin_model import Users
 from ..model.db_operate import DBOperator
+import random
 
 login_bp = Blueprint('login_bp', __name__, url_prefix='/auth')
 
 
 class RegisterForm(FlaskForm):
     email = StringField(u'E-mail',
-                        render_kw={'class': 'extinput textInput form-control', 'placeholder': '请输入邮箱地址',
-                                   'autofocus': 'autofocus', 'type': 'email'},
+                        render_kw={'placeholder': '请输入邮箱地址', 'autofocus': 'autofocus', 'type': 'email'},
                         validators=[DataRequired()])
-    username = StringField(u'用户名',
-                           render_kw={'class': 'extinput textInput form-control',
-                                      'placeholder': '请输入用户名，长度不超过8个字符'},
-                           validators=[DataRequired(), Length(min=1, max=8)])
-    password = StringField(u'密码', render_kw={'class': 'extinput textInput form-control',
-                                             'placeholder': '请输入密码长度8-40个字符',
-                                             'type': 'password'},
+    username = StringField(u'用户名', render_kw={'placeholder': '请输入用户名，长度不超过8个字符'},
+                           validators=[DataRequired(), Length(min=1, max=8, message='用户名长度不能超过8个字符')])
+    password = StringField(u'密码', render_kw={'placeholder': '请输入密码长度8-40个字符', 'type': 'password'},
                            validators=[DataRequired(), Length(min=8, max=40, message='密码格式不正确')])
-    confirm = StringField(u'确认密码', render_kw={'class': 'extinput textInput form-control',
-                                              'placeholder': '请确认密码',
-                                              'type': 'password'},
+    confirm = StringField(u'确认密码', render_kw={'placeholder': '请确认密码', 'type': 'password'},
                           validators=[DataRequired(), Length(min=8, max=40, message='密码格式不正确')])
-    submit = SubmitField(u'注册', render_kw={'class': 'pull-right btn btn-outline-success rounded-1',
-                                                    'type': 'submit'})
+    submit = SubmitField(u'注册', render_kw={'class': 'pull-right btn btn-outline-success rounded-1', 'type': 'submit'})
 
 
 @login_bp.route('/register', methods=['GET', 'POST'])
@@ -62,7 +55,7 @@ def register():
             return render_template('register.html', form=form)
 
         user = Users(email=email, username=username, password=get_md5(password), create_time=get_current_time(),
-                     delete_flag=0)
+                     delete_flag=0, avatar=AVATARS[random.randint(0, len(AVATARS))])
         db.add_data(user)
         db.commit_data()
         db.clear_buffer()
@@ -107,12 +100,23 @@ def user_login():
             flash('当前用户名不存在')
             return render_template('userLogin.html')
         session.permanent = True
-        session['user'] = username
-        return redirect(current_app.config.get('PRE_URL') or 'index_bp.index')
+        session['normal_user'] = username
+        if 'auth' in current_app.config.get('PRE_URL'):
+            return redirect(url_for('index_bp.index'))
+        else:
+            return redirect(current_app.config.get('PRE_URL') or 'index_bp.index')
     current_app.config['PRE_URL'] = request.referrer
     return render_template('userLogin.html')
 
 
+@login_bp.route('/logout')
+def user_logout():
+    session.clear()
+    print(request.referrer)
+    return redirect(request.referrer)
+
+
+# 存储管理员用户的g.use信息
 @login_bp.before_app_request
 def load_log_user_id():
     user_id = session.get('user_id')
@@ -122,20 +126,39 @@ def load_log_user_id():
         g.user = '804022023@qq.com'
 
 
+# 存储普通用户g.normal_user
+@login_bp.before_app_request
+def load_normal_user_id():
+    normal_user = session.get('normal_user')
+    if normal_user is None:
+        g.normal_user = None
+    else:
+        db = DBOperator()
+        user = db.query_user_by_name(Users, normal_user)
+        g.normal_user = user.id
+        g.normal_user_name = user.username
+        g.normal_user_avatar = user.avatar
+        db.clear_buffer()
+        del db
+
+
+# 重定向到后台登录页面
 def login_require(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            return redirect(url_for('login_bp.login'))
+            return redirect(url_for('login_bp.login_backend'))
         return view(**kwargs)
 
     return wrapped_view
 
 
+# 重定向到普通用户登录页面
 def user_login_require(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        if g.logined is None:
-            return redirect(url_for('login_bp.login'))
+        if g.normal_user is None:
+            return redirect(url_for('login_bp.user_login'))
         return view(**kwargs)
+
     return wrapped_view

@@ -20,10 +20,6 @@ _session = _session()
 
 class DBOperator:
     def __init__(self, engine=_engine, session=_session):
-        # self.engine = create_engine('mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.
-        #                             format(DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE))
-        # self.session = sessionmaker(bind=self.engine)
-        # self.session = self.session()
         self.engine = engine
         self.session = session
 
@@ -51,6 +47,9 @@ class DBOperator:
     def query_all_desc_time(self, obj, page_size, page_index):
         return self.session.query(obj).order_by(obj.create_time.desc()). \
             limit(page_size).offset((page_index - 1) * page_size)
+
+    def query_comment_by_blog_id(self, obj, condition):
+        return self.session.query(obj).filter_by(article_id=condition).order_by(obj.comment_time.desc()).all()
 
     def query_filter_by_id(self, obj, condition):
         ret = self.session.query(obj).filter_by(id=condition).all()

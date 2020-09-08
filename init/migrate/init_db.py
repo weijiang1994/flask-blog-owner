@@ -91,12 +91,11 @@ try:
     print('-'*56)
     print('starting create comment table')
     CREATE_COMMENT_TABLE_SQL = "CREATE TABLE IF NOT EXISTS comment(" \
-                               "id VARCHAR (40) PRIMARY KEY NOT NULL ," \
-                               "article_id VARCHAR (40) NOT NULL ," \
-                               "parent_id VARCHAR (40) NOT NULL ," \
+                               "id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT," \
+                               "article_id VARCHAR (40) NOT NULL DEFAULT ''," \
+                               "parent_id INTEGER," \
                                "comment_time datetime NOT NULL ," \
                                "comment_content VARCHAR (255) NOT NULL DEFAULT ''," \
-                               "is_read INTEGER NOT NULL DEFAULT 0," \
                                "delete_flag INTEGER NOT NULL DEFAULT 0)"
     cursor.execute(CREATE_COMMENT_TABLE_SQL)
     print('the comment table is created.')
@@ -128,6 +127,7 @@ try:
                             "create_time DATE NOT NULL )"
     cursor.execute(CREATE_TAGS_TABLE_SQL)
     print('create tags table done.')
+    print('-'*56)
     print('starting create users table')
     CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users(" \
                         "id INTEGER PRIMARY KEY AUTO_INCREMENT," \
@@ -135,9 +135,21 @@ try:
                         "username VARCHAR (40) NOT NULL DEFAULT ''," \
                         "password VARCHAR (40) NOT NULL DEFAULT ''," \
                         "create_time DATE NOT NULL ," \
-                        "delete_flag INTEGER NOT NULL DEFAULT 0)"
+                        "delete_flag INTEGER NOT NULL DEFAULT 0," \
+                        "avatar VARCHAR (128) NOT NULL DEFAULT '')"
     cursor.execute(CREATE_USER_TABLE)
     print('create users table done.')
+    print('-'*56)
+    print('starting create table notification')
+    CREATE_NOTIFICATION_TABLE_SQL = "CREATE TABLE IF NOT EXISTS notification(" \
+                                    "id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT," \
+                                    "create_u VARCHAR (40) NOT NULL DEFAULT ''," \
+                                    "recevive_u VARCHAR (40) NOT NULL DEFAULT ''," \
+                                    "comment_id INTEGER NOT NULL ," \
+                                    "create_time Datetime," \
+                                    "readed INTEGER NOT NULL DEFAULT 0)"
+    cursor.execute(CREATE_NOTIFICATION_TABLE_SQL)
+    print('create notification table done.')
     conn.commit()
     print('database is initialed.')
     conn.close()
