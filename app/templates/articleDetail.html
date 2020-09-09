@@ -30,6 +30,10 @@
         .gutter-right{
             margin: 5px 0px 0px 5px;
         }
+
+        .comment-child{
+            border-top: #1b6d85 1px dashed;
+        }
     </style>
 </head>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark justify-content-between">
@@ -195,6 +199,32 @@
                 </div>
             </li>
             <div class="comment-body">{{ comment[0][2]|safe }}</div>
+            {% if comment[1] %}
+                {% for child_comment in comment[1] %}
+                    <ul class="list-unstyled ml-4">
+                        <div class="comment-child pt-2" id="com-812">
+                            <li class="media">
+                                <img class="avatar" src="{{ child_comment[0] }}" alt="{{ child_comment[1] }}">
+                                <div class="media-body ml-2">
+                                    {% if g.normal_user %}
+                                    <a class="float-right small mr-2 rep-btn" href="#editor-block" data-repid="{{ child_comment[4] }}" data-repuser="{{ child_comment[1] }}">回复</a>
+                                    {% endif %}
+                                    <p class="mt-0 mb-1">
+                                        <strong>
+                                            <a>{{child_comment[1]}}
+                                            </a>
+                                        </strong>
+                                        <i class="fa fa-user-md"></i>
+                                    </p>
+                                    <p class="small text-muted"><span class="badge badge-warning"><i class="fa fa-calendar-times"></i> {{ child_comment[3] }}</span></p>
+                                </div>
+                            </li>
+                            <div class="comment-body">{{ child_comment[2]|safe }}</div>
+                        </div>
+
+                    </ul>
+                {% endfor %}
+            {% endif %}
         </div><br>
     {% endfor %}
 </div>
@@ -293,7 +323,7 @@
 
     //提交回复
     function replyUserComment(){
-        let reply = editor.getData()
+        let reply = editor.getData();
         if(!reply){
             $("#commentErrorHint").removeAttr('hidden');
             return false;
