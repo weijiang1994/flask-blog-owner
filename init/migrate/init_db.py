@@ -94,6 +94,7 @@ try:
                                "id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT," \
                                "article_id VARCHAR (40) NOT NULL DEFAULT ''," \
                                "parent_id INTEGER," \
+                               "create_u_id INTEGER NOT NULL ," \
                                "comment_time datetime NOT NULL ," \
                                "comment_content VARCHAR (255) NOT NULL DEFAULT ''," \
                                "delete_flag INTEGER NOT NULL DEFAULT 0)"

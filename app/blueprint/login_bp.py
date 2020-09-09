@@ -112,7 +112,6 @@ def user_login():
 @login_bp.route('/logout')
 def user_logout():
     session.clear()
-    print(request.referrer)
     return redirect(request.referrer)
 
 
@@ -162,3 +161,12 @@ def user_login_require(view):
         return view(**kwargs)
 
     return wrapped_view
+
+
+"""
+[
+ ['parent comment', ['child1', 'child2', 'child3']],
+ ['parent comment', ['child1', 'child2', 'child3']], 
+ ['parent comment', ['child1', 'child2', 'child3']]
+ ]
+"""

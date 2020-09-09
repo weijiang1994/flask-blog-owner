@@ -8,14 +8,13 @@
 @Contact:weijiang@colibri.com.cn
 """
 from sqlalchemy import create_engine, or_
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from ..util.common_util import DB_HOST, DB_PORT, DB_USER, DB_DATABASE, DB_PASSWORD
 
 _engine = create_engine('mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.
-                        format(DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE), pool_recycle=360, max_overflow=5,
-                        pool_size=10)
+                        format(DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE))
 _session = sessionmaker(bind=_engine)
-_session = _session()
+_session = scoped_session(_session)
 
 
 class DBOperator:
@@ -51,9 +50,16 @@ class DBOperator:
     def query_comment_by_blog_id(self, obj, condition):
         return self.session.query(obj).filter_by(article_id=condition).order_by(obj.comment_time.desc()).all()
 
+    def query_top_comment_by_blog_id(self, obj, condition):
+        return self.session.query(obj).filter_by(article_id=condition, parent_id=None).order_by(obj.comment_time.
+                                                                                                desc()).all()
+
     def query_filter_by_id(self, obj, condition):
         ret = self.session.query(obj).filter_by(id=condition).all()
         return ret
+
+    def query_child_comment(self, obj, condition):
+        return self.session.query(obj).filter_by(parent_id=condition).all()
 
     def query_photo_tag_by_id(self, obj, condition):
         ret = self.session.query(obj).filter_by(photo_id=condition).all()

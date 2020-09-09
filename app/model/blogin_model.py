@@ -66,6 +66,7 @@ class Comment(Base):
     id = Column(INTEGER, primary_key=True, nullable=False, comment='comment id', autoincrement=True)
     article_id = Column(String(40), nullable=False, server_default=text("''"), comment='article id')
     parent_id = Column(INTEGER, comment='comment and reply relationship')
+    create_u_id = Column(INTEGER, nullable=False, comment='comment create user')
     comment_time = Column(DateTime, comment='comment time')
     comment_content = Column(String(255), nullable=False, server_default=text("''"), comment='comment content')
     delete_flag = Column(INTEGER, nullable=False, comment='comment have delete? 0:no 1:yes')
