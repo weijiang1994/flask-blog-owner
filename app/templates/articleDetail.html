@@ -265,10 +265,11 @@
     $(".rep-btn").click(function(){
         let u = $(this).data('repuser');
         let i = $(this).data('repid');
-        console.log('user', u);
-        console.log('id', i);
-        sessionStorage.setItem('rep_id',i);
+        {#console.log('user', u);#}
+        {#console.log('id', i);#}
+        sessionStorage.setItem('rep_id', i);
         sessionStorage.setItem('receive_u', u);
+        console.log(sessionStorage)
         $("#replyUser").text("回复 @"+u).removeAttr('hidden');
         $("#cancelReplyBtn").removeAttr('hidden');
         $("#replyBtn").removeAttr('hidden');
@@ -305,7 +306,6 @@
             success: function (){
                 window.location.reload();
             }
-
         })
     }
 </script>

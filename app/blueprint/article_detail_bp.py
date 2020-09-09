@@ -103,9 +103,16 @@ def submit_comment():
 
 @article_detail_bp.route('/replyComment/', methods=['GET', 'POST'])
 def reply_comment():
-    reply_comment = request.form.get('reply_comment')
+    reply = request.form.get('reply_comment')
+    receive_u = request.form.get('receive_u')
+    parent_id = request.form.get('parent_id')
+    print('reply comment ', reply)
+    print('receive u ', receive_u)
+    print('parent id ', parent_id)
+    print('current user id ', g.normal_user)
     # 1. 保存用户回复的评论
     # 2. 添加notification
-    db = DBOperator()
-    comment = Comment()
-    db.add_data()
+    # db = DBOperator()
+    # comment = Comment()
+    # db.add_data()
+    return ''
