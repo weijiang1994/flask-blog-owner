@@ -63,6 +63,7 @@ def index(title):
         comments = db.query_top_comment_by_blog_id(Comment, condition=ret.id)
         for comment in comments:
             comm = []
+            child_comm = []
             user = db.query_filter_by_id(Users, comment.create_u_id)
             top_comment = [user[0].avatar, user[0].username, comment.comment_content, comment.comment_time, comment.id]
             comm.append(top_comment)
@@ -71,8 +72,17 @@ def index(title):
             if len(children) == 0:
                 comm.append([])
             else:
-                pass
+                for child in children:
+                    usr = db.query_filter_by_id(Users, condition=child.create_u_id)[0]
+                    avatar = usr.avatar
+                    username = usr.username
+                    child_comment = child.comment_content
+                    child_comm_time = child.comment_time
+                    parent_id = comment.id
+                    child_comm.append([avatar, username, child_comment, child_comm_time, parent_id])
+                comm.append(child_comm)
             comments_ret.append(comm)
+        print(comments_ret)
         db.clear_buffer()
         del db
         return render_template('articleDetail.html', title=title, create_time='发布于' + str(ret.create_time),
@@ -110,9 +120,13 @@ def reply_comment():
     print('receive u ', receive_u)
     print('parent id ', parent_id)
     print('current user id ', g.normal_user)
+    db = DBOperator()
+    art_id = db.query_filter_by_id(Comment, condition=parent_id)[0].article_id
+    reply_comment_obj = Comment(article_id=art_id, parent_id=parent_id, create_u_id=g.normal_user,
+                                comment_time=get_current_time(), comment_content=reply, delete_flag=0)
+    db.add_data(reply_comment_obj)
+    db.commit_data()
     # 1. 保存用户回复的评论
     # 2. 添加notification
-    # db = DBOperator()
-    # comment = Comment()
-    # db.add_data()
+
     return ''
