@@ -21,8 +21,9 @@
             border-left:4px solid #4a9c87;
             padding:10px 20px;
             background-color:rgba(0,0,0,.04);
-            margin:10px 0 20px
+            margin:10px 0 20px;
         }
+
         .ck-editor__editable {
             min-height: 100px;
         }
@@ -34,6 +35,7 @@
         .comment-child{
             border-top: #1b6d85 1px dashed;
         }
+
     </style>
 </head>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark justify-content-between">
@@ -77,8 +79,9 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right mt-0 rounded-0 border-0" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item pl-3" href="/accounts/profile"><i class="fa fa-fw fa-user text-info mr-2"></i>个人资料</a>
-                        <a class="dropdown-item pl-3" href="/comment/notification"><i class="fa fa-fw fa-bell text-info mr-2"></i>消息
-                        </a>
+                        {% if ntf_counts %}
+                            <a href="/accounts/profile" class="dropdown-item pl-3"><i class="fa fa-fw fa-bell text-info mr-2"></i>消息 <span class="badge badge-info">{{ ntf_counts }}</span>                        </a>
+                        {% endif %}
                         <a class="dropdown-item pl-3" href="/auth/logout"><i class="fa fa-fw fa-sign-out text-info mr-2"></i>退出</a>
                     </div>
                 </li>
@@ -207,7 +210,7 @@
                                 <img class="avatar" src="{{ child_comment[0] }}" alt="{{ child_comment[1] }}">
                                 <div class="media-body ml-2">
                                     {% if g.normal_user %}
-                                    <a class="float-right small mr-2 rep-btn" href="#editor-block" data-repid="{{ child_comment[4] }}" data-repuser="{{ child_comment[1] }}">回复</a>
+                                        <a class="float-right small mr-2 rep-btn" href="#editor-block" data-repid="{{ child_comment[4] }}" data-repuser="{{ child_comment[1] }}">回复</a>
                                     {% endif %}
                                     <p class="mt-0 mb-1">
                                         <strong>
@@ -228,6 +231,7 @@
         </div><br>
     {% endfor %}
 </div>
+
 <script>
     let editor;
     ClassicEditor.create( document.querySelector( '#comment-editor' ), {
@@ -340,4 +344,4 @@
     }
 </script>
 </body>
-</html>a
+</html>

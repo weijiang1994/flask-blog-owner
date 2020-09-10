@@ -6,10 +6,10 @@ file: login_bp.py
 @time: 2020/1/14 23:00
 @desc:
 """
-from flask import Blueprint, render_template, jsonify, send_from_directory
+from flask import Blueprint, render_template, jsonify, send_from_directory, g
 
 from ..frozen_dir import app_path
-from ..model.blogin_model import Article, BlogType
+from ..model.blogin_model import Article, BlogType, Notification
 from ..model.db_operate import DBOperator
 import math
 index_bp = Blueprint('index_bp', __name__)
@@ -20,7 +20,9 @@ page_size = 10
 
 @index_bp.route('/')
 def index():
-    return render_template('home copy.html')
+    db = DBOperator()
+    notifications = db.query_notification_by_receive_id(Notification, condition=g.normal_user)
+    return render_template('home copy.html', ntf_counts=len(notifications))
 
 
 @index_bp.route('/blogBriefInfo/<int:page>', methods=['GET', 'POST'])

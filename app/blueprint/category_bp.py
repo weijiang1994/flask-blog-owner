@@ -8,8 +8,8 @@ file: category_bp.py
 """
 import math
 
-from flask import Blueprint, render_template, jsonify
-from ..model.blogin_model import Article, BlogType
+from flask import Blueprint, render_template, jsonify, g
+from ..model.blogin_model import Article, BlogType, Notification
 from ..model.db_operate import DBOperator
 
 category_dic = {'生活': 1, '陈词': 2, '技术': 3}
@@ -20,7 +20,9 @@ brief_limit = 90
 
 @category_bp.route('/category/', methods=['GET'])
 def category():
-    return render_template('category.html')
+    db = DBOperator()
+    notifications = db.query_notification_by_receive_id(Notification, condition=g.normal_user)
+    return render_template('category.html', ntf_counts=len(notifications))
 
 
 @category_bp.route('/category/<article>/', methods=['GET'])

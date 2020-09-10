@@ -8,11 +8,10 @@ file: login_bp.py
 """
 from flask import Blueprint, render_template, current_app, request, redirect, g
 from urllib import parse
-from ..model.db_operate import DBOperator
 from ..model.blogin_model import Article, Users
 import traceback
 from ..model.db_operate import DBOperator
-from ..model.blogin_model import Comment
+from ..model.blogin_model import Comment, Notification
 from ..util.common_util import get_current_time
 
 article_detail_bp = Blueprint('article_detail_bp', __name__, url_prefix='/detail')
@@ -29,11 +28,6 @@ def index(title):
         articles = db.query_all_time(Article)
 
         current_index = 0
-        # pre_article = ''
-        # pre_link = ''
-        # next_article = ''
-        # next_link = ''
-        # comment_count = 0
         for i, article in enumerate(articles):
             if article.title == title:
                 current_index = i
@@ -56,44 +50,48 @@ def index(title):
         ret.read_times += 1
         db.commit_data()
 
-        # 获取该篇文章总评论数
-        comments = db.query_comment_by_blog_id(Comment, condition=ret.id)
-        comment_count = len(comments)
-        # 获取该篇文章的顶级评论
-        comments = db.query_top_comment_by_blog_id(Comment, condition=ret.id)
-        for comment in comments:
-            comm = []
-            child_comm = []
-            user = db.query_filter_by_id(Users, comment.create_u_id)
-            top_comment = [user[0].avatar, user[0].username, comment.comment_content, comment.comment_time, comment.id]
-            comm.append(top_comment)
-            # 查询该顶级评论的子评论按照时间升序
-            children = db.query_child_comment(Comment, comment.id)
-            if len(children) == 0:
-                comm.append([])
-            else:
-                for child in children:
-                    usr = db.query_filter_by_id(Users, condition=child.create_u_id)[0]
-                    avatar = usr.avatar
-                    username = usr.username
-                    child_comment = child.comment_content
-                    child_comm_time = child.comment_time
-                    parent_id = comment.id
-                    child_comm.append([avatar, username, child_comment, child_comm_time, parent_id])
-                comm.append(child_comm)
-            comments_ret.append(comm)
-        print(comments_ret)
+        # 获取该篇文章评论信息
+        comment_count = get_comments(comments_ret, db, ret)
+        print(g.normal_user)
+        notifications = db.query_notification_by_receive_id(Notification, condition=g.normal_user)
         db.clear_buffer()
         del db
         return render_template('articleDetail.html', title=title, create_time='发布于' + str(ret.create_time),
                                read_times='阅读数' + str(read_times), article_type=ret.type,
                                article_content=ret.content, preLink=pre_link, preArticle=pre_article,
                                nextLink=next_link, nextArticle=next_article, comment_count=comment_count,
-                               comments=comments_ret)
+                               comments=comments_ret, ntf_counts=len(notifications))
     except Exception as e:
         print(e.args)
         traceback.print_exc()
         return render_template('error/error.html')
+
+
+def get_comments(comments_ret, db, ret):
+    comments = db.query_top_comment_by_blog_id(Comment, condition=ret.id)
+    comment_count = len(comments)
+    for comment in comments:
+        comm = []
+        child_comm = []
+        user = db.query_filter_by_id(Users, comment.create_u_id)
+        top_comment = [user[0].avatar, user[0].username, comment.comment_content, comment.comment_time, comment.id]
+        comm.append(top_comment)
+        # 查询该顶级评论的子评论按照时间升序
+        children = db.query_child_comment(Comment, comment.id)
+        if len(children) == 0:
+            comm.append([])
+        else:
+            for child in children:
+                usr = db.query_filter_by_id(Users, condition=child.create_u_id)[0]
+                avatar = usr.avatar
+                username = usr.username
+                child_comment = child.comment_content
+                child_comm_time = child.comment_time
+                parent_id = comment.id
+                child_comm.append([avatar, username, child_comment, child_comm_time, parent_id])
+            comm.append(child_comm)
+        comments_ret.append(comm)
+    return comment_count
 
 
 @article_detail_bp.route('/comment/', methods=['GET', 'POST'])
@@ -120,13 +118,20 @@ def reply_comment():
     print('receive u ', receive_u)
     print('parent id ', parent_id)
     print('current user id ', g.normal_user)
+    current_user_id = g.normal_user
     db = DBOperator()
     art_id = db.query_filter_by_id(Comment, condition=parent_id)[0].article_id
-    reply_comment_obj = Comment(article_id=art_id, parent_id=parent_id, create_u_id=g.normal_user,
+    # 1. 保存用户回复的评论
+    reply_comment_obj = Comment(article_id=art_id, parent_id=parent_id, create_u_id=current_user_id,
                                 comment_time=get_current_time(), comment_content=reply, delete_flag=0)
     db.add_data(reply_comment_obj)
     db.commit_data()
-    # 1. 保存用户回复的评论
-    # 2. 添加notification
 
+    # 2. 添加notification
+    rec_u_id = db.query_user_by_name(Users, condition=receive_u).id
+    comment_id = db.query_all_by_id(Comment)[0].id
+    notification = Notification(create_time=get_current_time(), readed=0, create_u=current_user_id,
+                                receive_u=rec_u_id, comment_id=comment_id)
+    db.add_data(notification)
+    db.commit_data()
     return ''

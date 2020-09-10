@@ -13,7 +13,7 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Length
 
 from ..util.common_util import get_md5, get_current_time, AVATARS
-from ..model.blogin_model import Users
+from ..model.blogin_model import Users, LoginLog
 from ..model.db_operate import DBOperator
 import random
 
@@ -101,12 +101,20 @@ def user_login():
             return render_template('userLogin.html')
         session.permanent = True
         session['normal_user'] = username
+        log_login(user.id, login_ip=request.remote_addr)
         if 'auth' in current_app.config.get('PRE_URL'):
             return redirect(url_for('index_bp.index'))
         else:
             return redirect(current_app.config.get('PRE_URL') or 'index_bp.index')
     current_app.config['PRE_URL'] = request.referrer
     return render_template('userLogin.html')
+
+
+def log_login(userid, login_ip):
+    db = DBOperator()
+    log = LoginLog(user_id=userid, login_time=get_current_time(), login_ip=login_ip)
+    db.add_data(log)
+    db.commit_data()
 
 
 @login_bp.route('/logout')

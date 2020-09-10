@@ -32,6 +32,10 @@ a {
     transform: scale(1.05);
 }
 
+.gutter-right{
+    margin: 5px 0px 0px 5px;
+}
+
 .blog-column:hover{
     box-shadow:5px 5px 5px  #9d9d9d;
     transform: scale(1.01);
@@ -48,5 +52,59 @@ h2 {
 
 h3 {
     font-size: 21px;
+}
 
+.div-click{
+    cursor: pointer;
+    margin-bottom: 5px;
+    width: 150px;
+}
+html, body {
+    height: 100%; /*让页面撑满窗体*/
+}
+.div-click:hover{
+    color: #2aabd2;
+}
+
+.ntf-comment-body{
+    border: 1px dashed #9acfea;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+footer {
+    background: #1c1f21;
+    color: #99979c;
+    padding: 1rem 0;
+
+}
+footer a:hover {
+    color:#fff;
+}
+
+html{
+    height: 100%;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+header{
+    /* 我们希望 header 采用固定的高度，只占用必须的空间 */
+    /* 0 flex-grow, 0 flex-shrink, auto flex-basis */
+    flex: 0 0 auto;
+}
+
+.main-content{
+    /* 将 flex-grow 设置为1，该元素会占用全部可使用空间
+       而其他元素该属性值为0，因此不会得到多余的空间*/
+    /* 1 flex-grow, 0 flex-shrink, auto flex-basis */
+    flex: 1 0 auto;
+}
+
+footer{
+    /* 和 header 一样，footer 也采用固定高度*/
+    /* 0 flex-grow, 0 flex-shrink, auto flex-basis */
 }

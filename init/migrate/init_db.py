@@ -130,27 +130,37 @@ try:
     print('create tags table done.')
     print('-'*56)
     print('starting create users table')
-    CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS users(" \
-                        "id INTEGER PRIMARY KEY AUTO_INCREMENT," \
-                        "email VARCHAR (40) NOT NULL DEFAULT ''," \
-                        "username VARCHAR (40) NOT NULL DEFAULT ''," \
-                        "password VARCHAR (40) NOT NULL DEFAULT ''," \
-                        "create_time DATE NOT NULL ," \
-                        "delete_flag INTEGER NOT NULL DEFAULT 0," \
-                        "avatar VARCHAR (128) NOT NULL DEFAULT '')"
-    cursor.execute(CREATE_USER_TABLE)
+    CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS users(" \
+                         "id INTEGER PRIMARY KEY AUTO_INCREMENT," \
+                         "email VARCHAR (40) NOT NULL DEFAULT ''," \
+                         "username VARCHAR (40) NOT NULL DEFAULT ''," \
+                         "password VARCHAR (40) NOT NULL DEFAULT ''," \
+                         "create_time DATE NOT NULL ," \
+                         "delete_flag INTEGER NOT NULL DEFAULT 0," \
+                         "avatar VARCHAR (128) NOT NULL DEFAULT ''," \
+                         "website VARCHAR (128) DEFAULT '')"
+    cursor.execute(CREATE_USERS_TABLE)
     print('create users table done.')
     print('-'*56)
     print('starting create table notification')
     CREATE_NOTIFICATION_TABLE_SQL = "CREATE TABLE IF NOT EXISTS notification(" \
                                     "id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT," \
-                                    "create_u VARCHAR (40) NOT NULL DEFAULT ''," \
-                                    "recevive_u VARCHAR (40) NOT NULL DEFAULT ''," \
+                                    "create_u INTEGER NOT NULL ," \
+                                    "recevive_u INTEGER NOT NULL ," \
                                     "comment_id INTEGER NOT NULL ," \
                                     "create_time Datetime," \
                                     "readed INTEGER NOT NULL DEFAULT 0)"
     cursor.execute(CREATE_NOTIFICATION_TABLE_SQL)
     print('create notification table done.')
+    print('-'*56)
+    print('starting create login_log table')
+    CREATE_LOGIN_LOG_TABLE_SQL = "CREATE TABLE IF NOT EXISTS login_log(" \
+                                 "id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT," \
+                                 "user_id INTEGER NOT NULL," \
+                                 "login_time datetime," \
+                                 "login_ip VARCHAR (40) DEFAULT '')"
+    cursor.execute(CREATE_LOGIN_LOG_TABLE_SQL)
+    print('create login_log table done.')
     conn.commit()
     print('database is initialed.')
     conn.close()

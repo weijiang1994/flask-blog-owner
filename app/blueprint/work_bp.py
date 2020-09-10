@@ -8,12 +8,16 @@ file: login_bp.py
 """
 from flask import Blueprint, render_template, request, jsonify
 from ..util.common_util import get_encrypt_text
+from ..model.blogin_model import Notification
+from ..model.db_operate import DBOperator
 
 work_bp = Blueprint('work_bp',  __name__)
 
 
 @work_bp.route('/tech')
 def article():
+    db = DBOperator()
+
     return render_template('tool.html')
 
 

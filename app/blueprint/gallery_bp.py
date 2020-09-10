@@ -6,9 +6,9 @@ file: gallery_bp.py
 @time: 2020/06/02 23:00
 @desc:
 """
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, g
 from ..model.db_operate import DBOperator
-from ..model.blogin_model import Gallery, Tags, PhotoTag
+from ..model.blogin_model import Gallery, Tags, PhotoTag, Notification
 
 gallery_bp = Blueprint('gallery_bp', __name__)
 
@@ -18,9 +18,10 @@ def gallery():
     ret = []
     db = DBOperator()
     galleries = db.query_all(Gallery)
+    notifications = db.query_notification_by_receive_id(Notification, condition=g.normal_user)
     for photo in galleries:
         ret.append([photo.photo_title, photo.photo_path, photo.create_time, photo.id])
-    return render_template('gallery.html', galleries=ret)
+    return render_template('gallery.html', galleries=ret, ntf_counts=len(notifications))
 
 
 @gallery_bp.route('/getPhoto', methods=['POST'])
@@ -47,6 +48,7 @@ def show_photo(photo_id):
     photo = db.query_filter_by_id(Gallery, condition=photo_id)[0]
     photos = db.query_all(Gallery)
     tags = db.query_photo_tag_by_id(Tags, condition=photo.id)
+    notifications = db.query_notification_by_receive_id(Notification, condition=g.normal_user)
     if len(tags) != 0:
         for tag in tags:
             photo_tag = db.query_filter_by_id(PhotoTag, condition=tag.tag_id)[0]
@@ -72,7 +74,7 @@ def show_photo(photo_id):
            'updateTime': photo.create_time, 'preLink': pre_link, 'nextLink': next_link, 'tags': tags_ls,
            'tagIds': tags_id}
     return render_template('showPhoto.html', photo=ret, photoDesc=photo.photo_desc,
-                           time=photo.create_time, )
+                           time=photo.create_time, ntf_counts=len(notifications))
 
 
 @gallery_bp.route('/gallery/tag/<int:tag_id>', methods=['GET', 'POST'])

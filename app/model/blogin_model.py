@@ -75,8 +75,8 @@ class Comment(Base):
 class Notification(Base):
     __tablename__ = 'notification'
     id = Column(INTEGER, primary_key=True, nullable=False, autoincrement=True)
-    create_u = Column(String(40), nullable=False, default="''")
-    receive_u = Column(String(40), nullable=False, default="''")
+    create_u = Column(INTEGER, nullable=False)
+    receive_u = Column(INTEGER, nullable=False)
     comment_id = Column(INTEGER)
     create_time = Column(DateTime)
     readed = Column(INTEGER, nullable=False, comment='is read? 0 no 1 yes')
@@ -108,3 +108,13 @@ class Users(Base):
     create_time = Column(DateTime)
     delete_flag = Column(INTEGER, default=0)
     avatar = Column(String(128), nullable=False, default='')
+    website = Column(String(128), nullable=True, default='')
+
+
+class LoginLog(Base):
+    __tablename__ = 'login_log'
+
+    id = Column(INTEGER, autoincrement=True, primary_key=True, comment='login log id')
+    user_id = Column(INTEGER, nullable=False, comment='login user id')
+    login_time = Column(DateTime)
+    login_ip = Column(String(128), default='')

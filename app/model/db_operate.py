@@ -31,6 +31,9 @@ class DBOperator:
     def query_all(self, obj):
         return self.session.query(obj).all()
 
+    def query_all_by_id(self, obj):
+        return self.session.query(obj).order_by(obj.id.desc()).all()
+
     def query_all_time(self, obj):
         return self.session.query(obj).order_by(obj.create_time.desc()).all()
 
@@ -42,6 +45,9 @@ class DBOperator:
 
     def query_user_by_name(self, obj, condition):
         return self.session.query(obj).filter_by(username=condition).first()
+
+    def query_by_user_id(self, obj, condition):
+        return self.session.query(obj).filter_by(user_id=condition).order_by(obj.login_time.desc()).first()
 
     def query_all_desc_time(self, obj, page_size, page_index):
         return self.session.query(obj).order_by(obj.create_time.desc()). \
@@ -57,6 +63,9 @@ class DBOperator:
     def query_filter_by_id(self, obj, condition):
         ret = self.session.query(obj).filter_by(id=condition).all()
         return ret
+
+    def query_notification_by_receive_id(self, obj, condition):
+        return self.session.query(obj).filter_by(receive_u=condition, readed=0).all()
 
     def query_child_comment(self, obj, condition):
         return self.session.query(obj).filter_by(parent_id=condition).all()
