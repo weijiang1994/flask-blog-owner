@@ -18,21 +18,6 @@
     <div class="container">
         <form method="post" enctype="multipart/form-data">
             {{ form.csrf_token }}
-{#            {% for message in form.photo_title.errors %}#}
-{#                <small class="error"> {{ message }}</small>#}
-{#            {% endfor %}#}
-{#            {% for message in form.photo_desc.errors %}#}
-{#                <small class="error"> {{ message }}</small>#}
-{#            {% endfor %}#}
-{#            {% for message in form.photo_level.errors %}#}
-{#                <small class="error"> {{ message }}</small>#}
-{#            {% endfor %}#}
-{#            {% for message in form.tags.errors %}#}
-{#                <small class="error"> {{ message }}</small>#}
-{#            {% endfor %}#}
-{#            {% for message in form.img_file.errors %}#}
-{#                <small class="error"> {{ message }}</small>#}
-{#            {% endfor %}#}
             {{wtf.form_field(form.photo_title)}}
             {{wtf.form_field(form.photo_desc)}}
             <div class="row">

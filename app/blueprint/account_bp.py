@@ -7,12 +7,25 @@
 @Software: PyCharm
 """
 from flask import Blueprint, render_template, g, request
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed
+from wtforms import StringField, FileField, SubmitField
+from wtforms.validators import DataRequired, Length
 from ..blueprint.login_bp import user_login_require
 from ..model.blogin_model import Users, LoginLog, Comment, Article
 from ..model.db_operate import DBOperator
 from ..model.blogin_model import Notification
 
 account_bp = Blueprint(__name__, 'account_bp', url_prefix='/accounts')
+
+
+class ProfileForm(FlaskForm):
+    website = StringField(u'个人网站',
+                          validators=[DataRequired(), Length(min=0, max=128, message='个人网站长度必须在0到128之间')],
+                          render_kw={'class': '', 'rows': 50, 'placeholder': '输入照片标题'})
+    avatar = FileField(u'个人头像',  validators=[DataRequired(), FileAllowed(['png', 'jpg'], '只接收png和jpg图片')])
+
+    submit = SubmitField(u'保存')
 
 
 @account_bp.route('/profile/', methods=['GET', 'POST'])
@@ -68,3 +81,10 @@ def mark_a_notification():
     ntf.readed = 1
     db.commit_data()
     return ''
+
+
+@account_bp.route('/profile/edit/', methods=['GET', 'POST'])
+@user_login_require
+def profile_edit():
+    form = ProfileForm()
+    return render_template('profileEdit.html', form=form)
