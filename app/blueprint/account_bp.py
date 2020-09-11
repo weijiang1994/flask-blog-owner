@@ -6,12 +6,12 @@
 @File    : account_bp
 @Software: PyCharm
 """
-from flask import Blueprint, render_template, g, request
+from flask import Blueprint, render_template, g, request, send_from_directory, redirect, url_for
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from wtforms import StringField, FileField, SubmitField
-from wtforms.validators import DataRequired, Length
 from ..blueprint.login_bp import user_login_require
+from ..frozen_dir import app_path
 from ..model.blogin_model import Users, LoginLog, Comment, Article
 from ..model.db_operate import DBOperator
 from ..model.blogin_model import Notification
@@ -21,11 +21,10 @@ account_bp = Blueprint(__name__, 'account_bp', url_prefix='/accounts')
 
 class ProfileForm(FlaskForm):
     website = StringField(u'个人网站',
-                          validators=[DataRequired(), Length(min=0, max=128, message='个人网站长度必须在0到128之间')],
-                          render_kw={'class': '', 'rows': 50, 'placeholder': '输入照片标题'})
-    avatar = FileField(u'个人头像',  validators=[DataRequired(), FileAllowed(['png', 'jpg'], '只接收png和jpg图片')])
-
+                          render_kw={'class': '', 'rows': 50, 'placeholder': '输入个人网址'})
+    avatar = FileField(u'个人头像', validators=[FileAllowed(['png', 'jpg'], '只接收png和jpg图片')])
     submit = SubmitField(u'保存')
+    avatar_src = ''
 
 
 @account_bp.route('/profile/', methods=['GET', 'POST'])
@@ -43,7 +42,8 @@ def account_profile():
     user_join_time = usr.create_time
     user_email = usr.email
     website = usr.website
-    usr_info = [userid, user_name, user_join_time, user_email, login_time, website]
+    avatar = usr.avatar
+    usr_info = [userid, user_name, user_join_time, user_email, login_time, website, avatar]
     notifications = db.query_notification_by_receive_id(Notification, condition=g.normal_user)
     ntf_comments = []
     for ntf in notifications:
@@ -86,5 +86,34 @@ def mark_a_notification():
 @account_bp.route('/profile/edit/', methods=['GET', 'POST'])
 @user_login_require
 def profile_edit():
+    db = DBOperator()
+    usr = db.query_filter_by_id(Users, g.normal_user)[0]
     form = ProfileForm()
+
+    if form.validate_on_submit():
+        website = form.website.data
+        print('提交的website', website)
+        if form.avatar.data.filename:
+            filename = form.avatar.data.filename
+            filename = str(g.normal_user) + filename
+            form.avatar.data.save(app_path() + '/avatars/' + filename)
+
+            usr.avatar = '/accounts/profile/avatar/avatars/' + filename
+        usr.website = website
+        db.commit_data()
+        return redirect(url_for('app.blueprint.account_bp.account_profile'))
+    form.website.data = usr.website
+    form.avatar_src = usr.avatar
     return render_template('profileEdit.html', form=form)
+
+
+@account_bp.route('/profile/avatar/<path>/<filename>')
+def get_gallery_img(path, filename):
+    """
+    获取服务器相册照片资源
+    :param path: 请求携带的path
+    :param filename: 请求携带的文件名
+    :return: 对应的照片文件
+    """
+    path = app_path() + '/' + path + '/'
+    return send_from_directory(path, filename)

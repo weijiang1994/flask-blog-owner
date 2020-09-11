@@ -16,6 +16,19 @@
     <link rel="stylesheet" href="/static/css/base.css">
 </head>
 <body>
+<style>
+    .profile-edit{
+        border-radius: 5px;
+        border: 1px solid forestgreen;
+        padding: 10px;
+    }
+    .edit-img{
+        max-height: 300px;
+        max-width: 300px;
+        padding: 15px;
+
+    }
+</style>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark justify-content-between">
     <a class="navbar-brand" href="/">Blogin</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -70,16 +83,16 @@
 </nav>
 <div class="container">
     <br>
-    <div style="border: 1px solid forestgreen; padding: 10px;" class="col-md-4 offset-md-4">
-        <form method="post">
+    <div class="profile-edit col-md-4 offset-md-4">
+        <form method="post" action="/accounts/profile/edit/" enctype="multipart/form-data">
             {{ form.csrf_token }}
             {{wtf.form_field(form.website)}}
-            {{wtf.form_field(form.avatar)}}
+            <label class="text-danger">当前头像 <img class="img-fluid rounded" src="{{ form.avatar_src }}"></label>
+            {{wtf.form_field(form.avatar, class='text-muted')}}
+            <p style="font-size: 14px;" class="text-muted"><strong>上传的头像请小于3M</strong></p>
             {{wtf.form_field(form.submit, class="btn btn-outline-info")}}
         </form>
     </div>
-
-
 </div>
 </body>
 </html>
