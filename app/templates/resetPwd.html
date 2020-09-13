@@ -88,6 +88,14 @@
     <div class="container">
         <br>
         <div class="profile-edit col-md-4 offset-md-4">
+            {% for message in get_flashed_messages() %}
+                <div style="margin-top: 5px;" class="text-center alert alert-danger" role="alert">
+                    {{ message }}
+                    <button type="button" class="close btn btn-small" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
             <form method="post" action="/accounts/profile/resetPwd/">
                 {{ form.csrf_token }}
                 {{wtf.form_field(form.origin_pwd)}}

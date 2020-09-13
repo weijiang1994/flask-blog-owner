@@ -6,12 +6,12 @@
 @File    : account_bp
 @Software: PyCharm
 """
-from flask import Blueprint, render_template, g, request, send_from_directory, redirect, url_for
+from flask import Blueprint, render_template, g, request, send_from_directory, redirect, url_for, flash
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from wtforms import StringField, FileField, SubmitField
 from wtforms.validators import DataRequired, Length
-
+from ..util.common_util import get_md5
 from ..blueprint.login_bp import user_login_require
 from ..frozen_dir import app_path
 from ..model.blogin_model import Users, LoginLog, Comment, Article
@@ -32,11 +32,11 @@ class ProfileForm(FlaskForm):
 class ResetPwdForm(FlaskForm):
     origin_pwd = StringField('原始密码',
                              validators=[DataRequired(),Length(min=8, max=20, message='密码必须在8-20个字符之间')],
-                             render_kw={'placeholder': '请输入原始密码'})
+                             render_kw={'placeholder': '请输入原始密码', 'type':'password'})
     reset_pwd = StringField('重置密码', validators=[DataRequired(),Length(min=8, max=20, message='密码必须在8-20个字符之间')],
-                            render_kw={'placeholder': '请输入新的密码'})
+                            render_kw={'placeholder': '请输入新的密码', 'type':'password'})
     confirm_reset_pwd = StringField('确认密码', validators=[DataRequired(),Length(min=8, max=20, message='密码必须在8-20个字符之间')],
-                                    render_kw={'placeholder': '请确认密码'})
+                                    render_kw={'placeholder': '请确认密码', 'type':'password'})
     submit = SubmitField('修改')
 
 @account_bp.route('/profile/', methods=['GET', 'POST'])
@@ -119,11 +119,16 @@ def profile_edit():
     return render_template('profileEdit.html', form=form)
 
 
-@account_bp.route('/profile/resetPwd/')
+@account_bp.route('/profile/resetPwd/', methods=['GET', 'POST'])
 @user_login_require
 def reset_pwd():
     form = ResetPwdForm()
-
+    if form.validate_on_submit():
+        db = DBOperator()
+        usr = db.query_filter_by_id(Users, condition=g.normal_user)[0]
+        if usr.password != get_md5(form.origin_pwd.data):
+            flash('原始密码错误,请重试~')
+            return render_template('resetPwd.html', form=form)
     return render_template('resetPwd.html', form=form)
 
 
