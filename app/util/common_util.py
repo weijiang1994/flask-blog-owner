@@ -85,4 +85,4 @@ def get_encrypt_text(way, text):
     if way == 'md5':
         return get_md5(text)
     if way == 'base64':
-        return get_base64(text)
+        return get_base64(text).decode('utf-8')
