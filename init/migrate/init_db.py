@@ -146,7 +146,7 @@ try:
     CREATE_NOTIFICATION_TABLE_SQL = "CREATE TABLE IF NOT EXISTS notification(" \
                                     "id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT," \
                                     "create_u INTEGER NOT NULL ," \
-                                    "recevive_u INTEGER NOT NULL ," \
+                                    "receive_u INTEGER NOT NULL ," \
                                     "comment_id INTEGER NOT NULL ," \
                                     "create_time Datetime," \
                                     "readed INTEGER NOT NULL DEFAULT 0)"

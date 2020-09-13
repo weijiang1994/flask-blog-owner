@@ -16,7 +16,6 @@ work_bp = Blueprint('work_bp',  __name__)
 
 @work_bp.route('/tech')
 def article():
-    db = DBOperator()
 
     return render_template('tool.html')
 
