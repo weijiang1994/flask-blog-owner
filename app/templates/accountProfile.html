@@ -58,7 +58,7 @@
                     <div class="dropdown-menu dropdown-menu-right mt-0 rounded-0 border-0" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item pl-3" href="/accounts/profile"><i class="fa fa-fw fa-user text-info mr-2"></i>个人资料</a>
                         {% if nft_counts %}
-                        <a href="/accounts/profile" class="dropdown-item pl-3"><i class="fa fa-fw fa-bell text-info mr-2"></i>消息 <span class="badge badge-info">{{ nft_counts }}</span>
+                            <a href="/accounts/profile" class="dropdown-item pl-3"><i class="fa fa-fw fa-bell text-info mr-2"></i>消息 <span class="badge badge-info">{{ nft_counts }}</span>
                         {% endif %}
                         </a>
                         <a class="dropdown-item pl-3" href="/auth/logout"><i class="fa fa-fw fa-sign-out text-info mr-2"></i>退出</a>
@@ -89,7 +89,7 @@
                     <p class="text-muted">最近登录: <i class="fa fa-calendar"></i> {{ user_info[4] }}</p>
                     <br>
                     <button class="btn btn-success float-right gutter-right"><a style="color: white" href="/accounts/profile/edit/">编辑资料</a></button>
-                    <button class="btn btn-danger float-right gutter-right"><a>修改密码</a></button>
+                    <button class="btn btn-danger float-right gutter-right"><a style="color: white" href="/accounts/profile/resetPwd/">修改密码</a></button>
                 </div>
             </div>
 

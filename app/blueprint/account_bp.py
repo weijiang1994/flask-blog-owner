@@ -10,6 +10,8 @@ from flask import Blueprint, render_template, g, request, send_from_directory, r
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from wtforms import StringField, FileField, SubmitField
+from wtforms.validators import DataRequired, Length
+
 from ..blueprint.login_bp import user_login_require
 from ..frozen_dir import app_path
 from ..model.blogin_model import Users, LoginLog, Comment, Article
@@ -26,6 +28,16 @@ class ProfileForm(FlaskForm):
     submit = SubmitField(u'保存')
     avatar_src = ''
 
+
+class ResetPwdForm(FlaskForm):
+    origin_pwd = StringField('原始密码',
+                             validators=[DataRequired(),Length(min=8, max=20, message='密码必须在8-20个字符之间')],
+                             render_kw={'placeholder': '请输入原始密码'})
+    reset_pwd = StringField('重置密码', validators=[DataRequired(),Length(min=8, max=20, message='密码必须在8-20个字符之间')],
+                            render_kw={'placeholder': '请输入新的密码'})
+    confirm_reset_pwd = StringField('确认密码', validators=[DataRequired(),Length(min=8, max=20, message='密码必须在8-20个字符之间')],
+                                    render_kw={'placeholder': '请确认密码'})
+    submit = SubmitField('修改')
 
 @account_bp.route('/profile/', methods=['GET', 'POST'])
 @user_login_require
@@ -105,6 +117,14 @@ def profile_edit():
     form.website.data = usr.website
     form.avatar_src = usr.avatar
     return render_template('profileEdit.html', form=form)
+
+
+@account_bp.route('/profile/resetPwd/')
+@user_login_require
+def reset_pwd():
+    form = ResetPwdForm()
+
+    return render_template('resetPwd.html', form=form)
 
 
 @account_bp.route('/profile/avatar/<path>/<filename>')
