@@ -91,147 +91,169 @@
 
 </nav>
 
+
 <body background="/static/img/墙.jpg">
-<div style="background: white; border: 1px solid#E1E0E0; border-radius: 5px; margin-bottom: 20px; margin-top: 20px;" class="container">
+<main>
+    <div style="background: white; border: 1px solid#E1E0E0; border-radius: 5px; margin-bottom: 20px; margin-top: 20px;" class="container">
 
-    {{ share.load() }}
-    {{ ckeditor.load_code_theme() }}
-    <h1 style="width: 100%;text-align: center;">
-        <strong>{{title}}</strong>
-    </h1>
+        {{ share.load() }}
+        {{ ckeditor.load_code_theme() }}
+        <h1 style="width: 100%;text-align: center;">
+            <strong>{{title}}</strong>
+        </h1>
 
-    <div style="font-size: 17px; width: 100%; text-align: center;">
-        <span class="badge badge-info"><i class="fa fa-file-text-o"></i> 原创</span>
-        <span class="badge badge-success"><i class="fa fa-tag"></i> {{article_type}}</span>
-        <span class="badge badge-secondary"><i class="fa fa-calendar"></i> {{create_time}}</span>
-        <span class="badge badge-dark"><i class="fa fa-ticket"></i> {{read_times}}</span>
-    </div>
-    <hr>
-    <article>
-        {{article_content|safe}}
-        <div class="cc">
-            <div>版权声明：<i class="fa fa-cc-paypal"></i>原创不易,转载请注明出处～</div>
-            <div>文章连接：<a style="color: #4a9c87" href="http://2dogz.cn/detail/article/{{ title }}">http://2dogz.cn/detail/article/{{ title }}</a></div>
+        <div style="font-size: 17px; width: 100%; text-align: center;">
+            <span class="badge badge-info"><i class="fa fa-file-text-o"></i> 原创</span>
+            <span class="badge badge-success"><i class="fa fa-tag"></i> {{article_type}}</span>
+            <span class="badge badge-secondary"><i class="fa fa-calendar"></i> {{create_time}}</span>
+            <span class="badge badge-dark"><i class="fa fa-ticket"></i> {{read_times}}</span>
         </div>
+        <hr>
+        <article>
+            {{article_content|safe}}
+            <div class="cc">
+                <div>版权声明：<i class="fa fa-cc-paypal"></i>原创不易,转载请注明出处～</div>
+                <div>文章连接：<a style="color: #4a9c87" href="http://2dogz.cn/detail/article/{{ title }}">http://2dogz.cn/detail/article/{{ title }}</a></div>
+            </div>
+            <div class="text-center">
+                {{ share.create(addition_class='text-center',title='') }}
+            </div>
+        </article>
+        <hr>
         <div class="text-center">
-            {{ share.create(addition_class='text-center',title='') }}
+            <button data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-outline-success"><i class="fa fa-heart-o"></i>Donate</button>
+            {#        <button class="btn btn-outline-info"><i class="fa fa-thumbs-o-up"></i>Like it</button>#}
         </div>
-    </article>
-    <hr>
-    <div class="text-center">
-        <button data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-outline-success"><i class="fa fa-heart-o"></i>Donate</button>
-        {#        <button class="btn btn-outline-info"><i class="fa fa-thumbs-o-up"></i>Like it</button>#}
-    </div>
 
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle"><i class="fa fa-coffee"></i>给作者买杯咖啡吧～</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" class="fa fa-close"></span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <i class="fa fa-weixin"></i>微信<img class="img-fluid" src="/static/donate/wechatpay.png">
-                            </div>
-                            <div class="col-md-6">
-                                <i class="fa fa-cc-paypal"></i>支付宝<img class="img-fluid" src="/static/donate/alipay.jpg">
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle"><i class="fa fa-coffee"></i>给作者买杯咖啡吧～</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="fa fa-close"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <i class="fa fa-weixin"></i>微信<img class="img-fluid" src="/static/donate/wechatpay.png">
+                                </div>
+                                <div class="col-md-6">
+                                    <i class="fa fa-cc-paypal"></i>支付宝<img class="img-fluid" src="/static/donate/alipay.jpg">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div style="margin-bottom: 15px"  class="row">
+            <div class="col-lg-6"><a class="text-info" href="{{ preLink }}">{{ preArticle }}</a></div>
+            <div style="text-align: right;display: inline-block;" class="col-lg-6"><a class="text-info" href="{{ nextLink }}">{{ nextArticle }}</a></div>
+        </div>
     </div>
-    <div style="margin-bottom: 15px"  class="row">
-        <div class="col-lg-6"><a class="text-info" href="{{ preLink }}">{{ preArticle }}</a></div>
-        <div style="text-align: right;display: inline-block;" class="col-lg-6"><a class="text-info" href="{{ nextLink }}">{{ nextArticle }}</a></div>
-    </div>
-</div>
 
-<div style="background: white; border: 1px solid#E1E0E0; border-radius: 5px; margin-bottom: 20px; margin-top: 20px;" class="container">
-    {% if not g.normal_user %}
-        <div style="background: #ddddee" class="text-center">
-            <div class="card-body text-center m-2 m-md-3 f-16" id="no-editor">
-                <div>您尚未登录，请
-                    <a class="text-danger" href="/auth/userLogin">登录</a> 或
-                    <a class="text-danger" href="/auth/register">注册</a> 后评论
+    <div style="background: white; border: 1px solid#E1E0E0; border-radius: 5px; margin-bottom: 20px; margin-top: 20px;" class="container">
+        {% if not g.normal_user %}
+            <div style="background: #ddddee" class="text-center">
+                <div class="card-body text-center m-2 m-md-3 f-16" id="no-editor">
+                    <div>您尚未登录，请
+                        <a class="text-danger" href="/auth/userLogin">登录</a> 或
+                        <a class="text-danger" href="/auth/register">注册</a> 后评论
+                    </div>
                 </div>
             </div>
-        </div>
-    {% else %}
-        <div style="margin: 5px">
+        {% else %}
+            <div style="margin: 5px">
             <textarea name="comment-editor" id="comment-editor">
             </textarea>
-            <div>
-                <p id="replyUser" class="float-left text-info ml-0" hidden="hidden"></p>
-                <p id="commentErrorHint" class="text-right text-danger ml-0" hidden="hidden">请输入评论内容后再提交</p>
-                <br>
                 <div>
-                    <button hidden="hidden" class="btn btn-outline-danger round-3 float-right gutter-right" id="cancelReplyBtn">取消回复</button>
-                    <button hidden="hidden" class="btn btn-outline-success round-3 float-right gutter-right" onclick="replyUserComment()" id="replyBtn">回复</button>
-                    <button class="btn btn-outline-success round-3 float-right gutter-right" onclick="submitComment()" id="subCommentBtn">评论</button>
+                    <p id="replyUser" class="float-left text-info ml-0" hidden="hidden"></p>
+                    <p id="commentErrorHint" class="text-right text-danger ml-0" hidden="hidden">请输入评论内容后再提交</p>
+                    <br>
+                    <div>
+                        <button hidden="hidden" class="btn btn-outline-danger round-3 float-right gutter-right" id="cancelReplyBtn">取消回复</button>
+                        <button hidden="hidden" class="btn btn-outline-success round-3 float-right gutter-right" onclick="replyUserComment()" id="replyBtn">回复</button>
+                        <button class="btn btn-outline-success round-3 float-right gutter-right" onclick="submitComment()" id="subCommentBtn">评论</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endif %}
-    <br>
-    <p><strong>当前文章共有{{ comment_count }}条评论</strong></p>
-    <hr>
-    {% for comment in comments %}
-        <div class="comment-parent pt-2" style="border: solid 2px #afd9ee; padding: 5px; border-radius: 5px;" id="com-814">
-            <li class="media">
-                <img class="avatar" src="{{ comment[0][0] }}" alt="">
-                <div class="media-body ml-2">
-                    <!-- 当用户没有登录时候,回复按钮不可见。 -->
-                    {% if g.normal_user %}
-                        <a class="float-right small mr-2 rep-btn" href="#comment-editor" data-repid="{{ comment[0][4] }}" data-repuser="{{ comment[0][1] }}" style="color: rgb(134, 142, 150);">回复</a>
-                    {% endif %}
-                    <p class="mt-0 mb-1">
-                        <strong>{{ comment[0][1] }}</strong>
-                        <i class="fa fa-user-circle" ></i>
-                    </p>
-                    <p class="small text-muted">
-                        <span class="badge badge-info"><i class="fa fa-building-o"></i> {{ comment_count - loop.index0 }}楼 </span>
-                        <span class="badge badge-success"><i class="fa fa-clock-o"></i> {{ comment[0][3] }}</span>
-                    </p>
-                </div>
-            </li>
-            <div class="comment-body">{{ comment[0][2]|safe }}</div>
-            {% if comment[1] %}
-                {% for child_comment in comment[1] %}
-                    <ul class="list-unstyled ml-4">
-                        <div class="comment-child pt-2" id="com-812">
-                            <li class="media">
-                                <img class="avatar" src="{{ child_comment[0] }}" alt="{{ child_comment[1] }}">
-                                <div class="media-body ml-2">
-                                    {% if g.normal_user %}
-                                        <a class="float-right small mr-2 rep-btn" href="#editor-block" data-repid="{{ child_comment[4] }}" data-repuser="{{ child_comment[1] }}">回复</a>
-                                    {% endif %}
-                                    <p class="mt-0 mb-1">
-                                        <strong>
-                                            <a>{{child_comment[1]}}
-                                            </a>
-                                        </strong>
-                                        <i class="fa fa-user-md"></i>
-                                    </p>
-                                    <p class="small text-muted"><span class="badge badge-warning"><i class="fa fa-calendar-times"></i> {{ child_comment[3] }}</span></p>
-                                </div>
-                            </li>
-                            <div class="comment-body">{{ child_comment[2]|safe }}</div>
-                        </div>
+        {% endif %}
+        <br>
+        <p><strong>当前文章共有{{ comment_count }}条评论</strong></p>
+        <hr>
+        {% for comment in comments %}
+            <div class="comment-parent pt-2" style="border: solid 2px #afd9ee; padding: 5px; border-radius: 5px;" id="com-814">
+                <li class="media">
+                    <img class="avatar" src="{{ comment[0][0] }}" alt="">
+                    <div class="media-body ml-2">
+                        <!-- 当用户没有登录时候,回复按钮不可见。 -->
+                        {% if g.normal_user %}
+                            <a class="float-right small mr-2 rep-btn" href="#comment-editor" data-repid="{{ comment[0][4] }}" data-repuser="{{ comment[0][1] }}" style="color: rgb(134, 142, 150);">回复</a>
+                        {% endif %}
+                        <p class="mt-0 mb-1">
+                            <strong>{{ comment[0][1] }}</strong>
+                            <i class="fa fa-user-circle" ></i>
+                        </p>
+                        <p class="small text-muted">
+                            <span class="badge badge-info"><i class="fa fa-building-o"></i> {{ comment_count - loop.index0 }}楼 </span>
+                            <span class="badge badge-success"><i class="fa fa-clock-o"></i> {{ comment[0][3] }}</span>
+                        </p>
+                    </div>
+                </li>
+                <div class="comment-body">{{ comment[0][2]|safe }}</div>
+                {% if comment[1] %}
+                    {% for child_comment in comment[1] %}
+                        <ul class="list-unstyled ml-4">
+                            <div class="comment-child pt-2" id="com-812">
+                                <li class="media">
+                                    <img class="avatar" src="{{ child_comment[0] }}" alt="{{ child_comment[1] }}">
+                                    <div class="media-body ml-2">
+                                        {% if g.normal_user %}
+                                            <a class="float-right small mr-2 rep-btn" href="#editor-block" data-repid="{{ child_comment[4] }}" data-repuser="{{ child_comment[1] }}">回复</a>
+                                        {% endif %}
+                                        <p class="mt-0 mb-1">
+                                            <strong>
+                                                <a>{{child_comment[1]}}
+                                                </a>
+                                            </strong>
+                                            <i class="fa fa-user-md"></i>
+                                        </p>
+                                        <p class="small text-muted"><span class="badge badge-warning"><i class="fa fa-calendar-times"></i> {{ child_comment[3] }}</span></p>
+                                    </div>
+                                </li>
+                                <div class="comment-body">{{ child_comment[2]|safe }}</div>
+                            </div>
 
-                    </ul>
-                {% endfor %}
-            {% endif %}
-        </div><br>
-    {% endfor %}
-</div>
+                        </ul>
+                    {% endfor %}
+                {% endif %}
+            </div><br>
+        {% endfor %}
+    </div>
 
+</main>
+
+<footer class="container-fluid mt-4 py-0">
+    <div class="card-body text-center px-0 f-14">
+        <p class="card-text mb-1">Copyright&nbsp;©&nbsp;<span id="year-info">2020</span>
+            <a href="https://github.com/Hopetree" target="_blank" title="博客作者的Github">Hopetree</a>.&nbsp;Powered&nbsp;by&nbsp;Django.
+        </p>
+        <p class="mb-0">
+            <a href="http://beian.miit.gov.cn/" target="_blank">粤ICP备17114114号-3</a>&nbsp;|
+            <a href="/sitemap.xml" target="_blank">Sitemap</a>
+            |&nbsp;<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1275912930'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1275912930' type='text/javascript'%3E%3C/script%3E"));</script><span id="cnzz_stat_icon_1275912930"><a href="https://www.cnzz.com/stat/website.php?web_id=1275912930" target="_blank" title="站长统计">站长统计</a></span><script src="https://s96.cnzz.com/z_stat.php?id=1275912930" type="text/javascript"></script><script src="https://c.cnzz.com/core.php?web_id=1275912930&amp;t=z" charset="utf-8" type="text/javascript"></script>
+            <span id="web-day">| 网站已续航 900 天</span>
+        </p>
+        <script>function getnewYear(){var d = new Date();var old = new Date('2018/03/28');
+            var x = document.getElementById("year-info");
+            x.innerHTML=d.getFullYear();var y=document.getElementById("web-day");
+            var dd=Math.floor((d.getTime() - old.getTime()) / (24 * 3600 * 1000));
+            var d_str="| 网站已续航 "+dd+" 天";y.innerHTML=d_str;}getnewYear()</script>
+    </div>
+</footer>
 <script>
     let editor;
     ClassicEditor.create( document.querySelector( '#comment-editor' ), {
