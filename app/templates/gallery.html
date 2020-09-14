@@ -81,33 +81,35 @@
     </div>
 
 </nav>
-<div class="container">
-    <div style="margin-top: 10px; margin-bottom: 30px; background: linear-gradient(35deg, #CCFFFF, #FFCCCC); border-radius: 5px;" class="description px-3 pt-3 pb-1">
-        <h3 class="f-17" style="font-weight: bold" id="categoryName"><i class="fa fa-camera-retro"></i> 写代码厨子的业余</h3>
-        <p class="f-16">“我们不只是用相机拍照，因为我们带到摄影中去的是所有我们读过的书，看过的电影，听过的音乐，爱过的人。”——安塞尔 亚当斯</p>
-    </div>
-    <div>
-        {% for photo in galleries %}
-            <div class="border-card card photo-card">
-                <a href="/photo/{{ photo[3] }}" class="card-thumbnail">
-                    <img class="card-img-top portrait" src="{{ photo[1] }}">
-                </a>
-                <div class="card-body">
-                    <a class="photo-link" href="/photo/{{ photo[3] }}"> {{ photo[0] }} </a>
-                    <br>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <i class="fa fa-comment"></i> 0
-                            <i class="fa fa-heart"></i> 0
-                        </div>
-                        <div class="col-lg-8 text-right">
-                            <i class="fa fa-calendar"></i> {{ photo[2] }}
+<main>
+    <div class="container">
+        <div style="margin-top: 10px; margin-bottom: 30px; background: linear-gradient(35deg, #CCFFFF, #FFCCCC); border-radius: 5px;" class="description px-3 pt-3 pb-1">
+            <h3 class="f-17" style="font-weight: bold" id="categoryName"><i class="fa fa-camera-retro"></i> 写代码厨子的业余</h3>
+            <p class="f-16">“我们不只是用相机拍照，因为我们带到摄影中去的是所有我们读过的书，看过的电影，听过的音乐，爱过的人。”——安塞尔 亚当斯</p>
+        </div>
+        <div>
+            {% for photo in galleries %}
+                <div class="border-card card photo-card">
+                    <a href="/photo/{{ photo[3] }}" class="card-thumbnail">
+                        <img class="card-img-top portrait" src="{{ photo[1] }}">
+                    </a>
+                    <div class="card-body">
+                        <a class="photo-link" href="/photo/{{ photo[3] }}"> {{ photo[0] }} </a>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <i class="fa fa-comment"></i> 0
+                                <i class="fa fa-heart"></i> 0
+                            </div>
+                            <div class="col-lg-8 text-right">
+                                <i class="fa fa-calendar"></i> {{ photo[2] }}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
-</div>
+</main>
 </body>
 </html>

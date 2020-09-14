@@ -12,7 +12,7 @@ import logging
 import datetime
 from logging.handlers import RotatingFileHandler
 
-from flask import Flask
+from flask import Flask, render_template
 from .blueprint.index_bp import index_bp
 from .blueprint.gallery_bp import gallery_bp
 from .blueprint.work_bp import work_bp
@@ -87,6 +87,14 @@ def register_blueprint(app: Flask):
     app.register_blueprint(edit_photo_bp)
     app.register_blueprint(account_bp)
 
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('error/404.html'), 404
+
+    @app.errorhandler(500)
+    def server_error(e):
+        return render_template('error/500.html'), 500
+
 
 def register_log(app: Flask):
     app.logger.setLevel(logging.DEBUG)
@@ -96,3 +104,4 @@ def register_log(app: Flask):
     file_handler.setLevel(logging.DEBUG)
     # if not app.debug:
     app.logger.addHandler(file_handler)
+

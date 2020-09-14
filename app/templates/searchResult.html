@@ -12,6 +12,7 @@
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/base.css" rel="stylesheet">
 </head>
 <body background="/static/img/墙.jpg">
 
@@ -51,23 +52,47 @@
 
 </nav>
 <br>
-<div class="container">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb bg-white">
-            <li class="breadcrumb-item"><a href="/">首页</a></li>
-            <li class="breadcrumb-item active" aria-current="page">搜索结果</li>
-            <li style="color: #ff1c41" class="breadcrumb-item active" aria-current="page">关键字:{{ keyword }}</li>
-        </ol>
-    </nav>
-    {% for blog in blogs %}
-        <div style="margin-bottom: 10px;" class="card">
-            <div class="card-header"><a href="/detail/article/{{ blog.title }}">{{ blog.title }}</a></div>
-            <div class="card-body">{{ blog.brief_content }}</div>
-        </div>
-    {% endfor %}
-    {% if not blogs %}
+<main>
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-white">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item active" aria-current="page">搜索结果</li>
+                <li style="color: #ff1c41" class="breadcrumb-item active" aria-current="page">关键字:{{ keyword }}</li>
+            </ol>
+        </nav>
+        {% for blog in blogs %}
+            <div style="margin-bottom: 10px;" class="card">
+                <div class="card-header"><a href="/detail/article/{{ blog.title }}">{{ blog.title }}</a></div>
+                <div class="card-body">{{ blog.brief_content }}</div>
+            </div>
+        {% endfor %}
+        {% if not blogs %}
 
-    {% endif %}
-</div>
+        {% endif %}
+    </div>
+</main>
+<footer class="container-fluid mt-4 py-0">
+    <div class="card-body text-center px-0 f-14">
+        <p class="card-text mb-1">Copyright&nbsp;©&nbsp;<span id="year-info">2020</span>
+            <a href="https://github.com/weijiang1994" target="_blank" title="博客作者的Github">Blogin</a>.&nbsp;Design&nbsp;by&nbsp;Flask1.01.
+        </p>
+        <p class="mb-0">
+            <a href="http://beian.miit.gov.cn/" target="_blank">湘ICP备2020018236号-1</a>&nbsp;<span id="web-day"> 网站已续航 900 天</span>
+        </p>
+        <script>
+            function getNewYear(){
+                let d = new Date();
+                let old = new Date('2020/08/28');
+                let x = document.getElementById("year-info");
+                x.innerHTML = d.getFullYear();
+                let y = document.getElementById("web-day");
+                let dd = Math.floor((d.getTime() - old.getTime()) / (24 * 3600 * 1000));
+                let d_str = "| 网站已续航 " + dd + " 天";y.innerHTML=d_str;
+            }
+            getNewYear();
+        </script>
+    </div>
+</footer>
 </body>
 </html>

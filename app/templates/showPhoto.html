@@ -78,71 +78,73 @@
     </div>
 
 </nav>
-<div class="container">
-    {{ share.load() }}
-    <div class="row">
-        <div class="col-md-8">
-            <div class="border-card photo">
-                <a href="{{ photo.photo }}" target="_blank">
-                    <img src="{{ photo.photo }}" class="img-fluid">
-                </a>
-            </div>
+<main>
+    <div class="container">
+        {{ share.load() }}
+        <div class="row">
+            <div class="col-md-8">
+                <div class="border-card photo">
+                    <a href="{{ photo.photo }}" target="_blank">
+                        <img src="{{ photo.photo }}" class="img-fluid">
+                    </a>
+                </div>
 
-            <div class="text-right">
-                <p class="text-muted float-right small"><i class="fa fa-clock-o"></i> 发布于:{{ photo.updateTime }}</p>
+                <div class="text-right">
+                    <p class="text-muted float-right small"><i class="fa fa-clock-o"></i> 发布于:{{ photo.updateTime }}</p>
+                </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div style="margin-bottom: 10px;" class="btn-group">
-                {% if photo.preLink %}
-                    <button type="button" class="btn btn-outline-info"><a href="{{ photo.preLink }}" ><i class="fa fa-arrow-circle-left"></i></a></button>
-                {% endif %}
-                {% if photo.nextLink %}
-                    <button type="button" class="btn btn-outline-info"><a href="{{ photo.nextLink }}"><i class="fa fa-arrow-circle-right"></i></a></button>
-                {% endif %}
-            </div>
-            <div class="card bg-light mb-3 w-100 sidebar-card">
-                <div class="card-body">
-                    <div class="row">
-                        <img class="sidebar-avatar rounded avatar-m" src="/static/img/weijiang.png">
-                        <div class="sidebar-profile">
-                            <h6 class="card-title">
-                                <a href="/"><span class="badge badge-pill badge-info">清水</span></a>
-                            </h6>
-                            <p class="card-subtitle mb-2 text-muted">清风徐来，水波不兴。</p>
-                            <br>
-                            <p class="card-subtitle mb-2 text-muted">　　　　　--苏轼《赤壁赋》</p>
+            <div class="col-md-4">
+                <div style="margin-bottom: 10px;" class="btn-group">
+                    {% if photo.preLink %}
+                        <button type="button" class="btn btn-outline-info"><a href="{{ photo.preLink }}" ><i class="fa fa-arrow-circle-left"></i></a></button>
+                    {% endif %}
+                    {% if photo.nextLink %}
+                        <button type="button" class="btn btn-outline-info"><a href="{{ photo.nextLink }}"><i class="fa fa-arrow-circle-right"></i></a></button>
+                    {% endif %}
+                </div>
+                <div class="card bg-light mb-3 w-100 sidebar-card">
+                    <div class="card-body">
+                        <div class="row">
+                            <img class="sidebar-avatar rounded avatar-m" src="/static/img/weijiang.png">
+                            <div class="sidebar-profile">
+                                <h6 class="card-title">
+                                    <a href="/"><span class="badge badge-pill badge-info">清水</span></a>
+                                </h6>
+                                <p class="card-subtitle mb-2 text-muted">清风徐来，水波不兴。</p>
+                                <br>
+                                <p class="card-subtitle mb-2 text-muted">　　　　　--苏轼《赤壁赋》</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card bg-light mb-3 w-100">
-                <div class="card-body">
-                    <div id="description">
-                        <p>
-                            {{ photo.photoDesc }}
-                        </p>
-                    </div>
-                    <div id="tags">
-                        <p>
-                            {% for tag in photo.tags %}
-                                <a class="badge badge-light" href="/gallery/tag/{{ photo.tagIds[loop.index0]}}"><span class="fa fa-tags"></span> {{ tag }}</a>
-                            {% endfor %}
-                        </p>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <button data-toggle="tooltip" data-placement="bottom" title="给{{ photo.title }}点赞～" class="btn btn-outline-info"><i class="fa fa-heartbeat"></i></button>
+                <div class="card bg-light mb-3 w-100">
+                    <div class="card-body">
+                        <div id="description">
+                            <p>
+                                {{ photo.photoDesc }}
+                            </p>
                         </div>
-                        <div class="col-md-10">
-                            {{ share.create(sites='weibo, wechat, qq, douban, qzone') }}
+                        <div id="tags">
+                            <p>
+                                {% for tag in photo.tags %}
+                                    <a class="badge badge-light" href="/gallery/tag/{{ photo.tagIds[loop.index0]}}"><span class="fa fa-tags"></span> {{ tag }}</a>
+                                {% endfor %}
+                            </p>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <button data-toggle="tooltip" data-placement="bottom" title="给{{ photo.title }}点赞～" class="btn btn-outline-info"><i class="fa fa-heartbeat"></i></button>
+                            </div>
+                            <div class="col-md-10">
+                                {{ share.create(sites='weibo, wechat, qq, douban, qzone') }}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</main>
 <script>
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();

@@ -70,85 +70,109 @@
 
 </nav>
 <br>
-{{ ckeditor.load_code_theme() }}
-<div class="container">
-    <div class="card">
-        <div class="text-muted card-header">
-            <strong>{{ user_info[1] }}</strong>的个人资料
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-3">
-                    <img class="img-fluid rounded " src="{{ user_info[6] }}">
-                </div>
-                <div class="col-9">
-                    <h3><strong>{{ user_info[1] }}</strong></h3>
-                    <p class="text-muted">个人网站: <i class="fa fa-link"></i> <a href="{{ user_info[5] }}">{{ user_info[5] }}</a></p>
-                    <p class="text-muted">创建时间: <i class="fa fa-clock-o"></i> {{ user_info[2] }}</p>
-                    <p class="text-muted">注册邮箱: <i class="fa fa-envelope"></i> {{ user_info[3] }}</p>
-                    <p class="text-muted">最近登录: <i class="fa fa-calendar"></i> {{ user_info[4] }}</p>
-                    <br>
-                    <button class="btn btn-success float-right gutter-right"><a style="color: white" href="/accounts/profile/edit/">编辑资料</a></button>
-                    <button class="btn btn-danger float-right gutter-right"><a style="color: white" href="/accounts/profile/resetPwd/">修改密码</a></button>
-                </div>
+<main>
+    {{ ckeditor.load_code_theme() }}
+    <div class="container">
+        <div class="card">
+            <div class="text-muted card-header">
+                <strong>{{ user_info[1] }}</strong>的个人资料
             </div>
-
-        </div>
-    </div>
-    <br>
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#home"><i class="fa fa-photo"></i> 动态</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#notReadNotification"><i class="fa fa-bell"></i> 未读
-                {% if nft_counts %}
-                    <span class="badge badge-info">{{ nft_counts }}</span>
-                {% endif %}
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#notifications"><i class="fa fa-bell-o"></i> 全部</a>
-        </li>
-    </ul>
-
-    <div class="tab-content">
-        <div id="home" class="container tab-pane fade"><br>
-            <h3><i class="fa fa-building-o"></i> 正在建设中...</h3>
-        </div>
-        <div id="notReadNotification" class="container tab-pane active"><br>
-            {% if nft_counts %}
-                <div class="text-muted div-click " onclick="markReadedAll()"><i class="fa fa-close"></i> 全部标记为已读</div>
-            {% endif %}
-            {% for ntf in ntf_conmment %}
-                <div class="comment-parent pt-2" style="border: solid 2px #afd9ee; padding: 5px; border-radius: 5px;" id="com-814">
-                    <li class="media">
-                        <img class="avatar" src="{{ ntf[1] }}" alt="">
-                        <div class="media-body ml-2">
-                            <a class="float-right small mr-2" onclick="markRead(this.id)" id="{{ ntf[0] }}" style="color: rgb(134, 142, 150); cursor: pointer;">标记为已读</a>
-                            <p class="mt-0 mb-1">
-                                <i class="fa fa-user-circle" ></i>
-                                <strong>{{ ntf[2] }} 回复你:</strong>
-                            </p>
-                            <p class="small text-muted">
-                                <span class="badge badge-success"><i class="fa fa-clock-o"></i> {{ ntf[3] }}</span>
-                            </p>
-                        </div>
-                    </li>
-                    <div class="ntf-comment-body">
-                        {{ ntf[5]|safe }}
-                        <hr>
-                        查看详情:<a class="text-muted" href="/detail/article/{{ ntf[4] }}">{{ ntf[4] }}</a>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-3">
+                        <img class="img-fluid rounded " src="{{ user_info[6] }}">
                     </div>
+                    <div class="col-9">
+                        <h3><strong>{{ user_info[1] }}</strong></h3>
+                        <p class="text-muted">个人网站: <i class="fa fa-link"></i> <a href="{{ user_info[5] }}" target="_blank">{{ user_info[5] }}</a></p>
+                        <p class="text-muted">创建时间: <i class="fa fa-clock-o"></i> {{ user_info[2] }}</p>
+                        <p class="text-muted">注册邮箱: <i class="fa fa-envelope"></i> {{ user_info[3] }}</p>
+                        <p class="text-muted">最近登录: <i class="fa fa-calendar"></i> {{ user_info[4] }}</p>
+                        <br>
+                        <button class="btn btn-success float-right gutter-right"><a style="color: white" href="/accounts/profile/edit/">编辑资料</a></button>
+                        <button class="btn btn-danger float-right gutter-right"><a style="color: white" href="/accounts/profile/resetPwd/">修改密码</a></button>
+                    </div>
+                </div>
 
-                </div><br>
-            {% endfor %}
+            </div>
         </div>
-        <div id="notifications" class="container tab-pane fade"><br>
-            <h3><i class="fa fa-building-o"></i> 正在建设中...</h3>
+        <br>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#home"><i class="fa fa-photo"></i> 动态</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#notReadNotification"><i class="fa fa-bell"></i> 未读
+                    {% if nft_counts %}
+                        <span class="badge badge-info">{{ nft_counts }}</span>
+                    {% endif %}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#notifications"><i class="fa fa-bell-o"></i> 全部</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="home" class="container tab-pane fade"><br>
+                <h3><i class="fa fa-building-o"></i> 正在建设中...</h3>
+            </div>
+            <div id="notReadNotification" class="container tab-pane active"><br>
+                {% if nft_counts %}
+                    <div class="text-muted div-click " onclick="markReadedAll()"><i class="fa fa-close"></i> 全部标记为已读</div>
+                {% endif %}
+                {% for ntf in ntf_conmment %}
+                    <div class="comment-parent pt-2" style="border: solid 2px #afd9ee; padding: 5px; border-radius: 5px;" id="com-814">
+                        <li class="media">
+                            <img class="avatar" src="{{ ntf[1] }}" alt="">
+                            <div class="media-body ml-2">
+                                <a class="float-right small mr-2" onclick="markRead(this.id)" id="{{ ntf[0] }}" style="color: rgb(134, 142, 150); cursor: pointer;">标记为已读</a>
+                                <p class="mt-0 mb-1">
+                                    <i class="fa fa-user-circle" ></i>
+                                    <strong>{{ ntf[2] }} 回复你:</strong>
+                                </p>
+                                <p class="small text-muted">
+                                    <span class="badge badge-success"><i class="fa fa-clock-o"></i> {{ ntf[3] }}</span>
+                                </p>
+                            </div>
+                        </li>
+                        <div class="ntf-comment-body">
+                            {{ ntf[5]|safe }}
+                            <hr>
+                            查看详情:<a class="text-muted" href="/detail/article/{{ ntf[4] }}">{{ ntf[4] }}</a>
+                        </div>
+
+                    </div><br>
+                {% endfor %}
+            </div>
+            <div id="notifications" class="container tab-pane fade"><br>
+                <h3><i class="fa fa-building-o"></i> 正在建设中...</h3>
+            </div>
         </div>
     </div>
-</div>
+</main>
+<footer class="container-fluid mt-4 py-0">
+    <div class="card-body text-center px-0 f-14">
+        <p class="card-text mb-1">Copyright&nbsp;©&nbsp;<span id="year-info">2020</span>
+            <a href="https://github.com/weijiang1994" target="_blank" title="博客作者的Github">Blogin</a>.&nbsp;Design&nbsp;by&nbsp;Flask1.01.
+        </p>
+        <p class="mb-0">
+            <a href="http://beian.miit.gov.cn/" target="_blank">湘ICP备2020018236号-1</a>&nbsp;<span id="web-day"> 网站已续航 900 天</span>
+        </p>
+        <script>
+            function getNewYear(){
+                let d = new Date();
+                let old = new Date('2020/08/28');
+                let x = document.getElementById("year-info");
+                x.innerHTML = d.getFullYear();
+                let y = document.getElementById("web-day");
+                let dd = Math.floor((d.getTime() - old.getTime()) / (24 * 3600 * 1000));
+                let d_str = "| 网站已续航 " + dd + " 天";y.innerHTML=d_str;
+            }
+            getNewYear();
+        </script>
+    </div>
+</footer>
 </div>
 <script>
     function markReadedAll(){

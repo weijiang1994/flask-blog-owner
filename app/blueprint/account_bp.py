@@ -23,7 +23,7 @@ account_bp = Blueprint(__name__, 'account_bp', url_prefix='/accounts')
 
 class ProfileForm(FlaskForm):
     website = StringField(u'个人网站',
-                          render_kw={'class': '', 'rows': 50, 'placeholder': '输入个人网址'})
+                          render_kw={'class': '', 'rows': 50, 'placeholder': '输入个人网址', 'type': 'url'})
     avatar = FileField(u'个人头像', validators=[FileAllowed(['png', 'jpg'], '只接收png和jpg图片')])
     submit = SubmitField(u'保存')
     avatar_src = ''
@@ -31,13 +31,15 @@ class ProfileForm(FlaskForm):
 
 class ResetPwdForm(FlaskForm):
     origin_pwd = StringField('原始密码',
-                             validators=[DataRequired(),Length(min=8, max=20, message='密码必须在8-20个字符之间')],
-                             render_kw={'placeholder': '请输入原始密码', 'type':'password'})
-    reset_pwd = StringField('重置密码', validators=[DataRequired(),Length(min=8, max=20, message='密码必须在8-20个字符之间')],
-                            render_kw={'placeholder': '请输入新的密码', 'type':'password'})
-    confirm_reset_pwd = StringField('确认密码', validators=[DataRequired(),Length(min=8, max=20, message='密码必须在8-20个字符之间')],
-                                    render_kw={'placeholder': '请确认密码', 'type':'password'})
+                             validators=[DataRequired(), Length(min=8, max=20, message='密码必须在8-20个字符之间')],
+                             render_kw={'placeholder': '请输入原始密码', 'type': 'password'})
+    reset_pwd = StringField('重置密码', validators=[DataRequired(), Length(min=8, max=20, message='密码必须在8-20个字符之间')],
+                            render_kw={'placeholder': '请输入新的密码', 'type': 'password'})
+    confirm_reset_pwd = StringField('确认密码',
+                                    validators=[DataRequired(), Length(min=8, max=20, message='密码必须在8-20个字符之间')],
+                                    render_kw={'placeholder': '请确认密码', 'type': 'password'})
     submit = SubmitField('修改')
+
 
 @account_bp.route('/profile/', methods=['GET', 'POST'])
 @user_login_require
@@ -129,6 +131,12 @@ def reset_pwd():
         if usr.password != get_md5(form.origin_pwd.data):
             flash('原始密码错误,请重试~')
             return render_template('resetPwd.html', form=form)
+        if form.reset_pwd.data != form.confirm_reset_pwd.data:
+            flash('两次密码不一致,请重试~')
+            return render_template('resetPwd.html', form=form)
+        usr.password = get_md5(form.confirm_reset_pwd.data)
+        db.commit_data()
+        return redirect(url_for('app.blueprint.account_bp.account_profile'))
     return render_template('resetPwd.html', form=form)
 
 

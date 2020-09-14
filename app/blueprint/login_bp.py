@@ -64,12 +64,7 @@ def register():
     return render_template('register.html', form=form)
 
 
-@login_bp.route('/password/reset', methods=['GET', 'POST'])
-def reset_password():
-    return 'password reset'
-
-
-@login_bp.route('/login', methods=['GET', 'POST'])
+@login_bp.route('/login/', methods=['GET', 'POST'])
 def login_backend():
     if request.method == 'POST':
         username = request.form.get('username')
@@ -81,8 +76,8 @@ def login_backend():
             return redirect(url_for('admin_bp.index'))
         else:
             flash('用户名或密码错误')
-            return render_template('login.html')
-    return render_template('login.html')
+            return render_template('loginBack.html')
+    return render_template('loginBack.html')
 
 
 @login_bp.route('/userLogin', methods=['GET', 'POST'])
@@ -97,7 +92,7 @@ def user_login():
                 flash('用户名或密码错误')
                 return render_template('userLogin.html')
         else:
-            flash('当前用户名不存在')
+            flash('当前邮箱或用户名不存在')
             return render_template('userLogin.html')
         session.permanent = True
         session['normal_user'] = username
@@ -169,12 +164,3 @@ def user_login_require(view):
         return view(**kwargs)
 
     return wrapped_view
-
-
-"""
-[
- ['parent comment', ['child1', 'child2', 'child3']],
- ['parent comment', ['child1', 'child2', 'child3']], 
- ['parent comment', ['child1', 'child2', 'child3']]
- ]
-"""

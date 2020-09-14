@@ -46,6 +46,9 @@ class DBOperator:
     def query_user_by_name(self, obj, condition):
         return self.session.query(obj).filter_by(username=condition).first()
 
+    def query_user_by_name_email(self, obj, condition):
+        return self.session.query(obj).filter(or_(obj.username == condition, obj.email == condition)).first()
+
     def query_by_user_id(self, obj, condition):
         return self.session.query(obj).filter_by(user_id=condition).order_by(obj.login_time.desc()).first()
 

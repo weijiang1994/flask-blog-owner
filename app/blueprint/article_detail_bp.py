@@ -64,7 +64,7 @@ def index(title):
     except Exception as e:
         print(e.args)
         traceback.print_exc()
-        return render_template('error/error.html')
+        return render_template('error/500.html')
 
 
 def get_comments(comments_ret, db, ret):

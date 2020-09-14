@@ -110,19 +110,23 @@
 <footer class="container-fluid mt-4 py-0">
     <div class="card-body text-center px-0 f-14">
         <p class="card-text mb-1">Copyright&nbsp;©&nbsp;<span id="year-info">2020</span>
-            <a href="https://github.com/Hopetree" target="_blank" title="博客作者的Github">Hopetree</a>.&nbsp;Powered&nbsp;by&nbsp;Django.
+            <a href="https://github.com/weijiang1994" target="_blank" title="博客作者的Github">Blogin</a>.&nbsp;Design&nbsp;by&nbsp;Flask1.01.
         </p>
         <p class="mb-0">
-            <a href="http://beian.miit.gov.cn/" target="_blank">粤ICP备17114114号-3</a>&nbsp;|
-            <a href="/sitemap.xml" target="_blank">Sitemap</a>
-            |&nbsp;<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1275912930'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1275912930' type='text/javascript'%3E%3C/script%3E"));</script><span id="cnzz_stat_icon_1275912930"><a href="https://www.cnzz.com/stat/website.php?web_id=1275912930" target="_blank" title="站长统计">站长统计</a></span><script src="https://s96.cnzz.com/z_stat.php?id=1275912930" type="text/javascript"></script><script src="https://c.cnzz.com/core.php?web_id=1275912930&amp;t=z" charset="utf-8" type="text/javascript"></script>
-            <span id="web-day">| 网站已续航 900 天</span>
+            <a href="http://beian.miit.gov.cn/" target="_blank">湘ICP备2020018236号-1</a>&nbsp;<span id="web-day"> 网站已续航 900 天</span>
         </p>
-        <script>function getnewYear(){var d = new Date();var old = new Date('2018/03/28');
-            var x = document.getElementById("year-info");
-            x.innerHTML=d.getFullYear();var y=document.getElementById("web-day");
-            var dd=Math.floor((d.getTime() - old.getTime()) / (24 * 3600 * 1000));
-            var d_str="| 网站已续航 "+dd+" 天";y.innerHTML=d_str;}getnewYear()</script>
+        <script>
+            function getNewYear(){
+                let d = new Date();
+                let old = new Date('2020/08/28');
+                let x = document.getElementById("year-info");
+                x.innerHTML = d.getFullYear();
+                let y = document.getElementById("web-day");
+                let dd = Math.floor((d.getTime() - old.getTime()) / (24 * 3600 * 1000));
+                let d_str = "| 网站已续航 " + dd + " 天";y.innerHTML=d_str;
+            }
+            getNewYear();
+        </script>
     </div>
 </footer>
 </body>

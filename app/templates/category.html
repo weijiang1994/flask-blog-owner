@@ -69,122 +69,147 @@
     </div>
 
 </nav>
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8">
-            <div style="margin-top: 10px; margin-bottom: 30px;" class="description bg-white px-3 pt-3 pb-1">
-                <p class="float-right mb-0">共<span class="mx-2 text-info">{{category_article_count}}</span>篇</p>
-                <h3 class="f-17" style="font-weight: bold" id="categoryName">文章分类：{{category_name}}</h3>
-                <p class="f-16">{{category_desc}}</p>
-            </div>
-            <div id="blogBriefContent">
-
-            </div>
-            <ul id="paginationIndex" class="pagination justify-content-center">
-                <!-- 博客简介内容 -->
-            </ul>
-        </div>
-        <div class="col-lg-4">
-            <!-- 每日一句 -->
-            <div class="card mb-3 mt-2">
-                <div class="card-header p-2 f-17">
-                    <b><i class="my-fa fa fa-coffee" aria-hidden="true"></i>每日一句 (From ONE)</b>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div style="margin-top: 10px; margin-bottom: 30px;" class="description bg-white px-3 pt-3 pb-1">
+                    <p class="float-right mb-0">共<span class="mx-2 text-info">{{category_article_count}}</span>篇</p>
+                    <h3 class="f-17" style="font-weight: bold" id="categoryName">文章分类：{{category_name}}</h3>
+                    <p class="f-16">{{category_desc}}</p>
                 </div>
-                <div id="oneWord" class="card-body p-2 f-15">
+                <div id="blogBriefContent">
 
                 </div>
+                <ul id="paginationIndex" class="pagination justify-content-center">
+                    <!-- 博客简介内容 -->
+                </ul>
             </div>
-            <!-- 个人空间 -->
-            <div class="card border-0 rounded-1 px-3 mb-2 mb-lg-3" id="home-card">
-                <div class="card-header bg-white px-0">
-                    <strong><i class="fa fa-paper-plane mr-2 f-17"></i>个人空间</strong>
+            <div class="col-lg-4">
+                <!-- 每日一句 -->
+                <div class="card mb-3 mt-2">
+                    <div class="card-header p-2 f-17">
+                        <b><i class="my-fa fa fa-coffee" aria-hidden="true"></i>每日一句 (From ONE)</b>
+                    </div>
+                    <div id="oneWord" class="card-body p-2 f-15">
 
+                    </div>
                 </div>
-                <div class="card-body px-0 pt-3 pb-1">
-                    <div class="row text-center">
-                        <div class="col">
-                            <a href="https://github.com/weijiang1994" target="_blank" title="进入博主的Github查看博客源码">
-                                <img style="max-width:40px" alt="博主的github"
-                                     src="https://tendcode.com/static/blog/img/github.png">
-                                <p class="mt-2">Github</p>
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a href="/timeline" title="查看网站建站历程">
-                                <img style="max-width:40px" alt="网站的建站历程"
-                                     src="https://tendcode.com/static/blog/img/blog.png">
-                                <p class="mt-2">Timeline</p>
-                            </a>
+                <!-- 个人空间 -->
+                <div class="card border-0 rounded-1 px-3 mb-2 mb-lg-3" id="home-card">
+                    <div class="card-header bg-white px-0">
+                        <strong><i class="fa fa-paper-plane mr-2 f-17"></i>个人空间</strong>
+
+                    </div>
+                    <div class="card-body px-0 pt-3 pb-1">
+                        <div class="row text-center">
+                            <div class="col">
+                                <a href="https://github.com/weijiang1994" target="_blank" title="进入博主的Github查看博客源码">
+                                    <img style="max-width:40px" alt="博主的github"
+                                         src="https://tendcode.com/static/blog/img/github.png">
+                                    <p class="mt-2">Github</p>
+                                </a>
+                            </div>
+                            <div class="col">
+                                <a href="/timeline" title="查看网站建站历程">
+                                    <img style="max-width:40px" alt="网站的建站历程"
+                                         src="https://tendcode.com/static/blog/img/blog.png">
+                                    <p class="mt-2">Timeline</p>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- 博客分类 -->
-            <div class="card border-0 rounded-0 px-3 mb-2 mb-lg-3" id="category-card">
-                <div class="card-header bg-white px-0">
-                    <strong><i class="fa fa-book mr-2 f-17"></i>文章分类</strong>
+                <!-- 博客分类 -->
+                <div class="card border-0 rounded-0 px-3 mb-2 mb-lg-3" id="category-card">
+                    <div class="card-header bg-white px-0">
+                        <strong><i class="fa fa-book mr-2 f-17"></i>文章分类</strong>
+                    </div>
+
+                    <ul id="blogCategoryList" class="list-group list-group-flush f-16">
+
+                    </ul>
                 </div>
+                <!-- 友情链接 -->
+                <div class="card border-0 rounded-0 px-3 mb-2 mb-lg-3" id="friends-card">
+                    <div class="card-header bg-white px-0">
+                        <strong><i class="fa fa-link mr-2 f-17"></i>友情链接</strong>
+                    </div>
+                    <div class="card-body px-0 py-3">
+                        <div class="tool-list">
 
-                <ul id="blogCategoryList" class="list-group list-group-flush f-16">
-
-                </ul>
-            </div>
-            <!-- 友情链接 -->
-            <div class="card border-0 rounded-0 px-3 mb-2 mb-lg-3" id="friends-card">
-                <div class="card-header bg-white px-0">
-                    <strong><i class="fa fa-link mr-2 f-17"></i>友情链接</strong>
-                </div>
-                <div class="card-body px-0 py-3">
-                    <div class="tool-list">
-
-                        <div class="w-50 float-left text-center mb-2">
-                            <div class="mx-2">
-                                <a href="https://tendcode.com" title="一个基于 Django 开发的博客" target="_blank">
-                                    Tendcode</a>
+                            <div class="w-50 float-left text-center mb-2">
+                                <div class="mx-2">
+                                    <a href="https://tendcode.com" title="一个基于 Django 开发的博客" target="_blank">
+                                        Tendcode</a>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="w-50 float-left text-center mb-2">
-                            <div class="mx-2">
-                                <a href="https://frostming.com" title="一个基于 Flask 开发的博客" target="_blank">
-                                    Frost&#39;s Blog</a>
+                            <div class="w-50 float-left text-center mb-2">
+                                <div class="mx-2">
+                                    <a href="https://frostming.com" title="一个基于 Flask 开发的博客" target="_blank">
+                                        Frost&#39;s Blog</a>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="w-50 float-left text-center mb-2">
-                            <div class="mx-2">
-                                <a href="https://zmrenwu.com" title="Django 博客教程分享者" target="_blank">
-                                    追梦人物</a>
+                            <div class="w-50 float-left text-center mb-2">
+                                <div class="mx-2">
+                                    <a href="https://zmrenwu.com" title="Django 博客教程分享者" target="_blank">
+                                        追梦人物</a>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="w-50 float-left text-center mb-2">
-                            <div class="mx-2">
-                                <a href="https://www.dusaiphoto.com/" title="Django 搭建的博客，分享博客教程" target="_blank">
-                                    杜赛的个人网站</a>
+                            <div class="w-50 float-left text-center mb-2">
+                                <div class="mx-2">
+                                    <a href="https://www.dusaiphoto.com/" title="Django 搭建的博客，分享博客教程" target="_blank">
+                                        杜赛的个人网站</a>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="w-50 float-left text-center mb-2">
-                            <div class="mx-2">
-                                <a href="https://www.jerrycoding.com/" title="Jerry 的个人博客" target="_blank">
-                                    Jerry Coding</a>
+                            <div class="w-50 float-left text-center mb-2">
+                                <div class="mx-2">
+                                    <a href="https://www.jerrycoding.com/" title="Jerry 的个人博客" target="_blank">
+                                        Jerry Coding</a>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="w-50 float-left text-center mb-2">
-                            <div class="mx-2">
-                                <a href="https://boywithacoin.cn/" title="Stray_Camel的个人技术博客" target="_blank">
-                                    Stray_Camel</a>
+                            <div class="w-50 float-left text-center mb-2">
+                                <div class="mx-2">
+                                    <a href="https://boywithacoin.cn/" title="Stray_Camel的个人技术博客" target="_blank">
+                                        Stray_Camel</a>
+                                </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+</main>
+<footer class="container-fluid mt-4 py-0">
+    <div class="card-body text-center px-0 f-14">
+        <p class="card-text mb-1">Copyright&nbsp;©&nbsp;<span id="year-info">2020</span>
+            <a href="https://github.com/weijiang1994" target="_blank" title="博客作者的Github">Blogin</a>.&nbsp;Design&nbsp;by&nbsp;Flask1.01.
+        </p>
+        <p class="mb-0">
+            <a href="http://beian.miit.gov.cn/" target="_blank">湘ICP备2020018236号-1</a>&nbsp;<span id="web-day"> 网站已续航 900 天</span>
+        </p>
+        <script>
+            function getNewYear(){
+                let d = new Date();
+                let old = new Date('2020/08/28');
+                let x = document.getElementById("year-info");
+                x.innerHTML = d.getFullYear();
+                let y = document.getElementById("web-day");
+                let dd = Math.floor((d.getTime() - old.getTime()) / (24 * 3600 * 1000));
+                let d_str = "| 网站已续航 " + dd + " 天";y.innerHTML=d_str;
+            }
+            getNewYear();
+        </script>
+    </div>
+</footer>
 <script>
     let currentPage = 1;
     let totalPage = 0;
