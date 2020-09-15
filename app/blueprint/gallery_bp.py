@@ -6,14 +6,24 @@ file: gallery_bp.py
 @time: 2020/06/02 23:00
 @desc:
 """
+import functools
+
 from flask import Blueprint, render_template, request, jsonify, g
 
-from .login_bp import user_login_require
 from ..model.db_operate import DBOperator
 from ..model.blogin_model import Gallery, Tags, PhotoTag, Notification, Likes, LikePhoto
 from ..util.common_util import get_current_time
 
 gallery_bp = Blueprint('gallery_bp', __name__)
+
+
+def redirect_login(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.normal_user is None:
+            return jsonify({'url': '/auth/userLogin'})
+        return view(**kwargs)
+    return wrapped_view
 
 
 @gallery_bp.route('/gallery')
@@ -115,9 +125,8 @@ def get_photo_tag(tag_id):
 
 # noinspection PyBroadException
 @gallery_bp.route('/gallery/like/', methods=['POST'])
+@redirect_login
 def like_photo():
-    if not g.normal_user:
-        return jsonify({'url': '/auth/userLogin'})
     try:
         # 获取当前照片的id
         photo_id = request.referrer.split('/')[-1]
@@ -142,9 +151,8 @@ def like_photo():
 
 # noinspection PyBroadException
 @gallery_bp.route('/gallery/unlike/', methods=['POST'])
+@redirect_login
 def photo_unlike():
-    if not g.normal_user:
-        return jsonify({'url': '/auth/userLogin'})
     try:
         ph_id = request.referrer.split('/')[-1]
         usr_id = g.normal_user
