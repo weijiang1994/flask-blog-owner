@@ -13,6 +13,7 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/static/gallery/style.css">
     <link rel="stylesheet" href="/static/css/base.css">
+    <script src="https://cdn.ckeditor.com/ckeditor5/22.0.0/classic/ckeditor.js"></script>
 </head>
 <body>
 <style>
@@ -24,6 +25,9 @@
     .btn-group a{
         text-decoration: none;
         color: #000000;
+    }
+    .comment-thumbnail {
+        position: absolute;
     }
 </style>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark justify-content-between">
@@ -92,6 +96,71 @@
                 <div class="text-right">
                     <p class="text-muted float-right small"><i class="fa fa-clock-o"></i> 发布于:{{ photo.updateTime }}</p>
                 </div>
+                <br>
+                <div style="background: white; border: 1px solid#E1E0E0; border-radius: 5px; margin-bottom: 20px; margin-top: 20px;" class="container">
+                    {% if not g.normal_user %}
+                        <div style="background: #ddddee" class="text-center">
+                            <div class="card-body text-center m-2 m-md-3 f-16" id="no-editor">
+                                <div>您尚未登录，请
+                                    <a class="text-danger" href="/auth/userLogin">登录</a> 或
+                                    <a class="text-danger" href="/auth/register">注册</a> 后评论
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div style="margin: 5px">
+                            <textarea name="comment-editor" id="comment-editor">
+                            </textarea>
+                            <div>
+                                <p id="replyUser" class="float-left text-info ml-0" hidden="hidden"></p>
+                                <p id="commentErrorHint" class="text-right text-danger ml-0" hidden="hidden">请输入评论内容后再提交</p>
+                                <br>
+                                <div>
+                                    <button class="btn btn-outline-success round-3 float-right gutter-right" onclick="submitComment()" id="subCommentBtn">评论</button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <br>
+                    <p class="text-muted"><strong>当前照片共有{{ comment_count }}条评论</strong></p>
+                    <hr>
+                    <div class="comment">
+                        <div class="comment-thumbnail">
+                            <a href="">
+                                <img class="rounded img-fluid avatar-s profile-popover" src="/static/avatars/1.jpg">
+                            </a>
+                        </div>
+                        <div class="comment-body">
+                            <h6>
+                                <a class="profile-popover" data-href="/ajax/profile/4" href="/user/darlene22">
+                                    Tracy Contreras
+                                </a>
+                                <span class="badge badge-light">Author</span>
+                                <small data-toggle="tooltip" data-placement="top" data-timestamp="2020-02-13 05:14:39" data-delay="500" data-original-title="" title="">
+                                    <span class="" data-timestamp="2020-02-13T05:14:39Z" data-format="fromNow(0)" data-refresh="60000" style="">7 months ago</span>
+                                </small>
+                                <span class="float-right">
+                                <span class="dropdown">
+                                <button class="btn btn-sm btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="fa fa-ellipsis-h"></span>
+                                </button>
+                                <span class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item btn" href="#">
+                                    <span class="fa fa-facebook-f"></span> 回复
+                                    </a>
+                                    <a class="dropdown-item btn" href="#">
+                                    <span class="fa fa-podcast"></span> 举报
+                                    </a>
+                                </span>
+                                </span>
+                            </span>
+                            </h6>
+                            <p>
+                                Coach voice evening final should decade anything.是即可案发生立刻就发顺丰dfsjdjkjflklkgklsgdllgajslkd
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md-4">
                 <div style="margin-bottom: 10px;" class="btn-group">
@@ -153,6 +222,43 @@
 </main>
 <script>
 
+    let editor;
+    ClassicEditor.create( document.querySelector( '#comment-editor' ), {
+        toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
+        heading: {
+            options: [
+                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+            ]
+        }
+    } ).then(newEditor=>{
+        editor = newEditor;
+    })
+        .catch( error => {
+            console.log( error );
+        } );
+
+    function submitComment(){
+        const comment = editor.getData();
+        if (!comment){
+            $("#commentErrorHint").removeAttr('hidden');
+            $("#commentErrorHint").show().delay(2000).hide(200);
+
+            return false;
+        }
+        $.ajax({
+            url: '/gallery/comment/',
+            type: 'post',
+            data: {'comment-editor': comment},
+            success: function (){
+                window.location.reload();
+            }
+        })
+    }
+
     function likePhoto(name){
         if (name == 'like'){
             // 发送点赞
@@ -160,7 +266,6 @@
                 url:'/gallery/like/',
                 type:'POST',
                 success: function (res){
-
                     if (res.tag){
                         $("#backInfo").text(res.info);
                         $("#like").attr('name', 'unlike');

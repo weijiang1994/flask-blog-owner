@@ -96,7 +96,6 @@ def get_time_delta(target_time):
     cu_time = parse(str(cu_time))
     target_time = parse(str(target_time))
     total_sec = int((cu_time - target_time).total_seconds())
-    print(total_sec)
     if total_sec <= 30:
         return '刚刚'
     # 没超过分钟
@@ -123,11 +122,9 @@ def get_time_delta(target_time):
             return str(hours) + '小时之前'
         else:
             return str(hours) + '小时' + str(minutes) + '分' + str(secs) + '秒之前'
-
     # 超过一天
     elif 60*60*24 <= total_sec < 60*60*24*365:
         days = total_sec // (60 * 60 * 24)
-        print(total_sec)
         return str(days) + '天之前'
     else:
         years = total_sec // (60*60*24*365)

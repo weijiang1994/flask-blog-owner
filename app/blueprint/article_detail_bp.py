@@ -52,7 +52,6 @@ def index(title):
 
         # 获取该篇文章评论信息
         comment_count = get_comments(comments_ret, db, ret)
-        print(g.normal_user)
         notifications = db.query_notification_by_receive_id(Notification, condition=g.normal_user)
         db.clear_buffer()
         del db

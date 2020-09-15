@@ -116,8 +116,8 @@
         <div class="tab-content">
             <div id="moment" class="container tab-pane active"><br>
                 {% for comment in ntf_moments %}
-                    <p style="width: auto;" class="text-muted moment-p" data-toggle="tooltip" data-placement="right" title="{{ comment[1] }}">
-                        <i class="fa fa-clock-o"></i> {{ comment[-1] }}</p>
+                    <span class="text-muted moment-p" data-toggle="tooltip" data-placement="top" title="{{ comment[1] }}">
+                        <i class="fa fa-clock-o"></i> {{ comment[5] }}</span>
                     {% if comment[0]['parentComment'] %}
                         <div class="moment-div">
                             <p style="color: dodgerblue">{{ comment[0]['parentComment'][0] }}</p>

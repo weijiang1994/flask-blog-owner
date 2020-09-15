@@ -8,21 +8,23 @@ file: gallery_bp.py
 """
 import functools
 
-from flask import Blueprint, render_template, request, jsonify, g
+from flask import Blueprint, render_template, request, jsonify, g, redirect
 
+from .login_bp import user_login_require
 from ..model.db_operate import DBOperator
-from ..model.blogin_model import Gallery, Tags, PhotoTag, Notification, Likes, LikePhoto
+from ..model.blogin_model import Gallery, Tags, PhotoTag, Notification, Likes, LikePhoto, Comment
 from ..util.common_util import get_current_time
 
 gallery_bp = Blueprint('gallery_bp', __name__)
 
 
-def redirect_login(view):
+def ajax_redirect_login(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.normal_user is None:
             return jsonify({'url': '/auth/userLogin'})
         return view(**kwargs)
+
     return wrapped_view
 
 
@@ -100,12 +102,19 @@ def show_photo(photo_id):
     else:
         like = ''
         pre_like = '给'
+    # 获取当前照片评论数
+    top_comments = db.query_top_comment_by_blog_id(Comment, condition=photo_id)
+    comment_count = len(top_comments)
+    if comment_count:
+        for top_comment in top_comments:
+            child_comm = db.query_child_comment(Comment, condition=top_comment.id)
+
     # 拼接数据返回渲染
     ret = {'title': photo.photo_title, 'photo': photo.photo_path, 'photoDesc': photo.photo_desc,
            'updateTime': photo.create_time, 'preLink': pre_link, 'nextLink': next_link, 'tags': tags_ls,
            'tagIds': tags_id, 'like': like, 'pre_like': pre_like}
     return render_template('showPhoto.html', photo=ret, photoDesc=photo.photo_desc,
-                           time=photo.create_time, ntf_counts=len(notifications))
+                           time=photo.create_time, ntf_counts=len(notifications), comment_count=comment_count)
 
 
 @gallery_bp.route('/gallery/tag/<int:tag_id>', methods=['GET', 'POST'])
@@ -123,9 +132,23 @@ def get_photo_tag(tag_id):
     return render_template('photoTag.html', galleries=photos, tag=tag_name)
 
 
+@gallery_bp.route('/gallery/comment/', methods=['POST'])
+@user_login_require
+def photo_comment():
+    ph_id = request.referrer.split('/')[-1]
+    usr_id = g.normal_user
+    comm_content = request.form.get('comment-editor')
+    db = DBOperator()
+    comm = Comment(create_u_id=usr_id, article_id=ph_id, parent_id=None, comment_time=get_current_time(),
+                   comment_content=comm_content, delete_flag=0)
+    db.add_data(comm)
+    db.commit_data()
+    return redirect(request.referrer)
+
+
 # noinspection PyBroadException
 @gallery_bp.route('/gallery/like/', methods=['POST'])
-@redirect_login
+@ajax_redirect_login
 def like_photo():
     try:
         # 获取当前照片的id
@@ -151,7 +174,7 @@ def like_photo():
 
 # noinspection PyBroadException
 @gallery_bp.route('/gallery/unlike/', methods=['POST'])
-@redirect_login
+@ajax_redirect_login
 def photo_unlike():
     try:
         ph_id = request.referrer.split('/')[-1]
@@ -160,7 +183,6 @@ def photo_unlike():
         db.delete_like(LikePhoto, condition=ph_id, condition2=usr_id)
         db.query_like_by_photo_id(Likes, ph_id).like_counts -= 1
         db.commit_data()
-
         return jsonify({'tag': 1, 'info': '取消点赞成功～不开心ing'})
     except:
         return jsonify({'tag': 0, 'info': '取消点赞失败~'})
