@@ -118,3 +118,21 @@ class LoginLog(Base):
     user_id = Column(INTEGER, nullable=False, comment='login user id')
     login_time = Column(DateTime)
     login_ip = Column(String(128), default='')
+
+
+class Likes(Base):
+    __tablename__ = 'likes'
+
+    id = Column(INTEGER, autoincrement=True, primary_key=True, comment='likes id')
+    photo_id = Column(String(40), nullable=False, default="''", comment='photo id')
+    like_counts = Column(INTEGER, nullable=False, default=1, comment='photo like counts')
+
+
+class LikePhoto(Base):
+    __tablename__ = 'like_photo'
+
+    id = Column(INTEGER, autoincrement=True, primary_key=True, comment='like photo id')
+    photo_id = Column(String(40), nullable=False, default="''", comment='like photo id')
+    like_user_id = Column(INTEGER, nullable=False, comment='like photo user id')
+    like_time = Column(DateTime, nullable=False)
+    delete_flag = Column(INTEGER, nullable=False, default=0, comment='like photo delete flag')

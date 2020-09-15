@@ -133,11 +133,17 @@
                         </div>
                         <div class="row">
                             <div class="col-md-2">
-                                <button data-toggle="tooltip" data-placement="bottom" title="给{{ photo.title }}点赞～" class="btn btn-outline-info"><i class="fa fa-heartbeat"></i></button>
+                                <button id="like" name="{{ photo.like }}" data-toggle="tooltip" onclick="likePhoto(this.name)" data-placement="bottom" class="btn btn-outline-info">
+                                    <i class="fa fa-heartbeat"></i>
+                                </button>
                             </div>
                             <div class="col-md-10">
                                 {{ share.create(sites='weibo, wechat, qq, douban, qzone') }}
                             </div>
+
+                        </div>
+                        <div hidden="hidden" class="text-center" id="likeSuccess">
+                            <p id="backInfo"></p>
                         </div>
                     </div>
                 </div>
@@ -146,9 +152,58 @@
     </div>
 </main>
 <script>
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();
-    });
+
+    function likePhoto(name){
+        if (name == 'like'){
+            // 发送点赞
+            $.ajax({
+                url:'/gallery/like/',
+                type:'POST',
+                success: function (res){
+                    if (res.tag){
+                        $("#backInfo").text(res.info);
+                        $("#like").attr('name', 'unlike');
+                        $("#likeSuccess").removeAttr("hidden");
+                        $("#backInfo").attr("class", "badge badge-success");
+                        $('#likeSuccess').show().delay(2000).hide(200);
+                    }else {
+                        $("#backInfo").text(res.info);
+                        $("#likeSuccess").removeAttr("hidden");
+                        $("#backInfo").attr("class", "badge badge-danger");
+                        $('#likeSuccess').show().delay(2000).hide(200);
+                    }
+                },
+                error: function (res){
+
+                }
+            })
+        }else {
+            // 取消点赞
+            $.ajax({
+                url:'/gallery/unlike/',
+                type:'POST',
+                success: function (res){
+                    if (res.tag){
+                        $("#backInfo").text(res.info);
+                        $("#like").attr('name', 'like');
+                        $("#likeSuccess").removeAttr("hidden");
+                        $("#backInfo").attr("class", "badge badge-success");
+                        $('#likeSuccess').show().delay(2000).hide(200);
+                    }else {
+                        $("#backInfo").text(res.info);
+                        $("#likeSuccess").removeAttr("hidden");
+                        $("#backInfo").attr("class", "badge badge-danger");
+                        $('#likeSuccess').show().delay(2000).hide(200);
+                    }
+
+                },
+                error: function (res){
+
+                }
+            })
+        }
+    }
+
 </script>
 </body>
 </html>

@@ -89,7 +89,7 @@ try:
     cursor.execute(CREATE_ARTICLE_TABLE_SQL)
     print('the article table is created.')
     print('-'*56)
-    print('starting create comment table')
+    print('starting create comment table.')
     CREATE_COMMENT_TABLE_SQL = "CREATE TABLE IF NOT EXISTS comment(" \
                                "id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT," \
                                "article_id VARCHAR (40) NOT NULL DEFAULT ''," \
@@ -101,16 +101,25 @@ try:
     cursor.execute(CREATE_COMMENT_TABLE_SQL)
     print('the comment table is created.')
     print('-'*56)
-    print('starting create like_blog table')
-    CREATE_LIKEBLOG_TABLE_SQL = "CREATE TABLE IF NOT EXISTS like_blog(" \
-                                "id VARCHAR (255) PRIMARY KEY NOT NULL DEFAULT ''," \
-                                "blog_id VARCHAR (255) NOT NULL DEFAULT ''," \
-                                "like_acount VARCHAR (255) NOT NULL DEFAULT ''," \
-                                "like_time VARCHAR (255) NOT NULL DEFAULT '')"
-    cursor.execute(CREATE_LIKEBLOG_TABLE_SQL)
+    print('starting create like_blog table.')
+    CREATE_LIKE_PHOTO_TABLE_SQL = "CREATE TABLE IF NOT EXISTS like_photo(" \
+                                  "id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT," \
+                                  "photo_id VARCHAR (40) NOT NULL DEFAULT ''," \
+                                  "like_user_id INTEGER NOT NULL ," \
+                                  "like_time datetime NOT NULL," \
+                                  "delete_flag INTEGER NOT NULL DEFAULT 0)"
+    cursor.execute(CREATE_LIKE_PHOTO_TABLE_SQL)
     print('the like_blog table is created.')
     print('-'*56)
-    print('starting create photo_tag table')
+    print('starting create likes table.')
+    CREATE_LIKES_TABLE_SQL = "CREATE TABLE IF NOT EXISTS likes(" \
+                             "id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT," \
+                             "photo_id VARCHAR (40) NOT NULL DEFAULT ''," \
+                             "like_counts INTEGER NOT NULL DEFAULT 1)"
+    cursor.execute(CREATE_LIKES_TABLE_SQL)
+    print('the likes table is created.')
+    print('-'*56)
+    print('starting create photo_tag table.')
     CREATE_PHOTO_TAG_TABLE_SQL = "CREATE TABLE IF NOT EXISTS photo_tag(" \
                                  "id INTEGER PRIMARY KEY  AUTO_INCREMENT," \
                                  "tag_name VARCHAR (40) NOT NULL DEFAULT ''," \

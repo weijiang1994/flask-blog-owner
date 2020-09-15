@@ -43,6 +43,9 @@ class DBOperator:
     def query_user_by_email(self, obj, condition):
         return self.session.query(obj).filter_by(email=condition).first()
 
+    def query_like_by_photo_id(self, obj, condition):
+        return self.session.query(obj).filter_by(photo_id=condition).first()
+
     def query_user_by_name(self, obj, condition):
         return self.session.query(obj).filter_by(username=condition).first()
 
@@ -66,6 +69,15 @@ class DBOperator:
     def query_filter_by_id(self, obj, condition):
         ret = self.session.query(obj).filter_by(id=condition).all()
         return ret
+
+    def delete_like(self, obj, condition, condition2):
+        self.session.query(obj).filter_by(photo_id=condition, like_user_id=condition2).delete()
+
+    def query_by_like_user_id(self, obj, condition, condition2):
+        return self.session.query(obj).filter_by(like_user_id=condition, photo_id=condition2).first()
+
+    def query_filter_by_photo_id(self, obj, condition):
+        return self.session.query(obj).filter_by(photo_id=condition).first()
 
     def query_notification_by_receive_id(self, obj, condition):
         return self.session.query(obj).filter_by(receive_u=condition, readed=0).all()
