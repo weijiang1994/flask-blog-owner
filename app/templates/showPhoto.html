@@ -160,6 +160,7 @@
                 url:'/gallery/like/',
                 type:'POST',
                 success: function (res){
+
                     if (res.tag){
                         $("#backInfo").text(res.info);
                         $("#like").attr('name', 'unlike');
@@ -171,6 +172,9 @@
                         $("#likeSuccess").removeAttr("hidden");
                         $("#backInfo").attr("class", "badge badge-danger");
                         $('#likeSuccess').show().delay(2000).hide(200);
+                    }
+                    if (res.url){
+                        window.location.href = res.url;
                     }
                 },
                 error: function (res){
@@ -194,6 +198,9 @@
                         $("#likeSuccess").removeAttr("hidden");
                         $("#backInfo").attr("class", "badge badge-danger");
                         $('#likeSuccess').show().delay(2000).hide(200);
+                    }
+                    if (res.url){
+                        window.location.href = res.url;
                     }
 
                 },

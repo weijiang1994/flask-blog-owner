@@ -113,10 +113,11 @@ def get_photo_tag(tag_id):
     return render_template('photoTag.html', galleries=photos, tag=tag_name)
 
 
+# noinspection PyBroadException
 @gallery_bp.route('/gallery/like/', methods=['POST'])
-@user_login_require
 def like_photo():
-    # noinspection PyBroadException
+    if not g.normal_user:
+        return jsonify({'url': '/auth/userLogin'})
     try:
         # 获取当前照片的id
         photo_id = request.referrer.split('/')[-1]
@@ -139,10 +140,11 @@ def like_photo():
         return jsonify({'tag': 0, 'info': '点赞失败~'})
 
 
+# noinspection PyBroadException
 @gallery_bp.route('/gallery/unlike/', methods=['POST'])
-@user_login_require
 def photo_unlike():
-    # noinspection PyBroadException
+    if not g.normal_user:
+        return jsonify({'url': '/auth/userLogin'})
     try:
         ph_id = request.referrer.split('/')[-1]
         usr_id = g.normal_user
