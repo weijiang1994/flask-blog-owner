@@ -70,6 +70,9 @@ class DBOperator:
     def query_notification_by_receive_id(self, obj, condition):
         return self.session.query(obj).filter_by(receive_u=condition, readed=0).all()
 
+    def query_moments_by_crt_id(self, obj, condition):
+        return self.session.query(obj).filter_by(create_u_id=condition).order_by(obj.comment_time.desc()).all()
+
     def query_child_comment(self, obj, condition):
         return self.session.query(obj).filter_by(parent_id=condition).all()
 

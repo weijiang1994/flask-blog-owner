@@ -12,6 +12,9 @@ import uuid
 import datetime
 import hashlib
 import configparser
+
+from dateutil.parser import parse
+
 from ..frozen_dir import app_path
 import base64
 
@@ -86,3 +89,46 @@ def get_encrypt_text(way, text):
         return get_md5(text)
     if way == 'base64':
         return get_base64(text).decode('utf-8')
+
+
+def get_time_delta(target_time):
+    cu_time = get_current_time()
+    cu_time = parse(str(cu_time))
+    target_time = parse(str(target_time))
+    total_sec = int((cu_time - target_time).total_seconds())
+    print(total_sec)
+    if total_sec <= 30:
+        return '刚刚'
+    # 没超过分钟
+    elif 30 < total_sec <= 60:
+        return str(total_sec) + '秒之前'
+    # 超过一分钟
+    elif 60 < total_sec < 3600:
+        minutes = total_sec // 60
+        secs = total_sec % 60
+        if secs == 0:
+            return str(minutes) + '分之前'
+        else:
+            return str(minutes) + '分' + str(secs) + '秒之前'
+    # 超过一小时
+    elif 3600 <= total_sec < 60 * 60 * 24:
+        hours = total_sec // 3600
+        minutes = total_sec % 3600 // 60
+        secs = total_sec % 3600 % 60
+        if minutes == 0 and secs != 0:
+            return str(hours) + '小时' + str(secs) + '秒之前'
+        elif minutes != 0 and secs == 0:
+            return str(hours) + '小时' + str(minutes) + '分之前'
+        elif minutes == 0 and secs == 0:
+            return str(hours) + '小时之前'
+        else:
+            return str(hours) + '小时' + str(minutes) + '分' + str(secs) + '秒之前'
+
+    # 超过一天
+    elif 60*60*24 <= total_sec < 60*60*24*365:
+        days = total_sec // (60 * 60 * 24)
+        print(total_sec)
+        return str(days) + '天之前'
+    else:
+        years = total_sec // (60*60*24*365)
+        return str(years) + '年之前'

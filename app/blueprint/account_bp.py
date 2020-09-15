@@ -11,7 +11,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from wtforms import StringField, FileField, SubmitField
 from wtforms.validators import DataRequired, Length
-from ..util.common_util import get_md5
+from ..util.common_util import get_md5, get_time_delta
 from ..blueprint.login_bp import user_login_require
 from ..frozen_dir import app_path
 from ..model.blogin_model import Users, LoginLog, Comment, Article
@@ -57,9 +57,14 @@ def account_profile():
     user_email = usr.email
     website = usr.website
     avatar = usr.avatar
+    # 显示在资料卡上的用户信息
     usr_info = [userid, user_name, user_join_time, user_email, login_time, website, avatar]
+    # 获取当前用户的通知
     notifications = db.query_notification_by_receive_id(Notification, condition=g.normal_user)
+    # 获取用户动态
+    moments = db.query_moments_by_crt_id(Comment, condition=g.normal_user)
     ntf_comments = []
+    ntf_moments = []
     for ntf in notifications:
         comm = db.query_filter_by_id(Comment, ntf.comment_id)[0]
         create_u_info = db.query_filter_by_id(Users, ntf.create_u)[0]
@@ -71,8 +76,27 @@ def account_profile():
         article_name = db.query_filter_by_id(Article, comm.article_id)[0].title
         child_nft = [ntf.id, create_u_avatar, create_u_name, ntf_time, article_name, reply_content]
         ntf_comments.append(child_nft)
+
+    for moment in moments:
+        # 父id为空说明是顶级评论
+        if moment.parent_id is None:
+            # 查询评论所关联的文章
+            art_title = db.query_filter_by_id(Article, condition=moment.article_id)[0].title
+            delta_time = get_time_delta(moment.comment_time)
+            sub = [{'parentComment': None}, moment.comment_time, moment.comment_content, art_title,
+                   '/detail/article/'+art_title, delta_time]
+            ntf_moments.append(sub)
+        else:
+            # 查询父id所关联的信息
+            parent = db.query_filter_by_id(Comment, condition=moment.parent_id)[0]
+            parent_usr = db.query_filter_by_id(Users, condition=parent.create_u_id)[0].username
+            art_title = db.query_filter_by_id(Article, condition=moment.article_id)[0].title
+            delta_time = get_time_delta(moment.comment_time)
+            sub = [{'parentComment': [parent_usr, parent.comment_content]},
+                   moment.comment_time, moment.comment_content, art_title, '/detail/article/'+art_title, delta_time]
+            ntf_moments.append(sub)
     return render_template('accountProfile.html', user_info=usr_info, nft_counts=len(notifications),
-                           ntf_conmment=ntf_comments)
+                           ntf_conmment=ntf_comments, ntf_moments=ntf_moments)
 
 
 @account_bp.route('/profile/markReaded/', methods=['POST'])
@@ -88,7 +112,7 @@ def mark_all_notifications():
 
 @account_bp.route('/profile/markOne/', methods=['POST'])
 @user_login_require
-def mark_a_notification():
+def mark_one_notification():
     ntf_id = request.form.get('ntfID')
     db = DBOperator()
     ntf = db.query_filter_by_id(Notification, ntf_id)[0]

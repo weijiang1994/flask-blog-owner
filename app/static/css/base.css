@@ -122,3 +122,18 @@ main {
 .help-block{
     color: darkred;
 }
+
+/*个人动态区域的样式*/
+.moment-div{
+    background: #cccccc;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.moment-p{
+    margin: 5px 0px 5px 0px;
+}
+
+.moment-p.p{
+    margin: 5px 0px 5px 0px;
+}

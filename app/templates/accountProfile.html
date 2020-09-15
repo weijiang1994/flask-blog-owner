@@ -99,10 +99,10 @@
         <br>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#home"><i class="fa fa-photo"></i> 动态</a>
+                <a class="nav-link active" data-toggle="tab" href="#moment"><i class="fa fa-photo"></i> 动态</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#notReadNotification"><i class="fa fa-bell"></i> 未读
+                <a class="nav-link" data-toggle="tab" href="#notReadNotification"><i class="fa fa-bell"></i> 未读
                     {% if nft_counts %}
                         <span class="badge badge-info">{{ nft_counts }}</span>
                     {% endif %}
@@ -114,10 +114,25 @@
         </ul>
 
         <div class="tab-content">
-            <div id="home" class="container tab-pane fade"><br>
-                <h3><i class="fa fa-building-o"></i> 正在建设中...</h3>
+            <div id="moment" class="container tab-pane active"><br>
+                {% for comment in ntf_moments %}
+                    <p style="width: auto;" class="text-muted moment-p" data-toggle="tooltip" data-placement="right" title="{{ comment[1] }}">
+                        <i class="fa fa-clock-o"></i> {{ comment[-1] }}</p>
+                    {% if comment[0]['parentComment'] %}
+                        <div class="moment-div">
+                            <p style="color: dodgerblue">{{ comment[0]['parentComment'][0] }}</p>
+                            <p class="moment-p">{{comment[0]['parentComment'][1]|safe}}</p>
+                        </div>
+                    {% endif %}
+                    <div>
+                        {{ comment[2]|safe }}
+                        <p class="moment-p">来自:<a style="color: dodgerblue" href="{{ comment[4] }}">{{ comment[3] }}</a></p>
+                        <hr>
+
+                    </div>
+                {% endfor %}
             </div>
-            <div id="notReadNotification" class="container tab-pane active"><br>
+            <div id="notReadNotification" class="container tab-pane fade"><br>
                 {% if nft_counts %}
                     <div class="text-muted div-click " onclick="markReadedAll()"><i class="fa fa-close"></i> 全部标记为已读</div>
                 {% endif %}
@@ -203,6 +218,9 @@
         })
     }
 
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 
 </script>
 </body>
