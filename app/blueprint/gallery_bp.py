@@ -104,7 +104,7 @@ def show_photo(photo_id):
         pre_like = '给'
     # 获取当前照片评论数
     comments_ret = []
-    comment_count = get_photo_comment(comments_ret, db, photo_id)
+    comment_count, deleted_counts = get_photo_comment(comments_ret, db, photo_id)
     # 拼接数据返回渲染
     ret = {'title': photo.photo_title, 'photo': photo.photo_path, 'photoDesc': photo.photo_desc,
            'updateTime': photo.create_time, 'preLink': pre_link, 'nextLink': next_link, 'tags': tags_ls,
@@ -112,13 +112,16 @@ def show_photo(photo_id):
 
     return render_template('showPhoto.html', photo=ret, photoDesc=photo.photo_desc,
                            time=photo.create_time, ntf_counts=len(notifications), comment_count=comment_count,
-                           comment_ret=comments_ret)
+                           comment_ret=comments_ret, deleted=deleted_counts)
 
 
 def get_photo_comment(comments_ret, db, photo_id):
     comments = db.query_top_pc_by_blog_id(PhotoComment, condition=photo_id)
     comment_count = len(comments)
+    deleted_count = 0
     for comment in comments:
+        if '该条评论已删除' in  comment.content:
+            deleted_count += 1
         comm = []
         child_comm = []
         user = db.query_filter_by_id(Users, comment.user_id)
@@ -129,16 +132,17 @@ def get_photo_comment(comments_ret, db, photo_id):
             comm.append([])
         else:
             for child in children:
-                usr = db.query_filter_by_id(Users, condition=child.create_u_id)[0]
+                usr = db.query_filter_by_id(Users, condition=child.user_id)[0]
                 avatar = usr.avatar
                 username = usr.username
                 child_comment = child.content
                 child_comm_time = child.comm_timestamp
                 parent_id = comment.id
-                child_comm.append([avatar, username, child_comment, child_comm_time, parent_id])
+                child_id = child.id
+                child_comm.append([avatar, username, child_comment, child_comm_time, parent_id, child_id])
             comm.append(child_comm)
         comments_ret.append(comm)
-    return comment_count
+    return comment_count, deleted_count
 
 
 @gallery_bp.route('/gallery/tag/<int:tag_id>', methods=['GET', 'POST'])
@@ -226,3 +230,17 @@ def delete_photo_comment():
         import traceback
         traceback.print_exc()
         return jsonify({'tag': 1, 'info': '评论删除失败'})
+
+
+@gallery_bp.route('/gallery/comment/reply/', methods=['POST'])
+@ajax_redirect_login
+def reply_photo_comment():
+    rep_content = request.form.get('reply_comment')
+    receive_u = request.form.get('receive_u')
+    parent_id = request.form.get('parent_id')
+    ph_id = request.referrer.split('/')[-1]
+    db = DBOperator()
+    pc = PhotoComment(content=rep_content, parent_id=parent_id, user_id=g.normal_user, comm_timestamp=get_current_time(), photo_id=ph_id)
+    db.add_data(pc)
+    db.commit_data()
+    return jsonify({'tag':1, 'info': '评论成功'})

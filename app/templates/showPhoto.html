@@ -14,9 +14,7 @@
     <link rel="stylesheet" href="/static/gallery/style.css">
     <link rel="stylesheet" href="/static/css/base.css">
     <script src="https://cdn.ckeditor.com/ckeditor5/22.0.0/classic/ckeditor.js"></script>
-    {{ share.load() }}
-    {{ moment.include_moment() }}　　
-    {{ moment.locale(auto_detect=True) }}
+
 </head>
 <body>
 <style>
@@ -38,18 +36,15 @@
     }
     .comment-body>blockquote{
         padding: 8px;
-        border-left: solid 4px #c7ddef;
-        background: #cccccc;
-        border-radius: 5px;
+        border-left: solid 8px #c7ddef;
+        border-radius: 0px 5px 5px 0px;
+        font-style: italic;
+        font-size: 16px;
     }
     .comment-body>blockquote>p{
         margin: 0px;
     }
-    .comment-body>ul{
-        border: 2px dashed darkgrey;
-        border-radius: 5px;
-        font-style: italic;
-    }
+
 </style>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark justify-content-between">
     <a class="navbar-brand" href="/">Blogin</a>
@@ -104,6 +99,9 @@
 
 </nav>
 <main>
+    {{ share.load() }}
+    {{ moment.include_moment() }}　　
+    {{ moment.locale(auto_detect=True) }}
     <div class="container">
 
         <div class="row">
@@ -148,30 +146,39 @@
                         </div>
                     {% endif %}
                     <br>
-                    <p class="text-muted"><strong>当前照片共有{{ comment_count }}条评论</strong></p>
+                    <br>
+                    <p class="text-muted"><strong>当前照片共有{{ comment_count }}条评论
+                        {% if deleted %}
+                            | 已删除{{ deleted }}条
+                        {% endif %}
+                    </strong></p>
                     <hr>
+                    <!-- 显示顶级评论 -->
                     {% for comment in comment_ret %}
-                        <div class="comment">
-                            <div class="comment-thumbnail">
-                                <a>
-                                    <img class="rounded img-fluid avatar-s profile-popover" src="{{ comment[0][0] }}">
-                                </a>
-                            </div>
-                            <div class="comment-body">
-                                <h6>
-                                    <a class="profile-popover">
-                                        {{ comment[0][1]}}
+                        {% if '该条评论已删除' in comment[0][2] and not comment[1]|length %}
+                            {{ no }}
+                        {% else %}
+                            <div class="comment">
+                                <div class="comment-thumbnail">
+                                    <a>
+                                        <img class="rounded img-fluid avatar-s profile-popover" src="{{ comment[0][0] }}">
                                     </a>
-                                    {% if comment[0][1] == 'Blogin' %}
-                                        <span class="badge badge-light">博主</span>
-                                    {% else %}
-                                        <span class="badge badge-light">用户</span>
-                                    {% endif %}
-                                    <small data-toggle="tooltip" data-placement="top" data-timestamp="{{ comment[0][3] }}" data-delay="500" data-original-title="" title="{{ comment[0][3] }}">
-                                        {{ moment(comment[0][3], local=True).fromNow(refresh=True) }}
-                                    </small>
-                                    {% if '该条评论已删除' not in comment[0][2] and g.normal_user  %}
-                                        <span class="float-right">
+                                </div>
+                                <div class="comment-body">
+                                    <h6>
+                                        <a class="profile-popover">
+                                            {{ comment[0][1] }}
+                                        </a>
+                                        {% if comment[0][1] == 'Blogin' %}
+                                            <span class="badge badge-danger">博主</span>
+                                        {% else %}
+                                            <span class="badge badge-light">用户</span>
+                                        {% endif %}
+                                        <small data-toggle="tooltip" data-placement="top" data-timestamp="{{ comment[0][3] }}" data-delay="500" data-original-title="" title="{{ comment[0][3] }}">
+                                            {{ moment(comment[0][3], local=True).fromNow(refresh=True) }}
+                                        </small>
+                                        {% if '该条评论已删除' not in comment[0][2] and g.normal_user  %}
+                                            <span class="float-right">
                                         <span class="dropdown">
                                             <button class="btn btn-sm btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="fa fa-ellipsis-h"></i>
@@ -184,7 +191,7 @@
                                             </span>
                                             {% else %}
                                                 <span class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item btn" onclick="goRepl()">
+                                                <a class="dropdown-item btn" data-repuser="{{ comment[0][1] }}" data-repid="{{ comment[0][-1] }}" onclick="goRepl($(this).data('repuser'), $(this).data('repid'))">
                                                     <i class="fa fa-facebook-f"></i> 回复
                                                 </a>
                                                 <a class="dropdown-item btn" href="#">
@@ -195,18 +202,82 @@
                                         </span>
 
                                     </span>
-                                    {% endif %}
-                                </h6>
-                                <p>
-                                    {% if '该条评论已删除' in comment[0][2]  %}
-                                        <strong class="text-muted">{{ comment[0][2]|safe }}</strong>
-                                    {% else %}
-                                        {{ comment[0][2]|safe }}
-                                    {% endif %}
-                                </p>
+                                        {% endif %}
+                                    </h6>
+                                    <p>
+                                        {% if '该条评论已删除' in comment[0][2] %}
+                                            <strong class="text-muted">{{ comment[0][2]|safe }}</strong>
+                                        {% else %}
+                                            {{ comment[0][2]|safe }}
+                                        {% endif %}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        <hr>
+                            <!-- 显示子评论 -->
+                            {% for child in comment[1] %}
+                                {% if '该条评论已删除' in  child[2] %}
+                                    {{ no }}
+                                {% else %}
+                                    <div style="margin: 10px 0px 5px 15px">
+                                        <div class="comment">
+                                            <div class="comment-thumbnail">
+                                                <a>
+                                                    <img class="rounded img-fluid avatar-s profile-popover" src="{{ child[0] }}">
+                                                </a>
+                                            </div>
+                                            <div class="comment-body">
+                                                <h6>
+                                                    <a class="profile-popover">
+                                                        {{ child[1]}}
+                                                    </a>
+                                                    {% if child[1] == 'Blogin' %}
+                                                        <span class="badge badge-danger">博主</span>
+                                                    {% else %}
+                                                        <span class="badge badge-light">用户</span>
+                                                    {% endif %}
+                                                    <small data-toggle="tooltip" data-placement="top" data-timestamp="{{ child[3] }}" data-delay="500" data-original-title="" title="{{ child[3] }}">
+                                                        {{ moment(child[3], local=True).fromNow(refresh=True) }}
+                                                    </small>
+                                                    {% if '该条评论已删除' not in child[2] and g.normal_user  %}
+                                                        <span class="float-right">
+                                                    <span class="dropdown">
+                                                        <button class="btn btn-sm btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fa fa-ellipsis-h"></i>
+                                                        </button>
+                                                        {% if child[1] == g.normal_user_name %}
+                                                            <span class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                                                <a class="dropdown-item btn" data-commid="{{ child[5] }}" data-toggle="modal" data-target="#confirm-delete" >
+                                                                    <i class="fa fa-remove"></i> 删除
+                                                                </a>
+                                                            </span>
+                                                        {% else %}
+                                                            <span class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                                                <a class="dropdown-item btn" data-repuser="{{ child[1] }}" data-repid="{{ comment[0][-1] }}" onclick="goRepl($(this).data('repuser'), $(this).data('repid'))">
+                                                                    <i class="fa fa-facebook-f"></i> 回复
+                                                                </a>
+                                                                <a class="dropdown-item btn" href="#">
+                                                                    <i class="fa fa-podcast"></i> 举报
+                                                                </a>
+                                                            </span>
+                                                        {% endif %}
+                                                    </span>
+                                                </span>
+                                                    {% endif %}
+                                                </h6>
+                                                <p>
+                                                    {% if '该条评论已删除' in child[2]  %}
+                                                        <strong class="text-muted">{{ child[2]|safe }}</strong>
+                                                    {% else %}
+                                                        {{ child[2]|safe }}
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            <hr>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -381,21 +452,34 @@
         }
     }
 
-    function goRepl(){
+    function goRepl(u, i){
         $('html, body').animate({
             scrollTop: $("#commentPosition").offset().top
         }, 800);
+        sessionStorage.setItem('rep_id', i);
+        sessionStorage.setItem('receive_u', u);
+        console.log(sessionStorage)
+        $("#replyUser").text("回复 @"+u).removeAttr('hidden');
+        $("#cancelReplyBtn").removeAttr('hidden');
+        $("#replyBtn").removeAttr('hidden');
+        $("#subCommentBtn").attr('hidden', 'true');
+        $("#comment-editor").autofocus = true;
+        $(".rep-btn").css("color", "#868e96");
+        $(this).css("color", "red");
+
         return false;
     }
 
-    /*function deleteComment(commid){
-        console.log(commid);
-        $("#deleteBtn").val(commid);
-    }*/
+    $("#cancelReplyBtn").click(function (){
+        $("#cancelReplyBtn").attr('hidden', 'true');
+        $("#replyBtn").attr('hidden', 'true');
+        $("#replyUser").attr('hidden', 'true');
+        $("#subCommentBtn").removeAttr('hidden');
+        $(".rep-btn").css("color", "#868e96");
+    })
 
     $("#confirm-delete").on("show.bs.modal", function (e){
         let commID = $(e.relatedTarget).data('commid');
-        console.log(commID);
         $("#deleteBtn").val(commID);
     })
 
@@ -411,6 +495,23 @@
         })
     }
 
+    function replyUserComment(){
+        let reply = editor.getData();
+        if(!reply){
+            $("#commentErrorHint").removeAttr('hidden');
+            $("#commentErrorHint").show().delay(2000).hide(200);
+            return false;
+        }
+        $.ajax({
+            url: '/gallery/comment/reply/',
+            type: 'POST',
+            data: {'reply_comment': reply, 'receive_u': sessionStorage.getItem('receive_u'),
+                'parent_id': sessionStorage.getItem('rep_id')},
+            success: function (){
+                window.location.reload();
+            }
+        })
+    }
 </script>
 </body>
 </html>
