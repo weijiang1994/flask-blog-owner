@@ -66,6 +66,10 @@ class DBOperator:
         return self.session.query(obj).filter_by(article_id=condition, parent_id=None).order_by(obj.comment_time.
                                                                                                 desc()).all()
 
+    def query_top_pc_by_blog_id(self, obj, condition):
+        return self.session.query(obj).filter_by(photo_id=condition, parent_id=None).order_by(obj.comm_timestamp.
+                                                                                              desc()).all()
+
     def query_filter_by_id(self, obj, condition):
         ret = self.session.query(obj).filter_by(id=condition).all()
         return ret

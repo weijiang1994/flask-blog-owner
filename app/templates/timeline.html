@@ -63,13 +63,13 @@
                                 <img src="../static/img/{{ timeline[-1][1] }}">
                             </div>
                             <div class="cd-timeline-content">
-                                <h2>{{ timeline[0] }}</h2>
+                                <h3><strong>{{ timeline[0] }}</strong></h3>
                                 <ul>
                                     {% for content in timeline[1] %}
                                         <li>{{ content }}</li>
                                     {% endfor %}
                                 </ul>
-                                <span class="cd-date">{{ timeline[2] }}</span>
+                                <span class="text-muted float-right"><i class="fa fa-calendar"></i> {{ timeline[2] }}</span>
                             </div>
                         </div>
                     {% endfor %}

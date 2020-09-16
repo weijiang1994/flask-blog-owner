@@ -67,7 +67,10 @@ def index(title):
 
 
 def get_comments(comments_ret, db, ret):
-    comments = db.query_top_comment_by_blog_id(Comment, condition=ret.id)
+    if ret.__class__ == 'str'.__class__:
+        comments = db.query_top_comment_by_blog_id(Comment, ret)
+    else:
+        comments = db.query_top_comment_by_blog_id(Comment, condition=ret.id)
     comment_count = len(comments)
     for comment in comments:
         comm = []

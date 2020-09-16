@@ -14,9 +14,16 @@
     <link rel="stylesheet" href="/static/gallery/style.css">
     <link rel="stylesheet" href="/static/css/base.css">
     <script src="https://cdn.ckeditor.com/ckeditor5/22.0.0/classic/ckeditor.js"></script>
+    {{ share.load() }}
+    {{ moment.include_moment() }}　　
+    {{ moment.locale(auto_detect=True) }}
 </head>
 <body>
 <style>
+
+    .ck-editor__editable {
+        min-height: 100px;
+    }
     .border-card{
         border: 10px solid rgb(78 61 125 / 25%);
         margin: 0px 0px 5px 0px;
@@ -28,6 +35,20 @@
     }
     .comment-thumbnail {
         position: absolute;
+    }
+    .comment-body>blockquote{
+        padding: 8px;
+        border-left: solid 4px #c7ddef;
+        background: #cccccc;
+        border-radius: 5px;
+    }
+    .comment-body>blockquote>p{
+        margin: 0px;
+    }
+    .comment-body>ul{
+        border: 2px dashed darkgrey;
+        border-radius: 5px;
+        font-style: italic;
     }
 </style>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark justify-content-between">
@@ -84,7 +105,7 @@
 </nav>
 <main>
     <div class="container">
-        {{ share.load() }}
+
         <div class="row">
             <div class="col-md-8">
                 <div class="border-card photo">
@@ -109,6 +130,8 @@
                         </div>
                     {% else %}
                         <div style="margin: 5px">
+                            <p id="commentPosition"></p>
+
                             <textarea name="comment-editor" id="comment-editor">
                             </textarea>
                             <div>
@@ -116,50 +139,75 @@
                                 <p id="commentErrorHint" class="text-right text-danger ml-0" hidden="hidden">请输入评论内容后再提交</p>
                                 <br>
                                 <div>
+                                    <button hidden="hidden" class="btn btn-outline-danger round-3 float-right gutter-right" id="cancelReplyBtn">取消回复</button>
+                                    <button hidden="hidden" class="btn btn-outline-success round-3 float-right gutter-right" onclick="replyUserComment()" id="replyBtn">回复</button>
                                     <button class="btn btn-outline-success round-3 float-right gutter-right" onclick="submitComment()" id="subCommentBtn">评论</button>
                                 </div>
+
                             </div>
                         </div>
                     {% endif %}
                     <br>
                     <p class="text-muted"><strong>当前照片共有{{ comment_count }}条评论</strong></p>
                     <hr>
-                    <div class="comment">
-                        <div class="comment-thumbnail">
-                            <a href="">
-                                <img class="rounded img-fluid avatar-s profile-popover" src="/static/avatars/1.jpg">
-                            </a>
-                        </div>
-                        <div class="comment-body">
-                            <h6>
-                                <a class="profile-popover" data-href="/ajax/profile/4" href="/user/darlene22">
-                                    Tracy Contreras
+                    {% for comment in comment_ret %}
+                        <div class="comment">
+                            <div class="comment-thumbnail">
+                                <a>
+                                    <img class="rounded img-fluid avatar-s profile-popover" src="{{ comment[0][0] }}">
                                 </a>
-                                <span class="badge badge-light">Author</span>
-                                <small data-toggle="tooltip" data-placement="top" data-timestamp="2020-02-13 05:14:39" data-delay="500" data-original-title="" title="">
-                                    <span class="" data-timestamp="2020-02-13T05:14:39Z" data-format="fromNow(0)" data-refresh="60000" style="">7 months ago</span>
-                                </small>
-                                <span class="float-right">
-                                <span class="dropdown">
-                                <button class="btn btn-sm btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="fa fa-ellipsis-h"></span>
-                                </button>
-                                <span class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item btn" href="#">
-                                    <span class="fa fa-facebook-f"></span> 回复
+                            </div>
+                            <div class="comment-body">
+                                <h6>
+                                    <a class="profile-popover">
+                                        {{ comment[0][1]}}
                                     </a>
-                                    <a class="dropdown-item btn" href="#">
-                                    <span class="fa fa-podcast"></span> 举报
-                                    </a>
-                                </span>
-                                </span>
-                            </span>
-                            </h6>
-                            <p>
-                                Coach voice evening final should decade anything.是即可案发生立刻就发顺丰dfsjdjkjflklkgklsgdllgajslkd
-                            </p>
+                                    {% if comment[0][1] == 'Blogin' %}
+                                        <span class="badge badge-light">博主</span>
+                                    {% else %}
+                                        <span class="badge badge-light">用户</span>
+                                    {% endif %}
+                                    <small data-toggle="tooltip" data-placement="top" data-timestamp="{{ comment[0][3] }}" data-delay="500" data-original-title="" title="{{ comment[0][3] }}">
+                                        {{ moment(comment[0][3], local=True).fromNow(refresh=True) }}
+                                    </small>
+                                    {% if '该条评论已删除' not in comment[0][2] and g.normal_user  %}
+                                        <span class="float-right">
+                                        <span class="dropdown">
+                                            <button class="btn btn-sm btn-light" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-ellipsis-h"></i>
+                                            </button>
+                                            {% if comment[0][1] == g.normal_user_name %}
+                                                <span class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item btn" data-commid="{{ comment[0][-1] }}" data-toggle="modal" data-target="#confirm-delete" >
+                                                    <i class="fa fa-remove"></i> 删除
+                                                </a>
+                                            </span>
+                                            {% else %}
+                                                <span class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item btn" onclick="goRepl()">
+                                                    <i class="fa fa-facebook-f"></i> 回复
+                                                </a>
+                                                <a class="dropdown-item btn" href="#">
+                                                    <i class="fa fa-podcast"></i> 举报
+                                                </a>
+                                            </span>
+                                            {% endif %}
+                                        </span>
+
+                                    </span>
+                                    {% endif %}
+                                </h6>
+                                <p>
+                                    {% if '该条评论已删除' in comment[0][2]  %}
+                                        <strong class="text-muted">{{ comment[0][2]|safe }}</strong>
+                                    {% else %}
+                                        {{ comment[0][2]|safe }}
+                                    {% endif %}
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                        <hr>
+                    {% endfor %}
                 </div>
             </div>
             <div class="col-md-4">
@@ -219,6 +267,25 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">确认?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p>确定删除该条评论吗?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">取消</button>
+                    <button class="btn btn-danger btn-confirm" id="deleteBtn" onclick="submitDelete($(this).val())">删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 <script>
 
@@ -246,7 +313,6 @@
         if (!comment){
             $("#commentErrorHint").removeAttr('hidden');
             $("#commentErrorHint").show().delay(2000).hide(200);
-
             return false;
         }
         $.ajax({
@@ -313,6 +379,36 @@
                 }
             })
         }
+    }
+
+    function goRepl(){
+        $('html, body').animate({
+            scrollTop: $("#commentPosition").offset().top
+        }, 800);
+        return false;
+    }
+
+    /*function deleteComment(commid){
+        console.log(commid);
+        $("#deleteBtn").val(commid);
+    }*/
+
+    $("#confirm-delete").on("show.bs.modal", function (e){
+        let commID = $(e.relatedTarget).data('commid');
+        console.log(commID);
+        $("#deleteBtn").val(commID);
+    })
+
+    function submitDelete(commid){
+        $.ajax({
+            url:'/gallery/comment/delete/',
+            type: 'POST',
+            data: {'comm_id': commid},
+            success: function (){
+                window.location.reload();
+            },
+            error: function (){}
+        })
     }
 
 </script>

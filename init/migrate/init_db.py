@@ -170,6 +170,17 @@ try:
                                  "login_ip VARCHAR (40) DEFAULT '')"
     cursor.execute(CREATE_LOGIN_LOG_TABLE_SQL)
     print('create login_log table done.')
+    print('-'*56)
+    print('starting create photo_comment table')
+    CREATE_PHOTO_COMMENT_TABLE_SQL = "CREATE TABLE IF NOT EXISTS photo_comment(" \
+                                     "id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT," \
+                                     "photo_id VARCHAR (40) NOT NULL," \
+                                     "user_id INTEGER NOT NULL," \
+                                     "parent_id INTEGER," \
+                                     "content VARCHAR (255) NOT NULL," \
+                                     "comm_timestamp datetime NOT NULL)"
+    cursor.execute(CREATE_PHOTO_COMMENT_TABLE_SQL)
+    print('create photo comment table done.')
     conn.commit()
     print('database is initialed.')
     conn.close()

@@ -13,6 +13,7 @@ import datetime
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask, render_template
+from flask_moment import Moment
 from .blueprint.index_bp import index_bp
 from .blueprint.gallery_bp import gallery_bp
 from .blueprint.work_bp import work_bp
@@ -41,6 +42,7 @@ def create_app(test_config=None):
     Bootstrap(app)
     CKEditor(app)
     Share(app)
+    Moment(app)
     app.config['current_article_title'] = ''
     app.config['CKEDITOR_SERVE_LOCAL'] = True
     app.config['CKEDITOR_ENABLE_CODESNIPPET'] = True

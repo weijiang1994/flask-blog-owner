@@ -7,12 +7,12 @@ file: gallery_bp.py
 @desc:
 """
 import functools
-
+from .article_detail_bp import get_comments
 from flask import Blueprint, render_template, request, jsonify, g, redirect
 
 from .login_bp import user_login_require
 from ..model.db_operate import DBOperator
-from ..model.blogin_model import Gallery, Tags, PhotoTag, Notification, Likes, LikePhoto, Comment
+from ..model.blogin_model import Gallery, Tags, PhotoTag, Notification, Likes, LikePhoto, Comment, PhotoComment, Users
 from ..util.common_util import get_current_time
 
 gallery_bp = Blueprint('gallery_bp', __name__)
@@ -103,18 +103,42 @@ def show_photo(photo_id):
         like = ''
         pre_like = '给'
     # 获取当前照片评论数
-    top_comments = db.query_top_comment_by_blog_id(Comment, condition=photo_id)
-    comment_count = len(top_comments)
-    if comment_count:
-        for top_comment in top_comments:
-            child_comm = db.query_child_comment(Comment, condition=top_comment.id)
-
+    comments_ret = []
+    comment_count = get_photo_comment(comments_ret, db, photo_id)
     # 拼接数据返回渲染
     ret = {'title': photo.photo_title, 'photo': photo.photo_path, 'photoDesc': photo.photo_desc,
            'updateTime': photo.create_time, 'preLink': pre_link, 'nextLink': next_link, 'tags': tags_ls,
            'tagIds': tags_id, 'like': like, 'pre_like': pre_like}
+
     return render_template('showPhoto.html', photo=ret, photoDesc=photo.photo_desc,
-                           time=photo.create_time, ntf_counts=len(notifications), comment_count=comment_count)
+                           time=photo.create_time, ntf_counts=len(notifications), comment_count=comment_count,
+                           comment_ret=comments_ret)
+
+
+def get_photo_comment(comments_ret, db, photo_id):
+    comments = db.query_top_pc_by_blog_id(PhotoComment, condition=photo_id)
+    comment_count = len(comments)
+    for comment in comments:
+        comm = []
+        child_comm = []
+        user = db.query_filter_by_id(Users, comment.user_id)
+        top_comment = [user[0].avatar, user[0].username, comment.content, comment.comm_timestamp, comment.id]
+        comm.append(top_comment)
+        children = db.query_child_comment(PhotoComment, comment.id)
+        if len(children) == 0:
+            comm.append([])
+        else:
+            for child in children:
+                usr = db.query_filter_by_id(Users, condition=child.create_u_id)[0]
+                avatar = usr.avatar
+                username = usr.username
+                child_comment = child.content
+                child_comm_time = child.comm_timestamp
+                parent_id = comment.id
+                child_comm.append([avatar, username, child_comment, child_comm_time, parent_id])
+            comm.append(child_comm)
+        comments_ret.append(comm)
+    return comment_count
 
 
 @gallery_bp.route('/gallery/tag/<int:tag_id>', methods=['GET', 'POST'])
@@ -139,9 +163,9 @@ def photo_comment():
     usr_id = g.normal_user
     comm_content = request.form.get('comment-editor')
     db = DBOperator()
-    comm = Comment(create_u_id=usr_id, article_id=ph_id, parent_id=None, comment_time=get_current_time(),
-                   comment_content=comm_content, delete_flag=0)
-    db.add_data(comm)
+    pc = PhotoComment(photo_id=ph_id, user_id=usr_id, comm_timestamp=get_current_time(), content=comm_content,
+                      parent_id=None)
+    db.add_data(pc)
     db.commit_data()
     return redirect(request.referrer)
 
@@ -186,3 +210,19 @@ def photo_unlike():
         return jsonify({'tag': 1, 'info': '取消点赞成功～不开心ing'})
     except:
         return jsonify({'tag': 0, 'info': '取消点赞失败~'})
+
+
+@gallery_bp.route('/gallery/comment/delete/', methods=['POST'])
+@ajax_redirect_login
+def delete_photo_comment():
+    try:
+        comm_id = request.form.get('comm_id')
+        db = DBOperator()
+        target_comment = db.query_filter_by_id(PhotoComment, condition=comm_id)[0]
+        target_comment.content = '该条评论已删除'
+        db.commit_data()
+        return jsonify({'tag': 1, 'info': '评论删除成功'})
+    except:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'tag': 1, 'info': '评论删除失败'})

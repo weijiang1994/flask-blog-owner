@@ -136,3 +136,14 @@ class LikePhoto(Base):
     like_user_id = Column(INTEGER, nullable=False, comment='like photo user id')
     like_time = Column(DateTime, nullable=False)
     delete_flag = Column(INTEGER, nullable=False, default=0, comment='like photo delete flag')
+
+
+class PhotoComment(Base):
+    __tablename__ = 'photo_comment'
+
+    id = Column(INTEGER, autoincrement=True, primary_key=True, comment='photo comment id')
+    photo_id = Column(String(40), nullable=False, comment='photo id of this comment')
+    user_id = Column(INTEGER, nullable=False)
+    parent_id = Column(INTEGER)
+    content = Column(String(255), nullable=False, comment='comment content')
+    comm_timestamp = Column(DateTime)
