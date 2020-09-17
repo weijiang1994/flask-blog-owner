@@ -26,8 +26,24 @@ def confirm_required(view):
                 '<a class="alert-link" href="%s">重新发送确认邮件</a>' %
                 url_for('login_bp.resend_confirm_mail'))
             return jsonify({'tag': 0, 'info': message})
-            return redirect(url_for('index_bp.index'))
         return view(**kwargs)
+
     return view_in
 
 
+def confirm_required_2_index(view):
+    @wraps(view)
+    def view_in(**kwargs):
+        db = DBOperator()
+        usr = db.query_filter_by_id(Users, condition=g.normal_user)[0]
+        if not usr.confirmed:
+            message = Markup(
+                '请先前往邮箱确认然后进行后续操作.'
+                '没有收到邮件?'
+                '<a class="alert-link" href="%s">重新发送确认邮件</a>' %
+                url_for('login_bp.resend_confirm_mail'))
+            flash(message, 'warning')
+            return redirect(url_for('index_bp.index'))
+        return view(**kwargs)
+
+    return view_in

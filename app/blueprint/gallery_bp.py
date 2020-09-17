@@ -22,7 +22,6 @@ def ajax_redirect_login(view):
     def wrapped_view(**kwargs):
         if g.normal_user is None:
             return jsonify({'url': '/auth/userLogin'})
-        print(view is None)
         return view(**kwargs)
     return wrapped_view
 
@@ -237,6 +236,7 @@ def delete_photo_comment():
 
 @gallery_bp.route('/gallery/comment/reply/', methods=['POST'])
 @ajax_redirect_login
+@confirm_required
 def reply_photo_comment():
     rep_content = request.form.get('reply_comment')
     receive_u = request.form.get('receive_u')

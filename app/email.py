@@ -32,3 +32,14 @@ def send_mail(to_email, subject, template, **kwargs):
 
 def send_confirm_email(user, token, to=None):
     send_mail(subject='Register Confirm', to_email=to or user.email, template='email/confirm', user=user, token=token)
+
+
+def send_verify_code(to_email, **kwargs):
+    msg = Message(sender=current_app.config['MAIL_USERNAME'], recipients=[to_email],
+                  subject=current_app.config['BLOGIN_MAIL_SUBJECT_PRE'] + '密码修改')
+    msg.body = render_template('email/verifyCode.txt', **kwargs)
+    msg.html = render_template('email/verifyCode.html', **kwargs)
+    app = current_app._get_current_object()
+    th_send = Thread(target=_send_async_mail, args=(app, msg))
+    th_send.start()
+    return th_send

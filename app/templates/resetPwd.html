@@ -101,7 +101,17 @@
                 {{wtf.form_field(form.origin_pwd)}}
                 {{wtf.form_field(form.reset_pwd)}}
                 {{wtf.form_field(form.confirm_reset_pwd)}}
-                {{wtf.form_field(form.submit, class="btn btn-outline-info")}}
+                {{ wtf.form_field(form.ver_code, class="form-control") }}
+                <p hidden class="text-success text-center">验证码发送成功,十分钟内有效哦!</p>
+                <div class="row">
+                    <div class="col-6 ">
+                        <button onclick="sendVerCode()" class="btn btn-outline-info btn-sm">验证码</button>
+                    </div>
+                    <div class="col-6" style="text-align: right">
+                        {{wtf.form_field(form.submit, class="btn btn-outline-info btn-sm")}}
+                    </div>
+                </div>
+
             </form>
         </div>
     </div>
@@ -129,5 +139,17 @@
         </script>
     </div>
 </footer>
+<script>
+    function sendVerCode(){
+        $.ajax({
+            url: '/accounts/ver-code/',
+            type: 'POST',
+            data: {'tag': 'ver-code'},
+            success: function (res){
+
+            }
+        })
+    }
+</script>
 </body>
 </html>

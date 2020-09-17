@@ -182,6 +182,15 @@ try:
                                      "comm_timestamp datetime NOT NULL)"
     cursor.execute(CREATE_PHOTO_COMMENT_TABLE_SQL)
     print('create photo comment table done.')
+    print('-'*56)
+    print('starting create verify code table')
+    CREATE_VERIFY_CODE_TABLE_SQL = "CREATE TABLE IF NOT EXISTS ver_code(" \
+                                   "id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT," \
+                                   "user_id INTEGER NOT NULL," \
+                                   "code INTEGER NOT NULL ," \
+                                   "create_time datetime NOT NULL )"
+    cursor.execute(CREATE_VERIFY_CODE_TABLE_SQL)
+    print('create verify code table done.')
     conn.commit()
     print('database is initialed.')
     conn.close()

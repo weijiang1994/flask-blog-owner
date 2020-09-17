@@ -6,17 +6,19 @@
 @File    : account_bp
 @Software: PyCharm
 """
-from flask import Blueprint, render_template, g, request, send_from_directory, redirect, url_for, flash
+from flask import Blueprint, render_template, g, request, send_from_directory, redirect, url_for, flash, jsonify
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from wtforms import StringField, FileField, SubmitField
 from wtforms.validators import DataRequired, Length
-from ..util.common_util import get_md5, get_time_delta
+from ..util.common_util import get_md5, get_time_delta, generate_ver_code
 from ..blueprint.login_bp import user_login_require
 from ..frozen_dir import app_path
 from ..model.blogin_model import Users, LoginLog, Comment, Article
 from ..model.db_operate import DBOperator
 from ..model.blogin_model import Notification
+from app.decorators import confirm_required_2_index
+from app.email import send_verify_code
 
 account_bp = Blueprint(__name__, 'account_bp', url_prefix='/accounts')
 
@@ -38,6 +40,9 @@ class ResetPwdForm(FlaskForm):
     confirm_reset_pwd = StringField('确认密码',
                                     validators=[DataRequired(), Length(min=8, max=20, message='密码必须在8-20个字符之间')],
                                     render_kw={'placeholder': '请确认密码', 'type': 'password'})
+    ver_code = StringField('验证码', validators=[DataRequired(), Length(max=6, message='请输入正确的验证码')],
+                           render_kw={'placeholder': '请输入验证码'})
+
     submit = SubmitField('修改')
 
 
@@ -84,7 +89,7 @@ def account_profile():
             art_title = db.query_filter_by_id(Article, condition=moment.article_id)[0].title
             delta_time = get_time_delta(moment.comment_time)
             sub = [{'parentComment': None}, moment.comment_time, moment.comment_content, art_title,
-                   '/detail/article/'+art_title, delta_time]
+                   '/detail/article/' + art_title, delta_time]
             ntf_moments.append(sub)
         else:
             # 查询父id所关联的信息
@@ -93,7 +98,7 @@ def account_profile():
             art_title = db.query_filter_by_id(Article, condition=moment.article_id)[0].title
             delta_time = get_time_delta(moment.comment_time)
             sub = [{'parentComment': [parent_usr, parent.comment_content]},
-                   moment.comment_time, moment.comment_content, art_title, '/detail/article/'+art_title, delta_time]
+                   moment.comment_time, moment.comment_content, art_title, '/detail/article/' + art_title, delta_time]
             ntf_moments.append(sub)
     return render_template('accountProfile.html', user_info=usr_info, nft_counts=len(notifications),
                            ntf_conmment=ntf_comments, ntf_moments=ntf_moments)
@@ -123,6 +128,7 @@ def mark_one_notification():
 
 @account_bp.route('/profile/edit/', methods=['GET', 'POST'])
 @user_login_require
+@confirm_required_2_index
 def profile_edit():
     db = DBOperator()
     usr = db.query_filter_by_id(Users, g.normal_user)[0]
@@ -147,6 +153,7 @@ def profile_edit():
 
 @account_bp.route('/profile/resetPwd/', methods=['GET', 'POST'])
 @user_login_require
+@confirm_required_2_index
 def reset_pwd():
     form = ResetPwdForm()
     if form.validate_on_submit():
@@ -174,3 +181,14 @@ def get_gallery_img(path, filename):
     """
     path = app_path() + '/' + path + '/'
     return send_from_directory(path, filename)
+
+
+@account_bp.route('/ver-code/', methods=['POST'])
+@user_login_require
+def send_ver_code():
+    user_id = g.normal_user
+    db = DBOperator()
+    usr = db.query_filter_by_id(Users, condition=user_id)[0]
+    usr_name = usr.username
+    send_verify_code(usr.email, ver_code=generate_ver_code(), username=usr_name)
+    return jsonify({'tag': 1, 'info': '验证码发送成功,十分钟内有效!'})

@@ -13,6 +13,8 @@ import traceback
 from ..model.db_operate import DBOperator
 from ..model.blogin_model import Comment, Notification
 from ..util.common_util import get_current_time
+from app.blueprint.login_bp import user_login_require
+from app.decorators import confirm_required
 
 article_detail_bp = Blueprint('article_detail_bp', __name__, url_prefix='/detail')
 
@@ -97,6 +99,8 @@ def get_comments(comments_ret, db, ret):
 
 
 @article_detail_bp.route('/comment/', methods=['GET', 'POST'])
+@user_login_require
+@confirm_required
 def submit_comment():
     comment = request.form.get('comment-editor')
     blog_title = parse.unquote(request.referrer.split('/')[-2])
@@ -112,6 +116,8 @@ def submit_comment():
 
 
 @article_detail_bp.route('/replyComment/', methods=['GET', 'POST'])
+@user_login_require
+@confirm_required
 def reply_comment():
     reply = request.form.get('reply_comment')
     receive_u = request.form.get('receive_u')

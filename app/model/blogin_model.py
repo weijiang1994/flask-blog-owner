@@ -148,3 +148,12 @@ class PhotoComment(Base):
     parent_id = Column(INTEGER)
     content = Column(String(255), nullable=False, comment='comment content')
     comm_timestamp = Column(DateTime)
+
+
+class VerifyCode(Base):
+    __tablename__ = 'ver_code'
+
+    id = Column(INTEGER, primary_key=True, nullable=False, autoincrement=True)
+    user_id = Column(INTEGER, nullable=False)
+    code = Column(INTEGER, nullable=False)
+    create_time = Column(DateTime, nullable=False)

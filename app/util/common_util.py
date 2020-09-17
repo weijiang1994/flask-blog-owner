@@ -164,3 +164,7 @@ def validate_token(user, token, operation, new_password=None):
 
     return True
 
+
+def generate_ver_code():
+    import random
+    return random.randint(134299, 873242)
