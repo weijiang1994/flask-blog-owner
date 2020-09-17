@@ -136,6 +136,7 @@
                                 <p id="replyUser" class="float-left text-info ml-0" hidden="hidden"></p>
                                 <p id="commentErrorHint" class="text-right text-danger ml-0" hidden="hidden">请输入评论内容后再提交</p>
                                 <br>
+                                <p id="notConfirmHint" class="text-center text-danger ml0" hidden="hidden"></p>
                                 <div>
                                     <button hidden="hidden" class="btn btn-outline-danger round-3 float-right gutter-right" id="cancelReplyBtn">取消回复</button>
                                     <button hidden="hidden" class="btn btn-outline-success round-3 float-right gutter-right" onclick="replyUserComment()" id="replyBtn">回复</button>
@@ -390,7 +391,13 @@
             url: '/gallery/comment/',
             type: 'post',
             data: {'comment-editor': comment},
-            success: function (){
+            success: function (res){
+                if (res.tag == 0){
+                    $("#notConfirmHint").html(res.info);
+                    $("#notConfirmHint").removeAttr("hidden");
+                    $("#notConfirmHint").show().delay(5000).hide(200);
+                    return false;
+                }
                 window.location.reload();
             }
         })
@@ -403,6 +410,12 @@
                 url:'/gallery/like/',
                 type:'POST',
                 success: function (res){
+                    if (res.tag == 0){
+                        $("#notConfirmHint").html(res.info);
+                        $("#notConfirmHint").removeAttr("hidden");
+                        $("#notConfirmHint").show().delay(5000).hide(200);
+                        return false;
+                    }
                     if (res.tag){
                         $("#backInfo").text(res.info);
                         $("#like").attr('name', 'unlike');
@@ -458,7 +471,6 @@
         }, 800);
         sessionStorage.setItem('rep_id', i);
         sessionStorage.setItem('receive_u', u);
-        console.log(sessionStorage)
         $("#replyUser").text("回复 @"+u).removeAttr('hidden');
         $("#cancelReplyBtn").removeAttr('hidden');
         $("#replyBtn").removeAttr('hidden');
@@ -507,7 +519,13 @@
             type: 'POST',
             data: {'reply_comment': reply, 'receive_u': sessionStorage.getItem('receive_u'),
                 'parent_id': sessionStorage.getItem('rep_id')},
-            success: function (){
+            success: function (res){
+                if (res.tag == 0){
+                    $("#notConfirmHint").html(res.info);
+                    $("#notConfirmHint").removeAttr("hidden");
+                    $("#notConfirmHint").show().delay(5000).hide(200);
+                    return false;
+                }
                 window.location.reload();
             }
         })

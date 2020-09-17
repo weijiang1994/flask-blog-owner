@@ -109,6 +109,7 @@ class Users(Base):
     delete_flag = Column(INTEGER, default=0)
     avatar = Column(String(128), nullable=False, default='')
     website = Column(String(128), nullable=True, default='')
+    confirmed = Column(INTEGER, nullable=False, default=0)
 
 
 class LoginLog(Base):

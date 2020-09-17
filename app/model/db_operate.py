@@ -12,7 +12,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from ..util.common_util import DB_HOST, DB_PORT, DB_USER, DB_DATABASE, DB_PASSWORD
 
 _engine = create_engine('mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.
-                        format(DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE))
+                        format(DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE), pool_recycle=60)
 _session = sessionmaker(bind=_engine)
 _session = scoped_session(_session)
 

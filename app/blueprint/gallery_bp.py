@@ -7,9 +7,8 @@ file: gallery_bp.py
 @desc:
 """
 import functools
-from .article_detail_bp import get_comments
 from flask import Blueprint, render_template, request, jsonify, g, redirect
-
+from app.decorators import confirm_required
 from .login_bp import user_login_require
 from ..model.db_operate import DBOperator
 from ..model.blogin_model import Gallery, Tags, PhotoTag, Notification, Likes, LikePhoto, Comment, PhotoComment, Users
@@ -23,8 +22,8 @@ def ajax_redirect_login(view):
     def wrapped_view(**kwargs):
         if g.normal_user is None:
             return jsonify({'url': '/auth/userLogin'})
+        print(view is None)
         return view(**kwargs)
-
     return wrapped_view
 
 
@@ -120,7 +119,8 @@ def get_photo_comment(comments_ret, db, photo_id):
     comment_count = len(comments)
     deleted_count = 0
     for comment in comments:
-        if '该条评论已删除' in  comment.content:
+        # 统计当前照片被删除的评论条数
+        if '该条评论已删除' in comment.content:
             deleted_count += 1
         comm = []
         child_comm = []
@@ -162,6 +162,7 @@ def get_photo_tag(tag_id):
 
 @gallery_bp.route('/gallery/comment/', methods=['POST'])
 @user_login_require
+@confirm_required
 def photo_comment():
     ph_id = request.referrer.split('/')[-1]
     usr_id = g.normal_user
@@ -177,6 +178,7 @@ def photo_comment():
 # noinspection PyBroadException
 @gallery_bp.route('/gallery/like/', methods=['POST'])
 @ajax_redirect_login
+@confirm_required
 def like_photo():
     try:
         # 获取当前照片的id
@@ -203,6 +205,7 @@ def like_photo():
 # noinspection PyBroadException
 @gallery_bp.route('/gallery/unlike/', methods=['POST'])
 @ajax_redirect_login
+@confirm_required
 def photo_unlike():
     try:
         ph_id = request.referrer.split('/')[-1]
@@ -240,7 +243,8 @@ def reply_photo_comment():
     parent_id = request.form.get('parent_id')
     ph_id = request.referrer.split('/')[-1]
     db = DBOperator()
-    pc = PhotoComment(content=rep_content, parent_id=parent_id, user_id=g.normal_user, comm_timestamp=get_current_time(), photo_id=ph_id)
+    pc = PhotoComment(content=rep_content, parent_id=parent_id, user_id=g.normal_user,
+                      comm_timestamp=get_current_time(), photo_id=ph_id)
     db.add_data(pc)
     db.commit_data()
-    return jsonify({'tag':1, 'info': '评论成功'})
+    return jsonify({'tag': 1, 'info': '评论成功'})

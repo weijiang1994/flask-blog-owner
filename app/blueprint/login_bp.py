@@ -11,8 +11,8 @@ from flask import Blueprint, request, render_template, redirect, url_for, sessio
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, Length
-
-from ..util.common_util import get_md5, get_current_time, AVATARS
+from app.email import send_confirm_email
+from ..util.common_util import get_md5, get_current_time, AVATARS, generate_token, validate_token, Operations
 from ..model.blogin_model import Users, LoginLog
 from ..model.db_operate import DBOperator
 import random
@@ -60,6 +60,8 @@ def register():
         db.commit_data()
         db.clear_buffer()
         del db
+        token = generate_token(user=user, operation='confirm')
+        send_confirm_email(user=user, token=token)
         return redirect(url_for('login_bp.user_login'))
     return render_template('register.html', form=form)
 
@@ -164,3 +166,28 @@ def user_login_require(view):
         return view(**kwargs)
 
     return wrapped_view
+
+
+@login_bp.route('/confirm/<token>')
+@user_login_require
+def confirm(token):
+    db = DBOperator()
+    user = db.query_filter_by_id(Users, condition=g.normal_user)[0]
+    if validate_token(user=user, token=token, operation=Operations.CONFIRM):
+        user.confirmed = 1
+        db.commit_data()
+        flash('恭喜你,邮箱验证成功啦!', 'success')
+    else:
+        flash('不是你的就别想有拥有啦!╭(╯^╰)╮  邮箱验证失败啦!', 'danger')
+    return redirect(url_for('index_bp.index'))
+
+
+@login_bp.route('/resend-confirm-mail')
+@user_login_require
+def resend_confirm_mail():
+    db = DBOperator()
+    user = db.query_filter_by_id(Users, condition=g.normal_user)[0]
+    token = generate_token(user=user, operation=Operations.CONFIRM)
+    send_confirm_email(user=user, token=token)
+    flash('邮箱认证邮件发送成功，请前往邮箱查看认证!', 'success')
+    return redirect(url_for('index_bp.index'))

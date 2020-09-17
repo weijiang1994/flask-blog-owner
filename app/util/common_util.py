@@ -14,8 +14,10 @@ import hashlib
 import configparser
 
 from dateutil.parser import parse
-
+from flask import current_app
 from ..frozen_dir import app_path
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import BadSignature, SignatureExpired
 import base64
 
 AVATARS = ['/static/avatars/1.jpg', '/static/avatars/2.jpg', '/static/avatars/3.jpg', '/static/avatars/4.jpg',
@@ -28,6 +30,12 @@ CONFIG_PATH = app_path() + r'/config/config.ini'
 
 TIMELINE_STYLE = [['cd-location', 'cd-icon-location.svg'], ['cd-movie', 'cd-icon-movie.svg'],
                   ['cd-picture', 'cd-icon-picture.svg'], ]
+
+
+class Operations:
+    CONFIRM = 'confirm'
+    RESET_PASSWORD = 'reset-password'
+    CHANGE_EMAIL = 'change-email'
 
 
 class ReadConfig:
@@ -123,9 +131,36 @@ def get_time_delta(target_time):
         else:
             return str(hours) + '小时' + str(minutes) + '分' + str(secs) + '秒之前'
     # 超过一天
-    elif 60*60*24 <= total_sec < 60*60*24*365:
+    elif 60 * 60 * 24 <= total_sec < 60 * 60 * 24 * 365:
         days = total_sec // (60 * 60 * 24)
         return str(days) + '天之前'
     else:
-        years = total_sec // (60*60*24*365)
+        years = total_sec // (60 * 60 * 24 * 365)
         return str(years) + '年之前'
+
+
+# 生成token
+def generate_token(user, operation, expire_in=None, **kwargs):
+    s = Serializer(current_app.config['SECRET_KEY'], expire_in)
+    data = {'id': user.id, 'operation': operation}
+    data.update(**kwargs)
+    return s.dumps(data)
+
+
+def validate_token(user, token, operation, new_password=None):
+    s = Serializer(current_app.config['SECRET_KEY'])
+
+    try:
+        data = s.loads(token)
+    except (SignatureExpired, BadSignature):
+        return False
+    if operation != data.get('operation') or user.id != data.get('id'):
+        return False
+
+    if operation == Operations.CONFIRM:
+        user.confirmed = 1
+    else:
+        user.password = get_md5(new_password)
+
+    return True
+

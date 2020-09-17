@@ -33,16 +33,28 @@ from .blueprint.search_blog import search_bp
 from .blueprint.backend.gallery.edit_photo_bp import edit_photo_bp
 from .blueprint.account_bp import account_bp
 from flask_share import Share
+from app.extension import mail, ckeditor, bootstrap, share, moment
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
-    Bootstrap(app)
-    CKEditor(app)
-    Share(app)
-    Moment(app)
+    # Bootstrap(app)
+    # CKEditor(app)
+    # Share(app)
+    # Moment(app)
+    # mail.init_app(app)
+    app.config.update(
+        MAIL_SERVER='smtp.qq.com',
+        MAIL_PORT='465',
+        MAIL_USE_SSL=True,
+        MAIL_USERNAME='weijiang1994_1@qq.com',
+        MAIL_PASSWORD='diqwdlrwyotobaid',
+        SECRET_KEY='dev'
+    )
+    register_extension(app)
+
     app.config['current_article_title'] = ''
     app.config['CKEDITOR_SERVE_LOCAL'] = True
     app.config['CKEDITOR_ENABLE_CODESNIPPET'] = True
@@ -52,9 +64,11 @@ def create_app(test_config=None):
     app.config['UPLOADED_PATH'] = os.path.join(basedir, 'uploads')
     app.config['SECRET_KEY'] = 'dev'
     app.config['PRE_URL'] = ''
+    app.config['BLOGIN_MAIL_SUBJECT_PRE'] = '[Blogin]'
     app.permanent_session_lifetime = datetime.timedelta(days=1)
+
     # app.config.from_mapping(
-    #     SECRET_KEY='de'
+    #     SECRET_KEY='dev'
     # )
     # if test_config is None:
     #     app.config.from_pyfile('config.py', silent=True)
@@ -69,6 +83,14 @@ def create_app(test_config=None):
     register_blueprint(app)
     register_log(app)
     return app
+
+
+def register_extension(app):
+    bootstrap.init_app(app)
+    ckeditor.init_app(app)
+    share.init_app(app)
+    moment.init_app(app)
+    mail.init_app(app)
 
 
 def register_blueprint(app: Flask):
@@ -106,4 +128,3 @@ def register_log(app: Flask):
     file_handler.setLevel(logging.DEBUG)
     # if not app.debug:
     app.logger.addHandler(file_handler)
-

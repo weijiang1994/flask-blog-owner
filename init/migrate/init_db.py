@@ -147,7 +147,8 @@ try:
                          "create_time DATE NOT NULL ," \
                          "delete_flag INTEGER NOT NULL DEFAULT 0," \
                          "avatar VARCHAR (128) NOT NULL DEFAULT ''," \
-                         "website VARCHAR (128) DEFAULT '')"
+                         "website VARCHAR (128) DEFAULT ''," \
+                         "confirmed INTEGER NOT NULL DEFAULT 0)"
     cursor.execute(CREATE_USERS_TABLE)
     print('create users table done.')
     print('-'*56)
