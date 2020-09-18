@@ -55,7 +55,7 @@ def register():
             return render_template('register.html', form=form)
 
         user = Users(email=email, username=username, password=get_md5(password), create_time=get_current_time(),
-                     delete_flag=0, avatar=AVATARS[random.randint(0, len(AVATARS))])
+                     delete_flag=0, avatar=AVATARS[random.randint(0, len(AVATARS)-1)])
         db.add_data(user)
         db.commit_data()
         db.clear_buffer()
