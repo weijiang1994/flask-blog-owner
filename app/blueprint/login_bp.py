@@ -91,10 +91,10 @@ def user_login():
         user = db.query_user_by_name(Users, condition=username)
         if user:
             if user.password != get_md5(password):
-                flash('用户名或密码错误')
+                flash('用户名或密码错误', 'danger')
                 return render_template('userLogin.html')
         else:
-            flash('当前邮箱或用户名不存在')
+            flash('当前邮箱或用户名不存在', 'info')
             return render_template('userLogin.html')
         session.permanent = True
         session['normal_user'] = username

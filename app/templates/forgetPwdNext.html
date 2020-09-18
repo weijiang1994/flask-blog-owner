@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>重置密码</title>
-    {% import 'bootstrap/wtf.html' as wtf %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="{{url_for('static', filename='favicon.png')}}" type="image/x-icon">
     <link rel="icon" href="{{ url_for('static', filename = 'favicon.png') }}" type="image/x-icon">
@@ -16,24 +15,9 @@
     <link rel="stylesheet" href="/static/css/base.css">
 </head>
 <body>
-<style>
-    .profile-edit{
-        border-radius: 5px;
-        border: 1px solid forestgreen;
-        padding: 10px;
-    }
-    .edit-img{
-        max-height: 300px;
-        max-width: 300px;
-        padding: 15px;
-
-    }
-    main {
-        flex: 1 0 auto;
-    }
-</style>
 <main>
     <nav class="navbar navbar-expand-md bg-dark navbar-dark justify-content-between">
+
         <a class="navbar-brand" href="/">Blogin</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -87,35 +71,35 @@
     </nav>
     <div class="container">
         <br>
-        <div class="profile-edit col-md-4 offset-md-4">
-            {% for message in get_flashed_messages() %}
-                <div style="margin-top: 5px;" class="text-center alert alert-danger" role="alert">
-                    {{ message }}
-                    <button type="button" class="close btn btn-small" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
-            <form method="post" action="/accounts/profile/resetPwd/">
-                {{ form.csrf_token }}
-                {{wtf.form_field(form.origin_pwd)}}
-                {{wtf.form_field(form.reset_pwd)}}
-                {{wtf.form_field(form.confirm_reset_pwd)}}
-                {{ wtf.form_field(form.ver_code, class="form-control") }}
-                <p hidden class="text-success text-center">验证码发送成功,十分钟内有效哦!</p>
-                <div class="row">
-                    <div class="col-6 ">
-                        <button onclick="sendVerCode()" class="btn btn-outline-info btn-sm">验证码</button>
+        <div class="row">
+            <div class="col-md-4 offset-md-4 ">
+                {% for message in get_flashed_messages(with_categories=True) %}
+                    <div class="alert alert-{{ message[0] }}">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{ message[1] }}
                     </div>
-                    <div class="col-6" style="text-align: right">
-                        {{wtf.form_field(form.submit, class="btn btn-outline-info btn-sm")}}
-                    </div>
+                {% endfor %}
+                <div class="text-center">
+                    <img class="img-fluid" src="/static/img/blogin.png">
+                    <br>
+                    <br>
+                    <h2><strong>重置密码</strong></h2>
+                    <br>
                 </div>
+                <div class="card">
+                    <div class="card-body">
+                        <label style="font-weight: bold">检查您的电子邮件的链接，以重置您的密码。如果它在几分钟内没有出现，检查你的垃圾邮件文件夹。</label>
+                        <br>
+                        <div class="text-center">
+                            <a class="btn btn-dark" href="/auth/userLogin">返回登录页面</a>
 
-            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
 </main>
 <footer class="container-fluid mt-4 py-0">
     <div class="card-body text-center px-0 f-14">
@@ -139,17 +123,5 @@
         </script>
     </div>
 </footer>
-<script>
-    function sendVerCode(){
-        $.ajax({
-            url: '/accounts/ver-code/',
-            type: 'POST',
-            data: {'tag': 'ver-code'},
-            success: function (res){
-
-            }
-        })
-    }
-</script>
 </body>
 </html>

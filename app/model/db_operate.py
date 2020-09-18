@@ -74,6 +74,12 @@ class DBOperator:
         ret = self.session.query(obj).filter_by(id=condition).all()
         return ret
 
+    def query_ver_code_by_uid(self, obj, condition):
+        return self.session.query(obj).filter_by(user_id=condition).order_by(obj.create_time.desc()).first()
+
+    def query_user_by_email(self, obj, condition):
+        return self.session.query(obj).filter_by(email=condition).first()
+
     def delete_like(self, obj, condition, condition2):
         self.session.query(obj).filter_by(photo_id=condition, like_user_id=condition2).delete()
 

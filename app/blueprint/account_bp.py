@@ -10,15 +10,15 @@ from flask import Blueprint, render_template, g, request, send_from_directory, r
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from wtforms import StringField, FileField, SubmitField
-from wtforms.validators import DataRequired, Length
-from ..util.common_util import get_md5, get_time_delta, generate_ver_code
+from wtforms.validators import DataRequired, Length, EqualTo
+from ..util.common_util import get_md5, get_time_delta, generate_ver_code, get_current_time, generate_token, Operations,\
+    validate_token
 from ..blueprint.login_bp import user_login_require
 from ..frozen_dir import app_path
-from ..model.blogin_model import Users, LoginLog, Comment, Article
+from ..model.blogin_model import Users, LoginLog, Comment, Article, Notification, VerifyCode
 from ..model.db_operate import DBOperator
-from ..model.blogin_model import Notification
 from app.decorators import confirm_required_2_index
-from app.email import send_verify_code
+from app.email import send_reset_password_email
 
 account_bp = Blueprint(__name__, 'account_bp', url_prefix='/accounts')
 
@@ -31,7 +31,7 @@ class ProfileForm(FlaskForm):
     avatar_src = ''
 
 
-class ResetPwdForm(FlaskForm):
+class ChangePwdForm(FlaskForm):
     origin_pwd = StringField('原始密码',
                              validators=[DataRequired(), Length(min=8, max=20, message='密码必须在8-20个字符之间')],
                              render_kw={'placeholder': '请输入原始密码', 'type': 'password'})
@@ -40,10 +40,21 @@ class ResetPwdForm(FlaskForm):
     confirm_reset_pwd = StringField('确认密码',
                                     validators=[DataRequired(), Length(min=8, max=20, message='密码必须在8-20个字符之间')],
                                     render_kw={'placeholder': '请确认密码', 'type': 'password'})
-    ver_code = StringField('验证码', validators=[DataRequired(), Length(max=6, message='请输入正确的验证码')],
-                           render_kw={'placeholder': '请输入验证码'})
-
     submit = SubmitField('修改')
+
+
+class ResetPwdForm(FlaskForm):
+    email = StringField(u'注册邮箱', validators=[DataRequired()], render_kw={'type': 'email',
+                                                                         'placeholder': '请输入注册时使用的邮箱'})
+    new_pwd = StringField(u'新的密码', validators=[DataRequired(), Length(min=8, max=20, message='密码长度需要在8-20位之间'),
+                                               EqualTo('confirm_pwd', message='两次密码不一致')],
+                          render_kw={'placeholder': '请输入新的密码',
+                                     'type': 'password'})
+    confirm_pwd = StringField(u'确认密码', validators=[DataRequired(), Length(min=8, max=20, message='密码长度需要在8-20位之间')],
+                              render_kw={'placeholder': '请输入新的密码', 'type': 'password'})
+    ver_code = StringField(u'验证码', validators=[DataRequired(), Length(min=6, max=6, message='验证码必须为6位')],
+                           render_kw={'placeholder': '请输入邮箱验证码', 'type': 'number'})
+    submit = SubmitField(u'重置密码')
 
 
 @account_bp.route('/profile/', methods=['GET', 'POST'])
@@ -145,7 +156,8 @@ def profile_edit():
             usr.avatar = '/accounts/profile/avatar/avatars/' + filename
         usr.website = website
         db.commit_data()
-        return redirect(url_for('app.blueprint.account_bp.account_profile'))
+        flash('资料编辑成功啦O(∩_∩)O~~', 'success')
+        return redirect(url_for('.account_profile'))
     form.website.data = usr.website
     form.avatar_src = usr.avatar
     return render_template('profileEdit.html', form=form)
@@ -155,20 +167,21 @@ def profile_edit():
 @user_login_require
 @confirm_required_2_index
 def reset_pwd():
-    form = ResetPwdForm()
+    form = ChangePwdForm()
     if form.validate_on_submit():
         db = DBOperator()
         usr = db.query_filter_by_id(Users, condition=g.normal_user)[0]
         if usr.password != get_md5(form.origin_pwd.data):
             flash('原始密码错误,请重试~')
-            return render_template('resetPwd.html', form=form)
+            return render_template('changePassword.html', form=form)
         if form.reset_pwd.data != form.confirm_reset_pwd.data:
             flash('两次密码不一致,请重试~')
-            return render_template('resetPwd.html', form=form)
+            return render_template('changePassword.html', form=form)
         usr.password = get_md5(form.confirm_reset_pwd.data)
         db.commit_data()
-        return redirect(url_for('app.blueprint.account_bp.account_profile'))
-    return render_template('resetPwd.html', form=form)
+        flash('密码修改成功啦O(∩_∩)O~~', 'success')
+        return redirect(url_for('.account_profile'))
+    return render_template('changePassword.html', form=form)
 
 
 @account_bp.route('/profile/avatar/<path>/<filename>')
@@ -183,12 +196,65 @@ def get_gallery_img(path, filename):
     return send_from_directory(path, filename)
 
 
-@account_bp.route('/ver-code/', methods=['POST'])
-@user_login_require
-def send_ver_code():
-    user_id = g.normal_user
+# @account_bp.route('/ver-code/', methods=['POST'])
+# @user_login_require
+# def send_ver_code():
+#     user_id = g.normal_user
+#     db = DBOperator()
+#     usr = db.query_filter_by_id(Users, condition=user_id)[0]
+#     usr_name = usr.username
+#     send_reset_password_email(usr.email, ver_code=generate_ver_code(), username=usr_name)
+#     return jsonify({'tag': 1, 'info': '验证码发送成功,十分钟内有效!'})
+
+
+@account_bp.route('/password/reset/')
+def forget_password():
+    return render_template('forgetPwd.html')
+
+
+@account_bp.route('/password/reset/next/', methods=['POST'])
+def reset_password_next():
+    email = request.form.get('email')
     db = DBOperator()
-    usr = db.query_filter_by_id(Users, condition=user_id)[0]
-    usr_name = usr.username
-    send_verify_code(usr.email, ver_code=generate_ver_code(), username=usr_name)
-    return jsonify({'tag': 1, 'info': '验证码发送成功,十分钟内有效!'})
+    user = db.query_user_by_email(Users, condition=email)
+    if not user:
+        flash('你输入的邮箱不存在,请更正后再试!', 'danger')
+        return redirect(url_for('.forget_password'))
+    code = generate_ver_code()
+    ver_code = VerifyCode(user_id=user.id, code=code, create_time=get_current_time())
+    db.add_data(ver_code)
+    db.commit_data()
+    send_reset_password_email(user=user, token=generate_token(user=user, operation=Operations.RESET_PASSWORD),
+                              ver_code=code)
+    flash('验证邮件发送成功,请前往邮箱查看!', 'success')
+    return render_template('forgetPwdNext.html')
+
+
+@account_bp.route('/password/reset/confirm/<token>/', methods=['GET', 'POST'])
+def reset_confirm(token):
+    # 如果用户已经登录了,则返回主页面
+    if g.normal_user:
+        return redirect(url_for('index_bp.index'))
+
+    reset_form = ResetPwdForm()
+    if reset_form.validate_on_submit():
+        email = reset_form.email.data
+        pwd = reset_form.new_pwd.data
+        code = reset_form.ver_code.data
+        db = DBOperator()
+        user = db.query_user_by_email(Users, condition=email)
+        if user:
+            if validate_token(user=user, token=token, operation=Operations.RESET_PASSWORD, new_password=pwd):
+                ver_code = db.query_ver_code_by_uid(VerifyCode, condition=user.id)
+                if ver_code.code != int(code):
+                    flash('验证码错误!', 'danger')
+                    return render_template('resetPassword.html', form=reset_form)
+                user.password = get_md5(pwd)
+                db.commit_data()
+                flash('密码重置成功!', 'success')
+                return redirect(url_for('login_bp.user_login'))
+            else:
+                flash('错误或失效的链接!', 'danger')
+                return redirect(url_for('.forget_password'))
+
+    return render_template('resetPassword.html', form=reset_form)

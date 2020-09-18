@@ -34,6 +34,11 @@ def send_confirm_email(user, token, to=None):
     send_mail(subject='Register Confirm', to_email=to or user.email, template='email/confirm', user=user, token=token)
 
 
+def send_reset_password_email(user, token, ver_code):
+    send_mail(subject='Reset Password', to_email=user.email, template='email/verifyCode', token=token,
+              ver_code=ver_code, username=user.username)
+
+
 def send_verify_code(to_email, **kwargs):
     msg = Message(sender=current_app.config['MAIL_USERNAME'], recipients=[to_email],
                   subject=current_app.config['BLOGIN_MAIL_SUBJECT_PRE'] + '密码修改')

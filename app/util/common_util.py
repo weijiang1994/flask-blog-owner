@@ -149,7 +149,6 @@ def generate_token(user, operation, expire_in=None, **kwargs):
 
 def validate_token(user, token, operation, new_password=None):
     s = Serializer(current_app.config['SECRET_KEY'])
-
     try:
         data = s.loads(token)
     except (SignatureExpired, BadSignature):
@@ -158,9 +157,9 @@ def validate_token(user, token, operation, new_password=None):
         return False
 
     if operation == Operations.CONFIRM:
-        user.confirmed = 1
+        pass
     else:
-        user.password = get_md5(new_password)
+        pass
 
     return True
 
