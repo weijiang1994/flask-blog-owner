@@ -1,6 +1,7 @@
 # flask-blog-owner
 通过Flask框架搭建的个人博客网站。
 # :warning: 此版本不再进行更新! 
+# :star: [移步新版Blogin](https://github.com/weijiang1994/Blogin)
 #### Start
 [English Guid](https://github.com/weijiang1994/flask-blog-owner/blob/master/README-EN.md)
 ##### 1.安装依赖文件
